@@ -38,13 +38,13 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/src/build_number.h")
         execute_process(
                 COMMAND ${CMAKE_COMMAND} -P "${PROJECT_SOURCE_DIR}/build/build_number_inc.cmake"
                 WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/build/"
+        )
 else()
         add_custom_command(        
                 TARGET ${PROJECT_NAME}
                 COMMAND ${CMAKE_COMMAND} -P "${PROJECT_SOURCE_DIR}/build/build_number_inc.cmake"
                 WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/build/"
         )
-)
 endif()
 
 target_sources(${PROJECT_NAME} PUBLIC
