@@ -2,10 +2,9 @@
  * \file ws2812.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 
@@ -16,8 +15,8 @@
 #include <hardware/pio.h>
 #include <pico/stdlib.h>
 
+#include "macros.h"
 #include "platform.h"
-#include "types.h"
 #include "ws2812.pio.h"
 
 const float LUM_R = 1.400;

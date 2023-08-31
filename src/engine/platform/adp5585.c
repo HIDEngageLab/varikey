@@ -2,10 +2,9 @@
  * \file adp5585.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 
@@ -99,7 +98,7 @@
 
 /* ADP5585_POLL_TIME_CFG */
 #define KEY_POLL_MASK (0x03)
-#define KEY_POLL(x) ((x)&0x03)
+#define KEY_POLL(x) ((x) & 0x03)
 
 /* ADP5585_PIN_CONFIG_A */
 #define R4_CFG_MASK (1u << 4)
@@ -135,7 +134,7 @@
 
 /* ADP5585_GENERAL_CFG */
 #define OSC_EN (1 << 7)
-#define OSC_FREQ(x) (((x)&0x03) << 5)
+#define OSC_FREQ(x) (((x) & 0x03) << 5)
 #define OSC_FREQ_MASK(x) (0x03 << 5)
 #define INT_CFG (1 << 1)
 #define RST_CFG (1 << 0)

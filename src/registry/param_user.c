@@ -2,10 +2,9 @@
  * \file param_user.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -18,9 +17,9 @@
 #include <pico/stdlib.h>
 #include <stddef.h>
 
+#include "macros.h"
 #include "param_user.h"
 #include "parameter.h"
-#include "types.h"
 
 /** \brief Global user register parameter */
 param_user_register_t g_user_register = {{0xff, 0xff}};

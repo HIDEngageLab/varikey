@@ -30,4 +30,3 @@ extern const unsigned char HUGE_S_00[96];
 extern const unsigned char *FONT_TABLE_HUGE[128];
 
 #endif // __FONT_HUGE_H__
-

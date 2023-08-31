@@ -1,12 +1,13 @@
-/*
-	GMC INSTRUMENTS, GMC-I Messtechnik GmbH
-	Südwestpark 15, D-90449 Nürnberg, +4991186020, www.gossenmetrawatt.com
-	Roman Koch, roman.koch@gossenmetrawatt.com, koch.roman@googlemail.com
-
-	Copyright (c) 2019-2021 - All rights reserved
-	Unauthorized copying of this file, via any medium is strictly prohibited
-	Proprietary and confidential
-*/
+/**
+ * @file pico_hid.h
+ * @author Roman Koch, koch.roman@gmail.com
+ * @brief 
+ * @version 0.1
+ * 
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
+ * 
+ */
 
 #ifndef __COMPOSED_HID_DEVICE_H__
 #define __COMPOSED_HID_DEVICE_H__

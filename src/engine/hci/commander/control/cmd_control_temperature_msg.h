@@ -2,10 +2,9 @@
  * \file cmd_control_temperature_msg.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -18,7 +17,7 @@
 #ifndef __CMD_CONTROL_TEMPERATURE_MSG_H__
 #define __CMD_CONTROL_TEMPERATURE_MSG_H__
 
-#include "types.h"
+#include "macros.h"
 
 typedef struct chunk_struct chunk_t;
 

@@ -2,10 +2,9 @@
  * \file cmd_event_msg.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -21,10 +20,10 @@
 
 #include "cmd_event_msg.h"
 #include "commander.h"
+#include "macros.h"
 #include "revision.h"
 #include "serial_frame.h"
 #include "storage_queue.h"
-#include "types.h"
 
 #define EVENT_CFM_LENGTH 3
 #define EVENT_IND_LENGTH 16

@@ -2,10 +2,9 @@
  * \file usart.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -50,7 +49,7 @@ datasheet for information on which other pins can be used. */
 /* @{ */
 #define USART_SPACE_SIZE (1 << 8)
 
-    static uint8_t usart_rx_space[USART_SPACE_SIZE];
+static uint8_t usart_rx_space[USART_SPACE_SIZE];
 static buffer_t usart_rx_buffer;
 static uint8_t usart_tx_space[USART_SPACE_SIZE];
 static buffer_t usart_tx_buffer;

@@ -2,10 +2,9 @@
  * \file cmd_control_status_msg.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -23,10 +22,10 @@
 #include "cmd_control_status_msg.h"
 #include "commander.h"
 #include "engine.h"
+#include "macros.h"
 #include "param_serial_number.h"
 #include "serial_frame.h"
 #include "storage_queue.h"
-#include "types.h"
 
 #define CMD_CONTROL_STATUS_MESSAGE_CFM_SIZE 13
 #define CMD_CONTROL_STATUS_MESSAGE_IND_SIZE 7

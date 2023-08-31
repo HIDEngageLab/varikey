@@ -2,10 +2,9 @@
  * \file registry.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -24,6 +23,7 @@
 #include "checksum.h"
 #include "chunk.h"
 #include "composed_hid.h"
+#include "macros.h"
 #include "param_backlight.h"
 #include "param_features.h"
 #include "param_key.h"
@@ -35,7 +35,6 @@
 #include "random.h"
 #include "registry.h"
 #include "temperature.h"
-#include "types.h"
 
 /** \brief Node configuration state */
 typedef enum

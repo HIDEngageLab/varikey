@@ -2,10 +2,9 @@
  * \file types.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -15,8 +14,8 @@
     \author Roman Koch, koch.roman@googlemail.com
 */
 
+#include "macros.h"
 #include <stdint.h>
-#include "types.h"
 
 extern void serialize_word(uint16_t const _value, uint8_t **const _ptr)
 {

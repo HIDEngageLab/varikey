@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+# SPDX-License-Identifier: MIT
+
 pushd ..
-workspace=`pwd`
+workspace=$(pwd)
 
 # clean up
 

@@ -2,10 +2,9 @@
  * \file cmd_control_status_msg.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -19,7 +18,7 @@
 #define __CMD_CONTROL_STATUS_MSG_H__
 
 #include "chunk.h"
-#include "types.h"
+#include "macros.h"
 
 /** \brief Status message mode type */
 typedef enum

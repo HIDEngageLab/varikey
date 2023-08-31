@@ -1,29 +1,33 @@
 /**
- * \file types.h
+ * \file macros.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
-	\brief Data types
+	\brief Data macros
 
 	\internal
 	\author Roman Koch, koch.roman@googlemail.com
 */
 
-#ifndef __PULP_TYPES_H__
-#define __PULP_TYPES_H__
+#ifndef __PULP_MACROS_H__
+#define __PULP_MACROS_H__
 
 #include <stdint.h>
 
-#define HINIBLE(x) ((uint8_t)((x & 0xf0) >> 4u))
-#define LONIBLE(x) ((uint8_t)(x & 0x0f))
-#define HIBYTE(x) ((uint8_t)((x & 0xff00) >> 8u))
-#define LOBYTE(x) ((uint8_t)(x & 0x00ff))
+#define HINIBLE(x) ((uint8_t)(((x) & 0xf0) >> 4u))
+#define LONIBLE(x) ((uint8_t)((x) & 0x0f))
+
+#define HIBYTE(x) ((uint8_t)(((x) & 0xff00) >> 8u))
+#define LOBYTE(x) ((uint8_t)((x) & 0x00ff))
+
+#define HIWORD(x) ((uint16_t)(((x) & 0xffff0000) >> 16))
+#define LOWORD(x) ((uint16_t)((x) & 0x0000ffff))
+
 #define SETBYTE(a, b) (((((uint8_t)a) & 0x0f) << 4u) | (((uint8_t)b) & 0x0f))
 #define SETWORD(a, b) ((uint16_t)(((uint16_t)a) << 8u) | ((uint16_t)b))
 #define SETLONG(a, b) ((uint32_t)(((uint32_t)a) << 16u) | ((uint32_t)b))
@@ -60,4 +64,4 @@ extern uint32_t deserialize_long(uint8_t const **const _ptr);
 extern void serialize_float(float const _value, uint8_t **const _ptr);
 extern float deserialize_float(uint8_t const **const _ptr);
 
-#endif /* __PULP_TYPES_H__ */
+#endif /* __PULP_MACROS_H__ */

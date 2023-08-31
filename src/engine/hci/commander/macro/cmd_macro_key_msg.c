@@ -2,10 +2,9 @@
  * \file cmd_macro_key_msg.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -21,9 +20,9 @@
 
 #include "cmd_macro_key_msg.h"
 #include "commander.h"
+#include "macros.h"
 #include "revision.h"
 #include "serial_frame.h"
-#include "types.h"
 
 #define KEY_CFM_SIZE 6
 

@@ -1,6 +1,4 @@
 # Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
-# All rights reserved
-#
 # SPDX-License-Identifier: MIT
 
 cmake_minimum_required(VERSION 3.22)
@@ -19,6 +17,10 @@ set(HARDWARE_VARIANT 1)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 pico_sdk_init()
 
@@ -108,11 +110,11 @@ target_sources(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/ws2812.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/bytering.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/checksum.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/macros.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/random.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/temperature.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/ticker.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/timestamp.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/types.c
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_backlight.c
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_display.c
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_features.c

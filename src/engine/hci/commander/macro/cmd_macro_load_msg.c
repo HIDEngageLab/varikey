@@ -2,10 +2,9 @@
  * \file cmd_macro_load_msg.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -21,20 +20,20 @@
 
 #include "cmd_macro_load_msg.h"
 #include "commander.h"
+#include "macros.h"
 #include "revision.h"
 #include "serial_frame.h"
 #include "storage_queue.h"
-#include "types.h"
 
 #define LOAD_CFM_LENGTH 6
 #define LOAD_IND_LENGTH 5
 
-    /**
-        \brief Load request message
+/**
+    \brief Load request message
 
-        Deserialize only
-    */
-    extern void cmd_macro_load_msg_req(chunk_t const *const _chunk, cmd_macro_ctrl_msg_t *const _msg)
+    Deserialize only
+*/
+extern void cmd_macro_load_msg_req(chunk_t const *const _chunk, cmd_macro_ctrl_msg_t *const _msg)
 {
     /* checks */
     assert(_chunk != NULL && _msg != NULL); /* load macro request chunk null */

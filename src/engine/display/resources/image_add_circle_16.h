@@ -17,4 +17,3 @@ extern const unsigned char IMAGE_ADD_CIRCLE_16_HEIGHT;
 extern const unsigned char IMAGE_ADD_CIRCLE_16[32];
 
 #endif // __IMAGE_ADD_CIRCLE_16_H__
-

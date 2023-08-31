@@ -2,10 +2,9 @@
  * \file param_adc.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -18,8 +17,8 @@
 #include <pico/stdlib.h>
 #include <string.h>
 
+#include "macros.h"
 #include "param_backlight.h"
-#include "types.h"
 
 #define DEFAULT_REFERENCE 5.0f
 #define DEFAULT_WHEEL 1.8f

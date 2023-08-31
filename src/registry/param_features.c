@@ -2,10 +2,9 @@
  * \file param_features.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -18,9 +17,9 @@
 #include <pico/stdlib.h>
 #include <stddef.h>
 
+#include "macros.h"
 #include "param_features.h"
 #include "parameter.h"
-#include "types.h"
 
 param_features_t g_features = {0xff};
 

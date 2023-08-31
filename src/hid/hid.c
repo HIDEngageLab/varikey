@@ -1,8 +1,19 @@
+/**
+ * @file hid.c
+ * @author Roman Koch, koch.roman@gmail.com
+ * @brief 
+ * @version 0.1
+ * 
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
+ * 
+ */
+
 #include "bsp/board.h"
 #include "tusb.h"
 
-#include "usb_descriptors.h"
 #include "hid.h"
+#include "usb_descriptors.h"
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTOTYPES
@@ -24,7 +35,6 @@ static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 void led_blinking_task(void);
 static void send_hid_report(uint8_t report_id, uint32_t btn);
-
 
 // Every 10ms, we will sent 1 report for each HID profile (keyboard, mouse etc ..)
 // tud_hid_report_complete_cb() is used to send the next report after previous one is complete
@@ -76,7 +86,6 @@ void led_blinking_task(void)
   board_led_write(led_state);
   led_state = 1 - led_state; // toggle
 }
-
 
 //--------------------------------------------------------------------+
 // Device callbacks

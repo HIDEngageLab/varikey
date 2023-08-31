@@ -110,4 +110,3 @@ extern const unsigned char NORMAL_S_00[16];
 extern const unsigned char *FONT_TABLE_NORMAL[128];
 
 #endif // __FONT_NORMAL_H__
-

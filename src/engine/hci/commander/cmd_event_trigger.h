@@ -2,10 +2,9 @@
  * \file cmd_event_trigger.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -20,6 +19,6 @@
 
 #include "chunk.h"
 
-    extern void cmd_event_trigger_request(chunk_t const *_chunk);
+extern void cmd_event_trigger_request(chunk_t const *_chunk);
 
 #endif /* __CMD_EVENT_TRIGGER_H__ */

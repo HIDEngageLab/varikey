@@ -2,10 +2,9 @@
  * \file parameter.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -22,6 +21,7 @@
 
 #include "checksum.h"
 #include "chunk.h"
+#include "macros.h"
 #include "param_backlight.h"
 #include "param_display.h"
 #include "param_features.h"
@@ -31,7 +31,6 @@
 #include "param_serial_number.h"
 #include "param_user.h"
 #include "parameter.h"
-#include "types.h"
 
 #define REGISTRY_OFFSET (FLASH_PAGE_SIZE * 4096)
 #define REGISTRY_FLASH_START (XIP_BASE + REGISTRY_OFFSET)

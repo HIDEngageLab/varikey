@@ -180,7 +180,8 @@ class ShortCut:
 
             if isinstance(modifier, type([])):
                 for item in modifier:
-                    assert item in ShortCut.KEY_MODIFIER, "modifier " + modifier + " not in modifiers list"
+                    assert item in ShortCut.KEY_MODIFIER, "modifier " + \
+                        modifier + " not in modifiers list"
                     self.__modifier.append(item)
             else:
                 raise Exception("unknown modifier type")
@@ -191,7 +192,8 @@ class ShortCut:
         self.__type = ''
         try:
             key_type = _short_cut_data.key.type
-            assert key_type in ShortCut.KEY_TYPE, "key type " + key_type + " not in key types list"
+            assert key_type in ShortCut.KEY_TYPE, "key type " + \
+                key_type + " not in key types list"
             self.__type = key_type
 
         except:
@@ -200,7 +202,8 @@ class ShortCut:
         self.__detail = ''
         try:
             detail = _short_cut_data.key.detail
-            assert detail in ShortCut.KEY_DETAIL, "key detail " + detail + " not in key details list"
+            assert detail in ShortCut.KEY_DETAIL, "key detail " + \
+                detail + " not in key details list"
             self.__detail = detail
 
         except:

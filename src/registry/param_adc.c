@@ -1,11 +1,13 @@
-/*
-    GMC INSTRUMENTS, GMC-I Messtechnik GmbH
-    Südwestpark 15, D-90449 Nürnberg, +4991186020, www.gossenmetrawatt.com
-    Roman Koch, roman.koch@gossenmetrawatt.com, koch.roman@googlemail.com
-
-    Copyright (c) 2019-2021 - All rights reserved
-    Unauthorized copying of this file, via any medium is strictly prohibited
-    Proprietary and confidential
+/**
+ * @file param_adc.c
+ * @author Roman Koch, koch.roman@gmail.com
+ * @brief 
+ * @version 0.1
+ * 
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
+ * 
+ */
 */
 /**
     \brief Parameter "vref"
@@ -14,10 +16,10 @@
     \author Roman Koch, koch.roman@googlemail.com
 */
 
-#include <string.h>
-#include <pico/stdlib.h>
-#include "../pulp/types.h"
 #include "param_adc.h"
+#include "../pulp/types.h"
+#include <pico/stdlib.h>
+#include <string.h>
 
 #define DEFAULT_REFERENCE 5.0f
 #define DEFAULT_WHEEL 1.8f

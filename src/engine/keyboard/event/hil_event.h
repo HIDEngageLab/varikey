@@ -2,10 +2,9 @@
  * \file hil_event.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -18,7 +17,7 @@
 #ifndef _COMPOSED_HID_HIL_EVENT_H_
 #define _COMPOSED_HID_HIL_EVENT_H_
 
-#include "types.h"
+#include "macros.h"
 
 /* Really size is 5 bytes */
 #define HIL_EVENT_VALUE_SIZE 6

@@ -2,10 +2,9 @@
  * \file cmd_param_param_msg.h
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -21,8 +20,8 @@
 #include <stdint.h>
 
 #include "chunk.h"
+#include "macros.h"
 #include "parameter.h"
-#include "types.h"
 
 /** \brief Parameter length type */
 typedef enum

@@ -1,17 +1,14 @@
 /*
-	GMC INSTRUMENTS, GMC-I Messtechnik GmbH
-	Südwestpark 15, D-90449 Nürnberg, +4991186020, www.gossenmetrawatt.com
-	Roman Koch, roman.koch@gossenmetrawatt.com, koch.roman@googlemail.com
+    Roman Koch, koch.roman@googlemail.com, koch.roman@googlemail.com
 
-	Copyright (c) 2019-2021 - All rights reserved
-	Unauthorized copying of this file, via any medium is strictly prohibited
-	Proprietary and confidential
+	Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+	SPDX-License-Identifier: MIT
 */
 /**
-    \brief Project revision
+	\brief Project revision
 
-    \internal
-    \author Roman Koch, koch.roman@googlemail.com
+	\internal
+	\author Roman Koch, koch.roman@googlemail.com
 */
 
 #ifndef __REVISION_H__
@@ -24,8 +21,8 @@
 
 /* \name Firmware identifier */
 /* @{ */
-#define FIRMWARE_IDENTIFIER (((@PROJECT_VERSION_MAJOR@+0)<<8) + (@PROJECT_VERSION_MINOR@+0))
-#define FIRMWARE_REVISION ((@PROJECT_VERSION_PATCH@+0)<<8) + (@PROJECT_VERSION_TWEAK@+0) 
+#define FIRMWARE_IDENTIFIER (((@PROJECT_VERSION_MAJOR@+0) << 8) + (@PROJECT_VERSION_MINOR@+0))
+#define FIRMWARE_REVISION ((@PROJECT_VERSION_PATCH@+0) << 8) + (@PROJECT_VERSION_TWEAK@+0)
 #define FIRMWARE_BUILD (BUILD_NUMBER)
 /* @} */
 

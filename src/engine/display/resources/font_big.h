@@ -110,4 +110,3 @@ extern const unsigned char BIG_S_00[48];
 extern const unsigned char *FONT_TABLE_BIG[128];
 
 #endif // __FONT_BIG_H__
-

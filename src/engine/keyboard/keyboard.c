@@ -2,10 +2,9 @@
  * \file keyboard.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 
@@ -17,9 +16,9 @@
 #include "display.h"
 #include "keyboard.h"
 #include "keyboard_keycode.h"
+#include "macros.h"
 #include "param_serial_number.h"
 #include "temperature.h"
-#include "types.h"
 #include "usb_descriptors.h"
 
 #define ROTARY_ENCODER_EVENTS_TIMEOUT_MAX_MS 200

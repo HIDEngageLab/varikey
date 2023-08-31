@@ -17,4 +17,3 @@ extern const unsigned char IMAGE_ADD_SQUARE_8_HEIGHT;
 extern const unsigned char IMAGE_ADD_SQUARE_8[8];
 
 #endif // __IMAGE_ADD_SQUARE_8_H__
-

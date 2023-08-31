@@ -110,4 +110,3 @@ extern const unsigned char SMALL_S_00[8];
 extern const unsigned char *FONT_TABLE_SMALL[128];
 
 #endif // __FONT_SMALL_H__
-

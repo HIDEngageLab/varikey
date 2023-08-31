@@ -2,10 +2,9 @@
  * \file cmd_target_power_msg.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -23,8 +22,8 @@
 #include "chunk.h"
 #include "cmd_target_power_msg.h"
 #include "commander.h"
+#include "macros.h"
 #include "serial_frame.h"
-#include "types.h"
 
 #define POWER_MESSAGE_CFM_SIZE 3
 #define POWER_MESSAGE_IND_SIZE 6

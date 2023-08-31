@@ -2,10 +2,9 @@
  * \file param_serial_number.c
  * \author Koch, Roman (koch.roman@googlemail.com)
  * \brief
- * \version 0.1
- * @date 2023-03-28
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
  *
  */
 /**
@@ -19,10 +18,10 @@
 
 #include <pico/stdlib.h>
 
+#include "macros.h"
 #include "param_serial_number.h"
 #include "parameter.h"
 #include "random.h"
-#include "types.h"
 
 uint32_t g_unique_key = KEY_VALUE_INVALID;
 param_serial_number_t g_serial_number = {{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};

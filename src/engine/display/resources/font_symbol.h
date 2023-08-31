@@ -31,4 +31,3 @@ extern const unsigned char SYMBOL_S_00[32];
 extern const unsigned char *FONT_TABLE_SYMBOL[128];
 
 #endif // __FONT_SYMBOL_H__
-
