@@ -33,10 +33,17 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
 
-    - name: Upload a Build Artifact
+    - name: Upload a Build Artifact elf
       uses: actions/upload-artifact@v3.1.2
       with:
-        name: ${{github.workspace}}/bin/varikey.bin
+        name: VariKey-hex
+        path: ${{github.workspace}}/bin/varikey.elf
+
+    - name: Upload a Build Artifact uf2
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: VariKey-uf2
+        path: ${{github.workspace}}/bin/varikey.uf2
 
     - name: Test
       working-directory: ${{github.workspace}}/bin
