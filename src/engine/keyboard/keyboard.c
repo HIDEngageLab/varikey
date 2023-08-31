@@ -9,6 +9,7 @@
  */
 
 #include <pico/time.h>
+#include <pico/types.h>
 
 #include "tusb.h"
 
@@ -422,7 +423,7 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
             }
             else if (command == KEYPAD_COMMAND_CONFIG)
             {
-                backlight_mode_t const mode = buffer[1];
+                //backlight_mode_t const mode = buffer[1];
             }
         }
     }
