@@ -62,7 +62,7 @@ extern void keyboard_handle_event(keypad_event_t const _event)
     {
         static absolute_time_t timestamp = {0};
         absolute_time_t current_time = get_absolute_time();
-        const float time_diff_ms = (current_time._private_us_since_boot - timestamp._private_us_since_boot) / 1000.0;
+        const float time_diff_ms = (to_us_since_boot(current_time) - to_us_since_boot(timestamp)) / 1000.0;
         timestamp = current_time;
 
 #if defined(PRINT_EXTENDED_OUTPUT)
