@@ -1,12 +1,9 @@
 /**
- * @file pico_hid.h
- * @author Roman Koch, koch.roman@gmail.com
- * @brief 
- * @version 0.1
+ * \file pico_hid.h
+ * \author Roman Koch, koch.roman@gmail.com
  * 
- * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
- * 
  */
 
 #ifndef __COMPOSED_HID_DEVICE_H__

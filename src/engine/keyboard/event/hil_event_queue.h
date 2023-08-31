@@ -1,7 +1,6 @@
 /**
  * \file hil_event_queue.h
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Koch, Roman (koch.roman@gmail.com)
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
@@ -13,7 +12,7 @@
     Event queue only for storable user interaction events.
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef _COMPOSED_HID_HIL_EVENT_QUEUE_H_

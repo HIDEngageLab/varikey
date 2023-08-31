@@ -1,7 +1,6 @@
 /**
  * \file composed_hid.c
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Roman Koch
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT

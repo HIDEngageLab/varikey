@@ -1,18 +1,15 @@
 /**
- * @file param_button.h
- * @author Roman Koch, koch.roman@gmail.com
- * @brief 
- * @version 0.1
- * 
- * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \file param_button.h
+ * \author Roman Koch, koch.roman@gmail.com
+ *
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
- * 
  */
 /**
-    \brief Parameter "vwheel"
+    \brief Parameter "button"
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef _PARAM_BUTTON_H_
@@ -28,7 +25,7 @@
 typedef union
 {
     uint8_t byte[sizeof(uint16_t) * 2];
-    /** \brief Node vwheel details */
+    /** \brief Node button details */
     struct param_button_struct
     {
         uint16_t click_ms;

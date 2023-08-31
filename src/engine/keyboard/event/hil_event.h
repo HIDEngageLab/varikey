@@ -1,7 +1,6 @@
 /**
  * \file hil_event.h
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Koch, Roman (koch.roman@gmail.com)
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
@@ -11,7 +10,7 @@
     \brief HIL event definition
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef _COMPOSED_HID_HIL_EVENT_H_

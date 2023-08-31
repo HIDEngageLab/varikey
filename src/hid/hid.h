@@ -1,10 +1,8 @@
 /**
- * @file hid.h
- * @author Roman Koch, koch.roman@gmail.com
- * @brief 
- * @version 0.1
+ * \file hid.h
+ * \author Roman Koch, koch.roman@gmail.com
  * 
- * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
  * 
  */

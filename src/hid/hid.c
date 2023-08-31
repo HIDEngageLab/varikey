@@ -1,12 +1,10 @@
 /**
- * @file hid.c
- * @author Roman Koch, koch.roman@gmail.com
- * @brief 
- * @version 0.1
- * 
- * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \file hid.c
+ * \author Roman Koch
+ *
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
- * 
+ *
  */
 
 #include "bsp/board.h"

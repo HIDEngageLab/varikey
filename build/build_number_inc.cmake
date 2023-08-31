@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+# SPDX-License-Identifier: MIT
+
 #basic definitions
 set(HEADER_FILE "build_number.h")
 set(CACHE_FILE "build_number.cache")
@@ -19,10 +22,9 @@ file(WRITE ${CACHE_FILE} "${INCREMENTED_VALUE}")
 #Create the header
 message("Generate build number ${INCREMENTED_VALUE} for the next build to ${CMAKE_CURRENT_SOURCE_DIR}/../src/${HEADER_FILE}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/../src/${HEADER_FILE}" 
-"/*
-	Roman Koch, koch.roman@googlemail.com, koch.roman@googlemail.com
-
-	Copyright (c) 2019-2021 - All rights reserved
+"/*	
+	Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+	SPDX-License-Identifier: MIT
 */
 
 #ifndef __BUILD_NUMBER_H__

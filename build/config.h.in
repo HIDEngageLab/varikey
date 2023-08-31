@@ -1,6 +1,4 @@
 /*
-    Roman Koch, koch.roman@googlemail.com, koch.roman@googlemail.com
-
 	Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
 	SPDX-License-Identifier: MIT
 */
@@ -8,7 +6,7 @@
 	\brief Project revision
 
 	\internal
-	\author Roman Koch, koch.roman@googlemail.com
+	\author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef __REVISION_H__

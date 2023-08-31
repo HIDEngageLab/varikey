@@ -1,18 +1,16 @@
 /**
- * @file param_button.c
- * @author Roman Koch, koch.roman@gmail.com
- * @brief 
- * @version 0.1
+ * \file param_button.c
+ * \author Roman Koch, koch.roman@gmail.com
  * 
- * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
  * 
  */
 /**
-    \brief Parameter "vwheel"
+    \brief Parameter "button"
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #include "param_button.h"

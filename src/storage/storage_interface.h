@@ -1,7 +1,6 @@
 /**
  * \file storage_interface.h
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Koch, Roman (koch.roman@gmail.com)
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
@@ -13,7 +12,7 @@
 	Very special database for node data.
 
 	\internal
-	\author Roman Koch, koch.roman@googlemail.com
+	\author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef __STORAGE_INTERFACE_H__

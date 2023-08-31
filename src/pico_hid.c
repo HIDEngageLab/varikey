@@ -1,3 +1,11 @@
+/**
+ * \file pico_hid.c
+ * \author Roman Koch, koch.roman@gmail.com
+ * 
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
+ */
+
 #include <hardware/watchdog.h>
 #include <stdio.h>
 #include <stdlib.h>

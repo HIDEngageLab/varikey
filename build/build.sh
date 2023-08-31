@@ -6,6 +6,11 @@
 pushd ..
 workspace=$(pwd)
 
+if ! command -v cmake >/dev/null 2>&1; then
+    echo "cmake could not be found"
+    exit
+fi
+
 # clean up
 
 rm -f ${workspace}/bin/CMakeCache.txt

@@ -1,7 +1,6 @@
 /**
  * \file ticker.c
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Koch, Roman (koch.roman@gmail.com)
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
@@ -13,7 +12,7 @@
     Create a repeating timer that calls timer callback.
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #include <pico/stdlib.h>

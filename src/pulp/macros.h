@@ -1,7 +1,6 @@
 /**
  * \file macros.h
- * \author Koch, Roman (koch.roman@googlemail.com)
- * \brief
+ * \author Koch, Roman (koch.roman@gmail.com)
  *
  * @copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
@@ -11,7 +10,7 @@
 	\brief Data macros
 
 	\internal
-	\author Roman Koch, koch.roman@googlemail.com
+	\author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef __PULP_MACROS_H__

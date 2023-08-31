@@ -1,15 +1,14 @@
 /*
-    Roman Koch, koch.roman@googlemail.com, koch.roman@googlemail.com
+    Roman Koch, koch.roman@gmail.com
 
     Copyright (c) 2019-2021 - All rights reserved
     SPDX-License-Identifier: MIT
-
 */
 /**
     \brief Project revision
 
     \internal
-    \author Roman Koch, koch.roman@googlemail.com
+    \author Roman Koch, koch.roman@gmail.com
 */
 
 #ifndef __REVISION_H__
