@@ -117,7 +117,7 @@ extern void backlight_perform(void)
         static absolute_time_t timestamp = {0};
         absolute_time_t current_time = get_absolute_time();
 
-        const uint64_t us_diff = current_time._private_us_since_boot - timestamp._private_us_since_boot;
+        const uint64_t us_diff = to_us_since_boot(current_time) - to_us_since_boot(timestamp);
         if (us_diff > backlight.next_delay_ms * 1000)
         {
             backlight.mode = backlight.next_mode;
@@ -249,7 +249,7 @@ static void perform_step(const int _delay)
     static absolute_time_t timestamp = {0};
     absolute_time_t current_time = get_absolute_time();
 
-    const uint64_t us_diff = current_time._private_us_since_boot - timestamp._private_us_since_boot;
+    const uint64_t us_diff = to_us_since_boot(current_time) - to_us_since_boot(timestamp);
     if (us_diff < _delay * 1000)
     {
         return;
