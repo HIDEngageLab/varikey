@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+bin
+src/revision.h
+src/build_number.h
+.vscode

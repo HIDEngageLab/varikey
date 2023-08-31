@@ -1,0 +1,36 @@
+/*
+	Roman Koch, koch.roman@googlemail.com, koch.roman@googlemail.com
+
+	Copyright (c) 2019-2021 - All rights reserved
+*/
+/**
+    \brief Project revision
+
+    \internal
+    \author Roman Koch, koch.roman@googlemail.com
+*/
+
+#ifndef __REVISION_H__
+#define __REVISION_H__
+
+#include "build_number.h"
+
+/* \name Firmware defines */
+/* @{ */
+
+/* \name Firmware identifier */
+/* @{ */
+#define FIRMWARE_IDENTIFIER (((@PROJECT_VERSION_MAJOR@+0)<<8) + (@PROJECT_VERSION_MINOR@+0))
+#define FIRMWARE_REVISION ((@PROJECT_VERSION_PATCH@+0)<<8) + (@PROJECT_VERSION_TWEAK@+0) 
+#define FIRMWARE_BUILD (BUILD_NUMBER)
+/* @} */
+
+/* \name Hardware identifier */
+/* @{ */
+#define HARDWARE_IDENTIFIER (@HARDWARE_NUMBER@+0)
+#define HARDWARE_REVISION (@HARDWARE_VARIANT@+0)
+/* @} */
+
+/* @} */
+
+#endif /* __REVISION_H__ */
