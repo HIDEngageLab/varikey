@@ -2,9 +2,9 @@ name: VariKey
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   #schedule:
   #  - cron: '0 2 * * *'
   workflow_dispatch:
@@ -53,7 +53,7 @@ jobs:
           ${{github.workspace}}/bin/*.so
           ${{github.workspace}}/bin/varikey.elf
           ${{github.workspace}}/bin/varikey.uf2
-      retention-days: 2
+        retention-days: 2
 
     - name: Test
       working-directory: ${{github.workspace}}/bin
