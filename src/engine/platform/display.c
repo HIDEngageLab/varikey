@@ -12,8 +12,16 @@
 #include "display.h"
 #include "ssd1306.h"
 
+/**
+ * \brief number of signs in a font ASCII 0-127
+ */
+/* @{ */
+#define NUMBER_OF_SIGNS 128
+/* @} */
+
 uint8_t line = 0;
 uint8_t column = 0;
+
 FONT_SIZE font_size = FONT_SMALL;
 uint8_t high_pages = 1;
 uint8_t width_cols = 7;
@@ -44,24 +52,38 @@ extern void display_set_font(const FONT_SIZE size)
         symbol_size = 8;
         break;
 
-    case FONT_BIG:
+    case FONT_NORMAL:
         font_size = size;
         high_pages = 2;
         width_cols = 8;
         symbol_size = 16;
         break;
 
-    case FONT_HUGE:
+    case FONT_BIG:
         font_size = size;
         high_pages = 3;
         width_cols = 16;
         symbol_size = 48;
         break;
 
+    case FONT_HUGE:
+        font_size = size;
+        high_pages = 4;
+        width_cols = 24;
+        symbol_size = 96;
+        break;
+
+    case FONT_SYMBOL:
+        font_size = size;
+        high_pages = 2;
+        width_cols = 16;
+        symbol_size = 32;
+        break;
+
     default:
         font_size = FONT_SMALL;
         high_pages = 1;
-        width_cols = 8;
+        width_cols = 7;
         symbol_size = 8;
         break;
     }
@@ -74,7 +96,7 @@ extern void display_print(char const *const text)
     char const *ptr = &text[0];
     while (*ptr != 0 && text_len++ < 16)
     {
-        uint8_t character = (*ptr) % 128;
+        uint8_t character = (*ptr) % NUMBER_OF_SIGNS;
         uint8_t const *const symbol = font_character(font_size, character);
 
         printf("%c", character);

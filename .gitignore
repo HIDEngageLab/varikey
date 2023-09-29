@@ -35,4 +35,4 @@ bin
 build
 src/revision.h
 src/build_number.h
-.vscode
+#.vscode

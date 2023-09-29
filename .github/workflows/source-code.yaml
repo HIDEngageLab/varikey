@@ -1,0 +1,55 @@
+name: SourceCode
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  #schedule:
+  #  - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      log-level:
+        required: false
+        default: warning
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+
+env:
+  BUILD_TYPE: ${{ inputs.BuildType || 'Debug' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4.0.0
+      with:
+        submodules: true
+
+    - name: Declare variables
+      shell: bash
+      run: |
+        echo "git_short=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+        echo "git_branch=$(echo ${GITHUB_REF_NAME/\//-})" >> "$GITHUB_ENV"
+
+    - name: Generate SBOM
+      id: sbom
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        gh extension install advanced-security/gh-sbom
+        gh sbom >> varikey-spdx-${{ env.git_branch }}-${{ env.git_short }}.json
+        gh sbom -c -l >> varikey-spdx-cyclondx-${{ env.git_branch }}-${{ env.git_short }}.json
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: varikey-src-${{ env.git_branch }}-${{ env.git_short }}
+        path: |
+          ${{github.workspace}}/src/
+          ${{github.workspace}}/*.json
+        retention-days: 2

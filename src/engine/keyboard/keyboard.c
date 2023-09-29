@@ -373,11 +373,19 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
                 }
                 else if (font_size == 2)
                 {
-                    display_set_font(FONT_BIG);
+                    display_set_font(FONT_NORMAL);
                 }
                 else if (font_size == 3)
                 {
+                    display_set_font(FONT_BIG);
+                }
+                else if (font_size == 4)
+                {
                     display_set_font(FONT_HUGE);
+                }
+                else if (font_size == 5)
+                {
+                    display_set_font(FONT_SYMBOL);
                 }
                 else
                 {
@@ -391,38 +399,53 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
             }
             else if (command == KEYPAD_COMMAND_BACKLIGHT)
             {
-                backlight_mode_t const mode = buffer[1];
+                const int mode = buffer[1];
                 switch (mode)
                 {
-                case BACKLIGHT_PROGRAM_MEDIUM:
+                case 1:
                     backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
                     break;
-                case BACKLIGHT_PROGRAM_SLOW:
+                case 2:
                     backlight_mode(BACKLIGHT_PROGRAM_SLOW, 0);
                     break;
-                case BACKLIGHT_PROGRAM_TURBO:
+                case 3:
                     backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
                     break;
-                case BACKLIGHT_CONST:
+                case 4:
                     backlight_mode(BACKLIGHT_CONST, 0);
                     break;
-                case BACKLIGHT_NOT_MOUNTED:
+                case 5:
                     backlight_mode(BACKLIGHT_NOT_MOUNTED, 0);
                     break;
-                case BACKLIGHT_MOUNTED:
+                case 6:
                     backlight_mode(BACKLIGHT_MOUNTED, 0);
                     break;
-                case BACKLIGHT_SUSPENDED:
+                case 7:
                     backlight_mode(BACKLIGHT_SUSPENDED, 0);
                     break;
-                case BACKLIGHT_OFF:
+                case 8:
                     backlight_mode(BACKLIGHT_OFF, 0);
+                    break;
+                case 0xaa:
+                {
+                    const uint8_t r = buffer[2];
+                    const uint8_t g = buffer[3];
+                    const uint8_t b = buffer[4];
+                    backlight_mode(BACKLIGHT_CONST, 0);
+                    //backlight_set_left(r, g, b);
+                    //backlight_set_right(r, g, b);
+                    backlight_morph_left(r, g, b);
+                    backlight_morph_right(r, g, b);
+                    break;
+                }
+                default:
+                    backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
                     break;
                 }
             }
             else if (command == KEYPAD_COMMAND_CONFIG)
             {
-                //backlight_mode_t const mode = buffer[1];
+                // backlight_mode_t const mode = buffer[1];
             }
         }
     }

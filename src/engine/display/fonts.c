@@ -24,19 +24,11 @@ const unsigned char **font[5] = {
 
 uint8_t const *const font_character(const FONT_SIZE font_size, uint8_t const ascii)
 {
-    if (font_size == FONT_BIG)
-    {
-        return font[font_size][ascii];
-    }
-    else if (font_size == FONT_HUGE)
-    {
-        return font[font_size][ascii];
-    }
-    else if (font_size == FONT_NORMAL)
-    {
-        return font[font_size][ascii];
-    }
-    else if (font_size == FONT_SYMBOL)
+    if (font_size == FONT_NORMAL ||
+        font_size == FONT_BIG ||
+        font_size == FONT_HUGE ||
+        font_size == FONT_SYMBOL)
+
     {
         return font[font_size][ascii];
     }

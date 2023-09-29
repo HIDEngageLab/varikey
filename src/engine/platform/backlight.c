@@ -186,7 +186,7 @@ extern void backlight_perform(void)
         if (backlight.left.next.value != backlight.left.curent.value &&
             backlight.right.next.value != backlight.right.curent.value)
         {
-            perform_step(500);
+            perform_step(10);
         }
         break;
     case BACKLIGHT_OFF:
@@ -255,7 +255,7 @@ static void perform_step(const int _delay)
     }
     timestamp = current_time;
 
-    const int color_inc = 5;
+    const int color_inc = 1;
 
     bool left_changed = false;
     if (backlight.left.next.value != backlight.left.curent.value)
