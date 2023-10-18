@@ -59,6 +59,9 @@
         "tusb",
         "uart",
         "usart",
+        "varikey",
+        "Varikey",
+        "VARIKEY",
         "vbus",
         "VCOM",
         "vref",
@@ -109,6 +112,7 @@
         "commander.h": "c",
         "font_f8x16.h": "c",
         "param_serial_number.h": "c",
-        "param_display.h": "c"
+        "param_display.h": "c",
+        "param_backlight.h": "c"
     }
 }

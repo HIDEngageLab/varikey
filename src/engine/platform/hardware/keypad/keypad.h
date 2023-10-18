@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __PLATFORM_KEYPAD_H__
-#define __PLATFORM_KEYPAD_H__
+#ifndef __PLATFORM_HARDWARE_KEYPAD_H__
+#define __PLATFORM_HARDWARE_KEYPAD_H__
 
 #include <pico/stdlib.h>
 #include <stdint.h>
@@ -16,4 +16,4 @@
 extern void keypad_callback(uint gpio, uint32_t events);
 extern bool keypad_perform(void);
 
-#endif // __PLATFORM_KEYPAD_H__
+#endif // __PLATFORM_HARDWARE_KEYPAD_H__

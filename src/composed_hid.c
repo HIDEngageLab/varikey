@@ -16,7 +16,7 @@
 #include "tusb.h"
 
 #include "adp5585.h"
-#include "backlight.h"
+#include "backlight3.h"
 #include "composed_hid.h"
 #include "engine.h"
 #include "hardware/uart.h"

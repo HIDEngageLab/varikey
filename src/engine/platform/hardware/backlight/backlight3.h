@@ -1,5 +1,5 @@
 /**
- * \file backlight.h
+ * \file backlight3.h
  * \author Koch, Roman (koch.roman@gmail.com)
  *
  * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com

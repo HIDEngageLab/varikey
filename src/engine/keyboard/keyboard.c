@@ -12,7 +12,7 @@
 
 #include "tusb.h"
 
-#include "backlight.h"
+#include "backlight3.h"
 #include "display.h"
 #include "keyboard.h"
 #include "keyboard_keycode.h"
@@ -432,8 +432,8 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
                     const uint8_t g = buffer[3];
                     const uint8_t b = buffer[4];
                     backlight_mode(BACKLIGHT_CONST, 0);
-                    //backlight_set_left(r, g, b);
-                    //backlight_set_right(r, g, b);
+                    // backlight_set_left(r, g, b);
+                    // backlight_set_right(r, g, b);
                     backlight_morph_left(r, g, b);
                     backlight_morph_right(r, g, b);
                     break;

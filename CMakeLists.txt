@@ -12,9 +12,6 @@ VERSION 1.0.0.0
 DESCRIPTION "Custom composed HID device"
 LANGUAGES C CXX ASM)
 
-set(HARDWARE_NUMBER 0)
-set(HARDWARE_VARIANT 1)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -30,11 +27,30 @@ add_compile_options(-Wall
 -Wno-maybe-uninitialized
 )
 
+if (NOT HARDWARE_PLATFORM)
+        message("platform not defined, default is VARIKEY_1_0")
+        set(HARDWARE_PLATFORM "VARIKEY_1_0")
+endif()
+if (${HARDWARE_PLATFORM} STREQUAL "GOSSENMETRAWATT_1_0")
+        set(HARDWARE_IDENTIFIER 2)
+        set(HARDWARE_NUMBER 1)
+        set(HARDWARE_VARIANT 0)
+elseif (${HARDWARE_PLATFORM} STREQUAL "VARIKEY_1_0")
+        set(HARDWARE_IDENTIFIER 1)
+        set(HARDWARE_NUMBER 1)
+        set(HARDWARE_VARIANT 0)
+else()
+        set(HARDWARE_IDENTIFIER 1)
+        set(HARDWARE_NUMBER 1)
+        set(HARDWARE_VARIANT 0)
+endif()
+message("hardware is ${HARDWARE_PLATFORM} (internal ID:${HARDWARE_IDENTIFIER} NUM:${HARDWARE_NUMBER} VAR:${HARDWARE_VARIANT})")
+
 configure_file(${PROJECT_SOURCE_DIR}/build/revision.h.in ${PROJECT_SOURCE_DIR}/src/revision.h @ONLY)
 
 add_executable(${PROJECT_NAME})
 
-pico_generate_pio_header(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/src/engine/platform/ws2812.pio")
+pico_generate_pio_header(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/src/engine/platform/hardware/backlight/ws2812.pio")
 
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/src/build_number.h")
         execute_process(
@@ -101,13 +117,24 @@ target_sources(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/event/hil_event_queue.c
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/keyboard.c
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/usb_descriptors.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/adp5585.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/backlight.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/display.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/keypad.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/board_gossenmetrawatt_1_0.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/board_varikey_1_0.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight_gossenmetrawatt.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight_varikey.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight3.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/ws2812.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/button/button_mini_switch.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display_oled_128x32_gossenmetrawatt.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display_oled_128x32_varikey.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/ssd1306.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/adp5585.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad_adp5585_gossenmetrawatt.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad_adp5585_varikey.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/temperature_rp2040.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/timer_rp2040.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/platform.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/ssd1306.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/ws2812.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/bytering.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/checksum.c
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/macros.c
@@ -148,6 +175,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/event/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/button/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/
         ${CMAKE_CURRENT_LIST_DIR}/src/storage/

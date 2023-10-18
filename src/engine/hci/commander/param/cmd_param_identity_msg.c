@@ -83,7 +83,7 @@ extern void cmd_param_identity_cfm(cmd_identity_msg_t *const _msg)
         *ptr++ = (uint8_t)g_maintainer.byte;
         *ptr++ = (uint8_t)HIBYTE(HARDWARE_IDENTIFIER);
         *ptr++ = (uint8_t)LOBYTE(HARDWARE_IDENTIFIER);
-        *ptr++ = (uint8_t)HARDWARE_REVISION;
+        *ptr++ = (uint8_t)HARDWARE_NUMBER;
         _msg->value.size += 4;
     }
 
