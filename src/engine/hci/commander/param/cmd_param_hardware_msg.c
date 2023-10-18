@@ -56,7 +56,7 @@ extern void cmd_param_hardware_msg_cfm(cmd_hardware_msg_t *const _msg)
     *ptr++ = (uint8_t)HC_HARDWARE_CFM;
     *ptr++ = (uint8_t)_msg->result;
     serialize_word(HARDWARE_IDENTIFIER, &ptr);
-    *ptr++ = (uint8_t)HARDWARE_REVISION;
+    *ptr++ = (uint8_t)HARDWARE_NUMBER;
 
     serial_frame_send(SERIAL_COMMANDER_INTERPRETER_ADDRESS, &_msg->value);
 }

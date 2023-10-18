@@ -13,8 +13,8 @@
     \author Roman Koch, koch.roman@gmail.com
 */
 
-#ifndef __PARAM_ADC_H__
-#define __PARAM_ADC_H__
+#ifndef __PARAM_BACKLIGHT_H__
+#define __PARAM_BACKLIGHT_H__
 
 #include "parameter.h"
 
@@ -41,4 +41,4 @@ extern void param_backlight_init(void);
 extern void param_backlight_deserialize(uint8_t const *const _space);
 extern void param_backlight_serialize(uint8_t *const _space);
 
-#endif /* __PARAM_ADC_H__ */
+#endif /* __PARAM_BACKLIGHT_H__ */
