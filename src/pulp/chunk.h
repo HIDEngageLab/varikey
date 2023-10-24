@@ -13,8 +13,8 @@
 	\author Roman Koch, koch.roman@gmail.com
 */
 
-#ifndef __PULP_CHUNK_H__
-#define __PULP_CHUNK_H__
+#ifndef __PULP_CHUNK_HPP__
+#define __PULP_CHUNK_HPP__
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -26,4 +26,4 @@ typedef struct chunk_struct
 	size_t size;
 } chunk_t;
 
-#endif /* __PULP_CHUNK_H__ */
+#endif /* __PULP_CHUNK_HPP__ */

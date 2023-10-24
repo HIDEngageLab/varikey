@@ -13,6 +13,8 @@
     "cmake.generator": "Unix Makefiles",
     "cSpell.words": [
         "blub",
+        "bwdb",
+        "BWDB",
         "bytering",
         "Capslock",
         "fifos",
@@ -97,22 +99,5 @@
         "return",
     ],
     "files.associations": {
-        "time.h": "c",
-        "stdlib.h": "c",
-        "cstdio": "c",
-        "platform.h": "c",
-        "chunk.h": "c",
-        "i2c.h": "c",
-        "exception.h": "c",
-        "watchdog.h": "c",
-        "engine.h": "c",
-        "keypad_event.h": "c",
-        "board.h": "c",
-        "storage_queue.h": "c",
-        "commander.h": "c",
-        "font_f8x16.h": "c",
-        "param_serial_number.h": "c",
-        "param_display.h": "c",
-        "param_backlight.h": "c"
     }
 }

@@ -28,14 +28,15 @@ add_compile_options(-Wall
 )
 
 if (NOT HARDWARE_PLATFORM)
-        message("platform not defined, default is VARIKEY_1_0")
-        set(HARDWARE_PLATFORM "VARIKEY_1_0")
+        message("platform is not defined, default is VARIKEY")
+        set(HARDWARE_PLATFORM "VARIKEY")
+        #set(HARDWARE_PLATFORM "GOSSENMETRAWATT")
 endif()
-if (${HARDWARE_PLATFORM} STREQUAL "GOSSENMETRAWATT_1_0")
+if (${HARDWARE_PLATFORM} STREQUAL "GOSSENMETRAWATT")
         set(HARDWARE_IDENTIFIER 2)
         set(HARDWARE_NUMBER 1)
         set(HARDWARE_VARIANT 0)
-elseif (${HARDWARE_PLATFORM} STREQUAL "VARIKEY_1_0")
+elseif (${HARDWARE_PLATFORM} STREQUAL "VARIKEY")
         set(HARDWARE_IDENTIFIER 1)
         set(HARDWARE_NUMBER 1)
         set(HARDWARE_VARIANT 0)
@@ -46,11 +47,26 @@ else()
 endif()
 message("hardware is ${HARDWARE_PLATFORM} (internal ID:${HARDWARE_IDENTIFIER} NUM:${HARDWARE_NUMBER} VAR:${HARDWARE_VARIANT})")
 
+if (NOT FIRMWARE_PRODUCT)
+        message("product is not defined, default is KEYPAD_10_BOTTONS_WHEEL_DISPLAY_BACKLIGHT_0100")
+        set(FIRMWARE_PRODUCT "KEYPAD_10BWDB")
+        #set(FIRMWARE_PRODUCT "KEYPAD_DEMO")
+endif()
+if (${FIRMWARE_PRODUCT} STREQUAL "KEYPAD_10BWDB")
+        set(FIRMWARE_IDENTIFIER 2)
+elseif (${FIRMWARE_PRODUCT} STREQUAL "KEYPAD_DEMO")
+        set(FIRMWARE_IDENTIFIER 1)
+else()
+        set(FIRMWARE_IDENTIFIER 1)
+endif()
+message("product is ${FIRMWARE_PRODUCT} (internal ID:${FIRMWARE_IDENTIFIER} REV:${PROJECT_VERSION})")
+
+
 configure_file(${PROJECT_SOURCE_DIR}/build/revision.h.in ${PROJECT_SOURCE_DIR}/src/revision.h @ONLY)
 
 add_executable(${PROJECT_NAME})
 
-pico_generate_pio_header(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/src/engine/platform/hardware/backlight/ws2812.pio")
+pico_generate_pio_header(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/src/platform/hardware/backlight/ws2812.pio")
 
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/src/build_number.h")
         execute_process(
@@ -66,95 +82,93 @@ else()
 endif()
 
 target_sources(${PROJECT_NAME} PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/src/composed_hid.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/fonts.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/image_frame.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/image_gmc.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/image_heart.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/images.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/font_big.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/font_huge.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/font_normal.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/font_small.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/font_symbol.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_circle_16.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_circle_24.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_circle_32.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_circle_8.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_square_16.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_square_24.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_square_32.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/image_add_square_8.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_control.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_event_trigger.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_macro.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_param.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_target.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/commander.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_reset_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_status_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_temperature_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_hci_status_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/event/cmd_event_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_clean_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_key_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_load_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_load.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_store_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_store.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_firmware_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_hardware_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_identity_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_param_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_boot_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_power_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_reset_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial_frame.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial_msg.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/usart.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/event/hil_event_queue.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/keyboard.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/usb_descriptors.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/board_gossenmetrawatt_1_0.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/board_varikey_1_0.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight_gossenmetrawatt.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight_varikey.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/backlight3.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/ws2812.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/button/button_mini_switch.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display_oled_128x32_gossenmetrawatt.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display_oled_128x32_varikey.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/display.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display/ssd1306.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/adp5585.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad_adp5585_gossenmetrawatt.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad_adp5585_varikey.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/keypad.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/temperature_rp2040.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/timer_rp2040.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/platform.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/bytering.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/checksum.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/macros.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/random.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/temperature.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/ticker.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/timestamp.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_backlight.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_display.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_features.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_key.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_maintainer.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_position.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_serial_number.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_user.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry_interface.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/storage/storage_interface.c
-        ${CMAKE_CURRENT_LIST_DIR}/src/storage/storage_queue.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/composed_hid.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/backlight/backlight3.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_control.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_event_trigger.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_macro.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_param.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/cmd_target.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/commander.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_reset_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_status_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_control_temperature_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/control/cmd_hci_status_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/event/cmd_event_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_clean_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_key_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_load_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_load.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_store_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/cmd_macro_store.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_firmware_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_hardware_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_identity_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/cmd_param_param_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_boot_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_power_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/cmd_target_reset_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/event/hci_event_queue.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial_frame.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial_msg.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/usart.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/keyboard.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_gossenmetrawatt_1_0.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_keypad.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_varikey_1_0.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/backlight_ws2812.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/ws2812.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/display_oled_128x32.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/display.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/font_big.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/font_huge.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/font_normal.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/font_small.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/font_symbol.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_circle_16.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_circle_24.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_circle_32.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_circle_8.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_square_16.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_square_24.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_square_32.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_add_square_8.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_frame.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_gmc.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_heart.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/image_varikey.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/ssd1306.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keypad/adp5585.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keypad/keypad_adp5585.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_soc.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_temperature.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_ticker.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_timestamp.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_watchdog.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/usb/usb_descriptors.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/usb/usb_device.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/bytering.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/checksum.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/macros.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pulp/random.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_adc.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_backlight.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_button.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_display.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_features.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_key.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_maintainer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_position.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_serial_number.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_user.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry_interface.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/storage/storage_interface.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/storage/storage_queue.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -162,6 +176,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/build/
         ${CMAKE_CURRENT_LIST_DIR}/src/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/backlight/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/
@@ -171,17 +186,21 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/macro/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/param/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/commander/target/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/event/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/event/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/board/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/backlight/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/button/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/display
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/keypad/
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/platform/hardware/soc/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/button/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/resources/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keypad/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/usb/
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/
         ${CMAKE_CURRENT_LIST_DIR}/src/storage/
