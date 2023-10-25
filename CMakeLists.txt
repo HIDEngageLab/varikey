@@ -64,9 +64,11 @@ message("product is ${FIRMWARE_PRODUCT} (internal ID:${FIRMWARE_IDENTIFIER} REV:
 
 configure_file(${PROJECT_SOURCE_DIR}/build/revision.h.in ${PROJECT_SOURCE_DIR}/src/revision.h @ONLY)
 
-add_executable(${PROJECT_NAME})
+set(EXECUTABLE_NAME "${PROJECT_NAME}_${FIRMWARE_PRODUCT}_${HARDWARE_PLATFORM}_${HARDWARE_NUMBER}${HARDWARE_VARIANT}")
 
-pico_generate_pio_header(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/src/platform/hardware/backlight/ws2812.pio")
+add_executable(${EXECUTABLE_NAME})
+
+pico_generate_pio_header(${EXECUTABLE_NAME} "${PROJECT_SOURCE_DIR}/src/platform/hardware/backlight/ws2812.pio")
 
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/src/build_number.h")
         execute_process(
@@ -75,13 +77,13 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/src/build_number.h")
         )
 else()
         add_custom_command(        
-                TARGET ${PROJECT_NAME}
+                TARGET ${EXECUTABLE_NAME}
                 COMMAND ${CMAKE_COMMAND} -P "${PROJECT_SOURCE_DIR}/build/build_number_inc.cmake"
                 WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/build/"
         )
 endif()
 
-target_sources(${PROJECT_NAME} PUBLIC
+target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/composed_hid.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/backlight/backlight3.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine.cpp
@@ -171,7 +173,7 @@ target_sources(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/storage/storage_queue.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/
         ${CMAKE_CURRENT_LIST_DIR}/build/
         ${CMAKE_CURRENT_LIST_DIR}/src/
@@ -208,7 +210,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 # Uncomment this line to enable fix for Errata RP2040-E5 (the fix requires use of GPIO 15)
 # target_compile_definitions(dev_hid_composite PUBLIC PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1)
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_libraries(${EXECUTABLE_NAME} PUBLIC
         hardware_adc
         hardware_flash
         hardware_i2c
@@ -225,5 +227,5 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 # example_auto_set_url(${PROJECT_NAME})
 
 # pico_enable_stdio_usb(${PROJECT_NAME} 0)
-pico_enable_stdio_uart(${PROJECT_NAME} 1)
-pico_add_extra_outputs(${PROJECT_NAME})
+pico_enable_stdio_uart(${EXECUTABLE_NAME} 1)
+pico_add_extra_outputs(${EXECUTABLE_NAME})
