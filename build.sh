@@ -12,7 +12,6 @@ hw_plarform=VARIKEY
 
 # define product variant
 # available products are...
-#hw_plarform=VARIKEY
 #fw_product=KEYPAD_10BWDB
 fw_product=KEYPAD_DEMO
 

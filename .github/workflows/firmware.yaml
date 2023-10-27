@@ -23,6 +23,10 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        hardware: [VARIKEY, GOSSENMETRAWATT]
+        product: [KEYPAD_DEMO, KEYPAD_10BWDB]
     runs-on: ubuntu-latest
 
     steps:
@@ -40,10 +44,10 @@ jobs:
       uses: marvinschopf/install-gcc-arm-none-eabi@v1.0.0
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/bin -S${{github.workspace}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DHARDWARE_PLATFORM:STRING=${{matrix.hardware}} -DFIRMWARE_PRODUCT:STRING=${{matrix.product}}
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}} -j 6 --
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.3
