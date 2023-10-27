@@ -12,7 +12,7 @@
 #include "board.hpp"
 #include "display.hpp"
 #include "engine.hpp"
-#include "keyboard.hpp"
+#include "keypad.hpp"
 #include "random.hpp"
 #include "registry.hpp"
 
@@ -114,7 +114,7 @@ extern void engine_perform(void)
         break;
     case pulp::COMPONENT_STATE::ACTIVE:
         backlight_perform();
-        keyboard_perform();
+        keypad_perform();
 
         if (next_mode == pulp::COMPONENT_STATE::PENDING)
         {

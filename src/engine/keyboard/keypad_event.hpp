@@ -31,9 +31,13 @@ namespace engine
                 KEY_8,
                 KEY_9,
                 KEY_10,
-                KEY_11,
-                KEY_12,
-                KEY_13,
+                WHEEL_LEFT,
+                WHEEL_RIGHT,
+                WHEEL_PRESS,
+                MOUNT,
+                UNMOUNT,
+                SUSPEND,
+                RESUME,
             };
 
             enum class STATE : uint8_t
@@ -41,6 +45,9 @@ namespace engine
                 UNDEFINED,
                 RELEASE,
                 PRESS,
+                SWITCH,
+                SET,
+                RESET,
             };
         }
 

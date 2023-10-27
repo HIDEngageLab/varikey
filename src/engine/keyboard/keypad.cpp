@@ -1,5 +1,5 @@
 /**
- * \file keyboard.cpp
+ * \file keypad.cpp
  * \author Koch, Roman (koch.roman@gmail.com)
  *
  * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
@@ -15,17 +15,153 @@
 #include "board.hpp"
 #include "display.hpp"
 #include "image_identifier.hpp"
-#include "keyboard.hpp"
 #include "keyboard_type.hpp"
+#include "keypad.hpp"
+#include "keypad_backlight_command.hpp"
+#include "keypad_display_command.hpp"
 #include "macros.hpp"
 #include "param_serial_number.hpp"
+#include "revision.h"
 #include "usb_descriptors.hpp"
 
 #define ROTARY_ENCODER_EVENTS_TIMEOUT_MAX_MS 200
 
 #define _PRINT_EXTENDED_OUTPUT
 
-extern void keyboard_perform(void)
+static void set_keyboard_state(uint8_t const kbd_leds)
+{
+    if (kbd_leds & KEYBOARD_LED_CAPSLOCK)
+    {
+        backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
+    }
+    else if (kbd_leds & KEYBOARD_LED_NUMLOCK)
+    {
+        backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
+    }
+    else
+    {
+        backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
+        backlight_mode(BACKLIGHT_MOUNTED, 15000);
+    }
+}
+
+static void set_font(uint8_t const *buffer)
+{
+    const engine::keypad::display::FONT font_size = static_cast<engine::keypad::display::FONT>(buffer[0]);
+    switch (font_size)
+    {
+    case engine::keypad::display::FONT::SMALL:
+        display_set_font(FONT_SIZE::FONT_SMALL);
+        break;
+    case engine::keypad::display::FONT::NORMAL:
+        display_set_font(FONT_SIZE::FONT_NORMAL);
+        break;
+    case engine::keypad::display::FONT::BIG:
+        display_set_font(FONT_SIZE::FONT_BIG);
+        break;
+    case engine::keypad::display::FONT::HUGE:
+        display_set_font(FONT_SIZE::FONT_HUGE);
+        break;
+    case engine::keypad::display::FONT::SYMBOL:
+        display_set_font(FONT_SIZE::FONT_SYMBOL);
+        break;
+    default:
+        display_set_font(FONT_SIZE::FONT_SMALL);
+        break;
+    }
+}
+
+static void set_display_position(uint8_t const *buffer)
+{
+    uint8_t const lines = buffer[0];
+    uint8_t const columns = buffer[1];
+    display_set_cursor(lines, columns);
+}
+
+static void set_backlight(uint8_t const *buffer)
+{
+    const engine::keypad::backlight::COMMAND mode = static_cast<engine::keypad::backlight::COMMAND>(buffer[0]);
+    switch (mode)
+    {
+    case engine::keypad::backlight::COMMAND::PROGRAM_MEDIUM:
+        backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::PROGRAM_SLOW:
+        backlight_mode(BACKLIGHT_PROGRAM_SLOW, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::PROGRAM_TURBO:
+        backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::CONST:
+        backlight_mode(BACKLIGHT_CONST, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::NOT_MOUNTED:
+        backlight_mode(BACKLIGHT_NOT_MOUNTED, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::MOUNTED:
+        backlight_mode(BACKLIGHT_MOUNTED, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::SUSPENDED:
+        backlight_mode(BACKLIGHT_SUSPENDED, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::OFF:
+        backlight_mode(BACKLIGHT_OFF, 0);
+        break;
+    case engine::keypad::backlight::COMMAND::MORPH:
+    {
+        const uint8_t r = buffer[2];
+        const uint8_t g = buffer[3];
+        const uint8_t b = buffer[4];
+        backlight_mode(BACKLIGHT_CONST, 0);
+        backlight_morph_left(r, g, b);
+        backlight_morph_right(r, g, b);
+        break;
+    }
+    case engine::keypad::backlight::COMMAND::SET:
+    {
+        const uint8_t r = buffer[2];
+        const uint8_t g = buffer[3];
+        const uint8_t b = buffer[4];
+        backlight_mode(BACKLIGHT_CONST, 0);
+        backlight_set_left(r, g, b);
+        backlight_set_right(r, g, b);
+        break;
+    }
+    default:
+        backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
+        break;
+    }
+}
+
+static void display_print_message(uint8_t const *buffer)
+{
+    char *const text = (char *const)buffer;
+    display_print(text);
+}
+
+static void draw_icon(uint8_t const *buffer)
+{
+    KEYPAD_ICON const image = static_cast<KEYPAD_ICON>(buffer[0]);
+    switch (image)
+    {
+    case KEYPAD_ICON::KEYPAD_ICON_FRAME:
+        display_draw(KEYPAD_ICON::KEYPAD_ICON_FRAME);
+        break;
+    case KEYPAD_ICON::KEYPAD_ICON_VARIKEY_LOGO:
+        display_draw(KEYPAD_ICON::KEYPAD_ICON_VARIKEY_LOGO);
+        break;
+    case KEYPAD_ICON::KEYPAD_ICON_GOSSENMETRAWATT_LOGO:
+        display_draw(KEYPAD_ICON::KEYPAD_ICON_GOSSENMETRAWATT_LOGO);
+        break;
+    case KEYPAD_ICON::KEYPAD_ICON_HEART:
+        display_draw(KEYPAD_ICON::KEYPAD_ICON_HEART);
+        break;
+    default:
+        break;
+    }
+}
+
+extern void keypad_perform(void)
 {
     // Poll every 10ms
     static absolute_time_t timestamp = {0};
@@ -47,7 +183,7 @@ extern void keyboard_perform(void)
     }
 }
 
-extern void keyboard_handle_event(engine::keypad::event_t const _event)
+extern void keypad_handle_event(engine::keypad::event_t const _event)
 {
     if (tud_suspended())
     {
@@ -113,15 +249,15 @@ extern void keyboard_handle_event(engine::keypad::event_t const _event)
             keycode[0] = static_cast<uint8_t>(engine::Keypad::KEYCODE::RIGHT_5);
             tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::REPORT_ID::KEYBOARD), 0, keycode);
             break;
-        case engine::keypad::event::IDENTIFIER::KEY_11:
+        case engine::keypad::event::IDENTIFIER::WHEEL_LEFT:
             if (last_identifier == engine::keypad::event::IDENTIFIER::UNDEFINED)
             {
-                last_identifier = engine::keypad::event::IDENTIFIER::KEY_11;
+                last_identifier = engine::keypad::event::IDENTIFIER::WHEEL_LEFT;
             }
-            else if (last_identifier == engine::keypad::event::IDENTIFIER::KEY_11)
+            else if (last_identifier == engine::keypad::event::IDENTIFIER::WHEEL_LEFT)
             {
             }
-            else if (last_identifier == engine::keypad::event::IDENTIFIER::KEY_12)
+            else if (last_identifier == engine::keypad::event::IDENTIFIER::WHEEL_RIGHT)
             {
                 if (time_diff_ms < ROTARY_ENCODER_EVENTS_TIMEOUT_MAX_MS)
                 {
@@ -135,15 +271,15 @@ extern void keyboard_handle_event(engine::keypad::event_t const _event)
                 last_identifier = engine::keypad::event::IDENTIFIER::UNDEFINED;
             }
             break;
-        case engine::keypad::event::IDENTIFIER::KEY_12:
+        case engine::keypad::event::IDENTIFIER::WHEEL_RIGHT:
             if (last_identifier == engine::keypad::event::IDENTIFIER::UNDEFINED)
             {
-                last_identifier = engine::keypad::event::IDENTIFIER::KEY_12;
+                last_identifier = engine::keypad::event::IDENTIFIER::WHEEL_RIGHT;
             }
-            else if (last_identifier == engine::keypad::event::IDENTIFIER::KEY_12)
+            else if (last_identifier == engine::keypad::event::IDENTIFIER::WHEEL_RIGHT)
             {
             }
-            else if (last_identifier == engine::keypad::event::IDENTIFIER::KEY_11)
+            else if (last_identifier == engine::keypad::event::IDENTIFIER::WHEEL_LEFT)
             {
                 if (time_diff_ms < ROTARY_ENCODER_EVENTS_TIMEOUT_MAX_MS)
                 {
@@ -157,7 +293,7 @@ extern void keyboard_handle_event(engine::keypad::event_t const _event)
                 last_identifier = engine::keypad::event::IDENTIFIER::UNDEFINED;
             }
             break;
-        case engine::keypad::event::IDENTIFIER::KEY_13:
+        case engine::keypad::event::IDENTIFIER::WHEEL_PRESS:
             keycode[0] = static_cast<uint8_t>(engine::Keypad::KEYCODE::ENTER);
             tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::REPORT_ID::KEYBOARD), 0, keycode);
             break;
@@ -226,9 +362,18 @@ void tud_hid_report_complete_cb(uint8_t instance, uint8_t const *report, uint16_
 #endif
 }
 
-// Invoked when received GET_REPORT control request
-// Application must fill buffer report's content and return its length.
-// Return zero will cause the stack to STALL request
+/**
+ * \brief Invoked when received GET_REPORT control request
+ *
+ * Application must fill buffer report's content and return its length.
+ *
+ * \param instance
+ * \param report_id
+ * \param report_type
+ * \param buffer
+ * \param bufsize
+ * \return uint16_t Return zero will cause the stack to STALL request
+ */
 uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t bufsize)
 {
     (void)instance;
@@ -239,7 +384,7 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
         {
         case platform::usb::REPORT_ID::SERIAL:
         {
-            memcpy((char *)buffer, (char *)g_serial_number.value, bufsize);
+            memcpy((char *)buffer, (char *)g_serial_number.value, PARAMETER_SERIAL_NUMBER_SIZE);
             break;
         }
         case platform::usb::REPORT_ID::GADGET:
@@ -249,21 +394,19 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
         }
         case platform::usb::REPORT_ID::UNIQUE:
         {
-            memcpy((char *)buffer, (char *)&g_unique_key, bufsize);
+            serialize_long(g_unique_key, &buffer);
             break;
         }
         case platform::usb::REPORT_ID::HARDWARE:
         {
-            uint8_t tmp[12] = {0x0e, 0x00, 0x00, 0x00};
+            uint8_t tmp[3] = {HARDWARE_IDENTIFIER, HARDWARE_NUMBER, HARDWARE_VARIANT};
             memcpy((char *)buffer, (char *)tmp, sizeof(tmp));
-            // strncpy((char *)buffer, (char *)g_serial_number.value, bufsize);
             break;
         }
         case platform::usb::REPORT_ID::VERSION:
         {
-            uint8_t tmp[12] = {0x01, 0x00, 0x00, 0x00};
+            uint8_t tmp[5] = {FIRMWARE_IDENTIFIER, HIBYTE(FIRMWARE_REVISION), LOBYTE(FIRMWARE_REVISION), HIBYTE(FIRMWARE_PATCH), LOBYTE(FIRMWARE_PATCH)};
             memcpy((char *)buffer, (char *)tmp, sizeof(tmp));
-            // strncpy((char *)buffer, (char *)g_serial_number.value, bufsize);
             break;
         }
         case platform::usb::REPORT_ID::TEMPERATURE:
@@ -292,8 +435,15 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
     return bufsize;
 }
 
-// Invoked when received SET_REPORT control request or
-// received data on OUT endpoint ( Report ID = 0, Type = 0 )
+/**
+ * \brief Invoked when received SET_REPORT control request or received data on OUT endpoint ( Report ID = 0, Type = 0 )
+ *
+ * \param instance
+ * \param _report_id
+ * \param report_type
+ * \param buffer
+ * \param bufsize
+ */
 void tud_hid_set_report_cb(uint8_t instance, uint8_t _report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
 {
     (void)instance;
@@ -316,20 +466,7 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t _report_id, hid_report_type
                 return;
 
             uint8_t const kbd_leds = buffer[0];
-
-            if (kbd_leds & KEYBOARD_LED_CAPSLOCK)
-            {
-                backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
-            }
-            else if (kbd_leds & KEYBOARD_LED_NUMLOCK)
-            {
-                backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
-            }
-            else
-            {
-                backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
-                backlight_mode(BACKLIGHT_MOUNTED, 15000);
-            }
+            set_keyboard_state(kbd_leds);
         }
         else if (report_id == platform::usb::REPORT_ID::CUSTOM)
         {
@@ -337,120 +474,33 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t _report_id, hid_report_type
                 return;
 
             const platform::usb::KEYPAD_COMMAND command = static_cast<platform::usb::KEYPAD_COMMAND>(buffer[0]);
+            const uint8_t *payload = &buffer[1];
 
-            if (command == platform::usb::KEYPAD_COMMAND::RESET)
+            switch (command)
             {
+            case platform::usb::KEYPAD_COMMAND::RESET:
                 /* todo: reset keypad */
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::POSITION)
-            {
-                uint8_t const lines = buffer[1];
-                uint8_t const columns = buffer[2];
-                display_set_cursor(lines, columns);
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::ICON)
-            {
-                KEYPAD_ICON const image = static_cast<KEYPAD_ICON>(buffer[1]);
-                switch (image)
-                {
-                case KEYPAD_ICON::KEYPAD_ICON_FRAME:
-                    display_draw(KEYPAD_ICON::KEYPAD_ICON_FRAME);
-                    break;
-                case KEYPAD_ICON::KEYPAD_ICON_VARIKEY_LOGO:
-                    display_draw(KEYPAD_ICON::KEYPAD_ICON_VARIKEY_LOGO);
-                    break;
-                case KEYPAD_ICON::KEYPAD_ICON_GOSSENMETRAWATT_LOGO:
-                    display_draw(KEYPAD_ICON::KEYPAD_ICON_GOSSENMETRAWATT_LOGO);
-                    break;
-                case KEYPAD_ICON::KEYPAD_ICON_HEART:
-                    display_draw(KEYPAD_ICON::KEYPAD_ICON_HEART);
-                    break;
-                default:
-                    break;
-                }
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::FONT_SIZE)
-            {
-                const uint8_t font_size = buffer[1];
-                if (font_size == 1)
-                {
-                    display_set_font(FONT_SIZE::FONT_SMALL);
-                }
-                else if (font_size == 2)
-                {
-                    display_set_font(FONT_SIZE::FONT_NORMAL);
-                }
-                else if (font_size == 3)
-                {
-                    display_set_font(FONT_SIZE::FONT_BIG);
-                }
-                else if (font_size == 4)
-                {
-                    display_set_font(FONT_SIZE::FONT_HUGE);
-                }
-                else if (font_size == 5)
-                {
-                    display_set_font(FONT_SIZE::FONT_SYMBOL);
-                }
-                else
-                {
-                    display_set_font(FONT_SIZE::FONT_SMALL);
-                }
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::TEXT)
-            {
-                char *const text = (char *const)&buffer[1];
-                display_print(text);
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::BACKLIGHT)
-            {
-                const int mode = buffer[1];
-                switch (mode)
-                {
-                case 1:
-                    backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
-                    break;
-                case 2:
-                    backlight_mode(BACKLIGHT_PROGRAM_SLOW, 0);
-                    break;
-                case 3:
-                    backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
-                    break;
-                case 4:
-                    backlight_mode(BACKLIGHT_CONST, 0);
-                    break;
-                case 5:
-                    backlight_mode(BACKLIGHT_NOT_MOUNTED, 0);
-                    break;
-                case 6:
-                    backlight_mode(BACKLIGHT_MOUNTED, 0);
-                    break;
-                case 7:
-                    backlight_mode(BACKLIGHT_SUSPENDED, 0);
-                    break;
-                case 8:
-                    backlight_mode(BACKLIGHT_OFF, 0);
-                    break;
-                case 0xaa:
-                {
-                    const uint8_t r = buffer[2];
-                    const uint8_t g = buffer[3];
-                    const uint8_t b = buffer[4];
-                    backlight_mode(BACKLIGHT_CONST, 0);
-                    // backlight_set_left(r, g, b);
-                    // backlight_set_right(r, g, b);
-                    backlight_morph_left(r, g, b);
-                    backlight_morph_right(r, g, b);
-                    break;
-                }
-                default:
-                    backlight_mode(BACKLIGHT_PROGRAM_MEDIUM, 0);
-                    break;
-                }
-            }
-            else if (command == platform::usb::KEYPAD_COMMAND::CONFIG)
-            {
-                // backlight_mode_t const mode = buffer[1];
+                break;
+            case platform::usb::KEYPAD_COMMAND::POSITION:
+                set_display_position(payload);
+                break;
+            case platform::usb::KEYPAD_COMMAND::ICON:
+                draw_icon(payload);
+                break;
+            case platform::usb::KEYPAD_COMMAND::FONT_SIZE:
+                set_font(payload);
+                break;
+            case platform::usb::KEYPAD_COMMAND::TEXT:
+                display_print_message(payload);
+                break;
+            case platform::usb::KEYPAD_COMMAND::BACKLIGHT:
+                set_backlight(payload);
+                break;
+            case platform::usb::KEYPAD_COMMAND::CONFIG:
+                /* todo: config keypad */
+                break;
+            default:
+                break;
             }
         }
     }

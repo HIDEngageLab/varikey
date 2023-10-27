@@ -13,7 +13,8 @@
 #include <pico/binary_info.h>
 #include <pico/stdlib.h>
 
-#include "keyboard.hpp"
+#include "keypad.hpp"
+#include "keypad_event.hpp"
 
 #include "adp5585.hpp"
 #include "keypad_adp5585.hpp"
@@ -210,13 +211,13 @@ namespace platform
                     case adp5585::EVENT_IDENTIFIER::C1_GPI_8:
                         break;
                     case adp5585::EVENT_IDENTIFIER::C2_GPI_9:
-                        event_identifier = engine::keypad::event::IDENTIFIER::KEY_13;
+                        event_identifier = engine::keypad::event::IDENTIFIER::WHEEL_PRESS;
                         break;
                     case adp5585::EVENT_IDENTIFIER::C3_GPI_10:
-                        event_identifier = engine::keypad::event::IDENTIFIER::KEY_11;
+                        event_identifier = engine::keypad::event::IDENTIFIER::WHEEL_LEFT;
                         break;
                     case adp5585::EVENT_IDENTIFIER::C4_GPI_11:
-                        event_identifier = engine::keypad::event::IDENTIFIER::KEY_12;
+                        event_identifier = engine::keypad::event::IDENTIFIER::WHEEL_RIGHT;
                         break;
                     case adp5585::EVENT_IDENTIFIER::LOGIC:
                         break;
@@ -228,7 +229,7 @@ namespace platform
                         event_state,
                         event_identifier,
                     };
-                    keyboard_handle_event(keypad_event);
+                    keypad_handle_event(keypad_event);
                 }
 
                 return true;

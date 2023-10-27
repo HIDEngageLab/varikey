@@ -116,7 +116,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial_msg.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/serial.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/hci/serial/usart.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/keyboard.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keyboard/keypad.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_gossenmetrawatt_1_0.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_keypad.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_varikey_1_0.cpp

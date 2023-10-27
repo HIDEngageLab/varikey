@@ -22,7 +22,7 @@
 #include "cmd_control_temperature_msg.hpp"
 #include "commander.hpp"
 #include "composed_hid.hpp"
-#include "keyboard.hpp"
+#include "keypad.hpp"
 #include "parameter.hpp"
 #include "serial_frame.hpp"
 #include "usart.hpp"
