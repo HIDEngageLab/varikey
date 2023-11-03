@@ -48,7 +48,7 @@ endif()
 message("hardware is ${HARDWARE_PLATFORM} (internal ID:${HARDWARE_IDENTIFIER} NUM:${HARDWARE_NUMBER} VAR:${HARDWARE_VARIANT})")
 
 if (NOT FIRMWARE_PRODUCT)
-        message("product is not defined, default is KEYPAD_10_BOTTONS_WHEEL_DISPLAY_BACKLIGHT_0100")
+        message("product is not defined, default is KEYPAD_10BWDB")
         set(FIRMWARE_PRODUCT "KEYPAD_10BWDB")
         #set(FIRMWARE_PRODUCT "KEYPAD_DEMO")
 endif()

@@ -12,6 +12,7 @@
     "cSpell.language": "en,de",
     "cmake.generator": "Unix Makefiles",
     "cSpell.words": [
+        "backlighting",
         "blub",
         "bwdb",
         "BWDB",
@@ -99,5 +100,12 @@
         "return",
     ],
     "files.associations": {
-    }
+        "compare": "cpp",
+        "concepts": "cpp",
+        "type_traits": "cpp",
+        "cmath": "cpp",
+        "limits": "cpp",
+        "new": "cpp"
+    },
+    "svg.preview.background": "transparent"
 }
