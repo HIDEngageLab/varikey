@@ -40,13 +40,13 @@ extern void random_init(void)
     state = READY;
 
     /* calculate seed (paranoid) */
-    const uint16_t value = board.soc.temperature.get_raw_value();
+    const uint16_t value = board.soc.get_temperature_raw();
     const uint8_t result = 1 + (create_random(value) & 0x0f);
     uint16_t seed = result;
 
     for (uint8_t i = 0; i < result; ++i)
     {
-        const uint16_t value = board.soc.temperature.get_raw_value();
+        const uint16_t value = board.soc.get_temperature_raw();
         uint8_t byte = create_random(value);
         seed = checksum_crc_byte(byte, seed);
     }

@@ -15,12 +15,17 @@ namespace platform
 {
     namespace hardware
     {
-        extern void platform_ssd1306_init(uint8_t data_command_select_pin);
-        extern void platform_ssd1306_clean(void);
-        extern void platform_ssd1306_mask(uint8_t const *const image);
-        extern void platform_ssd1306_symbol(uint8_t const page_start, uint8_t const page_end, uint8_t const column_start, uint8_t const column_end, uint8_t const *const data, uint8_t const len);
-        extern void platform_ssd1306_set_inverse(void);
-        extern void platform_ssd1306_set_normal(void);
+        namespace ssd1306
+        {
+            extern void initialize(uint8_t data_command_select_pin);
+            extern void clean(void);
+            extern void mask(uint8_t const *const image);
+            extern void symbol(uint8_t const page_start, uint8_t const page_end,
+                               uint8_t const column_start, uint8_t const column_end,
+                               uint8_t const *const data, size_t const len);
+            extern void set_inverse(void);
+            extern void set_normal(void);
+        }
     }
 }
 

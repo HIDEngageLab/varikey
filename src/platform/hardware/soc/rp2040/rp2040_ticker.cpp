@@ -23,8 +23,6 @@
 #include "rp2040_ticker.hpp"
 #include "soc_type.hpp"
 
-#define USE_TEST_PIN
-
 namespace platform
 {
     namespace soc
@@ -40,15 +38,6 @@ namespace platform
         */
         void RP2040Ticker::initialize(void)
         {
-#if defined(USE_TEST_PIN)
-            /* ticker pin */
-            gpio_init(platform::driver::SoC::DEBUG_PIN_4);
-            gpio_set_dir(platform::driver::SoC::DEBUG_PIN_4, GPIO_OUT);
-
-            /* application activity pin */
-            gpio_init(platform::driver::SoC::DEBUG_PIN_3);
-            gpio_set_dir(platform::driver::SoC::DEBUG_PIN_3, GPIO_OUT);
-#endif
         }
 
         void RP2040Ticker::shutdown(void)
@@ -82,32 +71,13 @@ namespace platform
 
         static bool timer_callback(struct repeating_timer *const _timer)
         {
-#if defined(USE_TEST_PIN)
-            static int pin_state = 0;
-            if (pin_state == 1)
-            {
-                pin_state = 0;
-            }
-            else
-            {
-                pin_state = 1;
-            }
-            gpio_put(platform::driver::SoC::DEBUG_PIN_4, pin_state);
-#endif
             if (ticker_handler != nullptr)
             {
                 static bool execution_flag = false;
                 if (!execution_flag)
                 {
                     execution_flag = true;
-
-#if defined(USE_TEST_PIN)
-                    gpio_put(platform::driver::SoC::DEBUG_PIN_3, 1);
-#endif
                     ticker_handler();
-#if defined(USE_TEST_PIN)
-                    gpio_put(platform::driver::SoC::DEBUG_PIN_3, 0);
-#endif
                     execution_flag = false;
                 }
                 else

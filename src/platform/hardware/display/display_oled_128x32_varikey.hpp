@@ -29,6 +29,8 @@ namespace platform
 
             static const unsigned int C = 128;
             static const unsigned int R = 4;
+
+            static const unsigned int MAX_LINE_LENGTH = 18;
         };
     }
 }

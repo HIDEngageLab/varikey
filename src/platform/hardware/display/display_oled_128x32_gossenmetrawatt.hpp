@@ -17,11 +17,11 @@ namespace platform
     {
         struct DisplayOLED128x32Gossenmetrawatt : public DisplayOLED128x32
         {
-            static const unsigned int PICO_SPI_CS = 17;
-            static const unsigned int PICO_SPI_SCK = 18;
-            static const unsigned int PICO_SPI_TX = 19;
-            static const unsigned int DISPLAY_RESET = 20;
-            static const unsigned int DISPLAY_CMD_SEL = 21;
+            static const unsigned int PICO_SPI_CS = 21;
+            static const unsigned int PICO_SPI_SCK = 22;
+            static const unsigned int PICO_SPI_TX = 23;
+            static const unsigned int DISPLAY_RESET = 24;
+            static const unsigned int DISPLAY_CMD_SEL = 25;
             static const unsigned int PICO_SPI_SPEED = (10 * 1000 * 1000);
 
             static const unsigned int W = 128;
@@ -29,6 +29,8 @@ namespace platform
 
             static const unsigned int C = 128;
             static const unsigned int R = 4;
+
+            static const unsigned int MAX_LINE_LENGTH = 18;
         };
     }
 }

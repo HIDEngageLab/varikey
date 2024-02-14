@@ -20,10 +20,16 @@
 #include <stdlib.h>
 
 /** \brief Chunk structure */
-typedef struct chunk_struct
+struct chunk_t
 {
 	uint8_t *space;
 	size_t size;
-} chunk_t;
+};
+
+struct const_chunk_t
+{
+	uint8_t const *space;
+	size_t size;
+};
 
 #endif /* __PULP_CHUNK_HPP__ */

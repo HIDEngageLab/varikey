@@ -15,32 +15,16 @@ namespace platform
 {
     namespace usb
     {
-        enum class REPORT_ID : uint8_t
+        enum class COMMAND : uint8_t
         {
             KEYBOARD = 1,
             MOUSE = 2,
-            CONSUMER_CONTROL = 3,
-            GAMEPAD = 4,
-            COUNT = 5,
-            CUSTOM = 6,
-            SERIAL = 7,
-            GADGET = 8,
-            UNIQUE = 9,
-            HARDWARE = 10,
-            VERSION = 11,
-            TEMPERATURE = 12,
+            CONSUMER = 3,
+            CUSTOM = 0xE0,
         };
 
-        enum class KEYPAD_COMMAND : uint8_t
-        {
-            RESET = 1,
-            POSITION,
-            ICON,
-            FONT_SIZE,
-            TEXT,
-            BACKLIGHT,
-            CONFIG,
-        };
+        extern void sent_keycode(const uint8_t _code);
+        extern void sent_keycode();
     }
 }
 

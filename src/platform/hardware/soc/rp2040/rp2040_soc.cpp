@@ -22,13 +22,16 @@ namespace platform
 {
     namespace soc
     {
+        static absolute_time_t time_reference;
+
+        RP2040::RP2040() : stopwatch(time_reference) {}
+
         void RP2040::initialize()
         {
-            uart_init(uart0, 115200);
-
+            gpio.initialize();
             temperature.initialize();
             ticker.initialize();
-            timestamp.initialize();
+            stopwatch.initialize();
             watchdog.initialize();
             watchdog.start();
         }
@@ -36,11 +39,131 @@ namespace platform
         void RP2040::shutdown()
         {
             watchdog.shutdown();
+            gpio.shutdown();
             temperature.shutdown();
             ticker.shutdown();
-            timestamp.shutdown();
+            stopwatch.shutdown();
 
             watchdog.reboot();
+        }
+
+        const driver::soc::gpio::DIRECTION RP2040::get_gpio_direction(const driver::soc::gpio::IDENTIFIER _identifier) const
+        {
+            driver::soc::gpio::DIRECTION direction = driver::soc::gpio::DIRECTION::UNDEFINED;
+            switch (_identifier)
+            {
+            case driver::soc::gpio::IDENTIFIER::GPIO0:
+                direction = gpio.get_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO0);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO1:
+                direction = gpio.get_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO1);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO2:
+                direction = gpio.get_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO2);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO3:
+                direction = gpio.get_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO3);
+                break;
+            default:
+                break;
+            }
+            return direction;
+        }
+
+        void RP2040::set_gpio_direction(const driver::soc::gpio::IDENTIFIER _identifier,
+                                        driver::soc::gpio::DIRECTION _direction)
+        {
+            auto set_direction = [&](const platform::driver::soc::gpio::IDENTIFIER _identifier)
+            {
+                if (_direction == driver::soc::gpio::DIRECTION::INPUT)
+                {
+                    gpio.set_pulls(_identifier, true, false);
+                }
+                else
+                {
+                    gpio.set_pulls(_identifier, false, false);
+                }
+                gpio.set_direction(_identifier, _direction);
+            };
+
+            switch (_identifier)
+            {
+            case driver::soc::gpio::IDENTIFIER::GPIO0:
+                set_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO0);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO1:
+                set_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO1);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO2:
+                set_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO2);
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO3:
+                set_direction(platform::driver::soc::gpio::IDENTIFIER::GPIO3);
+                break;
+            default:
+                break;
+            }
+        }
+
+        void RP2040::enable_gpio_event(driver::soc::gpio::callback_t _callback,
+                                       const bool _value)
+        {
+            if (_value)
+            {
+                gpio.enable_event(_callback);
+            }
+            else
+            {
+                gpio.disable_event();
+            }
+        }
+
+        const driver::soc::gpio::VALUE RP2040::get_value(const driver::soc::gpio::IDENTIFIER _identifier)
+        {
+
+            auto set_direction = [&](const platform::driver::soc::gpio::IDENTIFIER _identifier) -> driver::soc::gpio::VALUE
+            {
+                driver::soc::gpio::VALUE value = driver::soc::gpio::VALUE::UNDEFINED;
+                driver::soc::gpio::DIRECTION direction = gpio.get_direction(_identifier);
+                if (direction != driver::soc::gpio::DIRECTION::UNDEFINED)
+                {
+                    value = gpio.get_value(_identifier);
+                }
+                return value;
+            };
+
+            driver::soc::gpio::VALUE value = driver::soc::gpio::VALUE::UNDEFINED;
+            switch (_identifier)
+            {
+            case driver::soc::gpio::IDENTIFIER::GPIO0:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO1:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO2:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO3:
+                break;
+            default:
+                break;
+            }
+            return value;
+        }
+
+        void RP2040::set_value(const driver::soc::gpio::IDENTIFIER _identifier, const bool _value)
+        {
+            switch (_identifier)
+            {
+            case driver::soc::gpio::IDENTIFIER::GPIO0:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO1:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO2:
+                break;
+            case driver::soc::gpio::IDENTIFIER::GPIO3:
+                break;
+            default:
+                break;
+            }
         }
 
         void RP2040::perform()

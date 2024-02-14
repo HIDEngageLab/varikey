@@ -21,7 +21,7 @@ namespace platform
             virtual void initialize();
             virtual void shutdown();
 
-            void put_value(const color_t &);
+            void put_value(const engine::backlight::color_t &);
         };
     }
 }

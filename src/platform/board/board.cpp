@@ -23,5 +23,4 @@ extern void board_shutdown()
 extern void board_perform()
 {
     board.perform();
-
 }

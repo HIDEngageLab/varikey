@@ -1,0 +1,14 @@
+/**
+ * \file varikey.hpp
+ * \author Roman Koch
+ *
+ * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * SPDX-License-Identifier: MIT
+ */
+
+#ifndef __VARIKEY_DEVICE_HPP__
+#define __VARIKEY_DEVICE_HPP__
+
+extern void varikey_shutdown(void);
+
+#endif /* __VARIKEY_DEVICE_HPP__ */

@@ -14,8 +14,9 @@
 
 #include "backlight_type.hpp"
 #include "display_type.hpp"
-#include "keypad_type.hpp"
+#include "keymatrix_adp5585_type.hpp"
 #include "soc_type.hpp"
+#include "usart.hpp"
 #include "usb_device.hpp"
 
 namespace platform
@@ -35,8 +36,9 @@ namespace platform
 
             hardware::Backlight backlight;
             hardware::Display display;
-            hardware::Keypad keypad;
+            hardware::Keymatrix keypad;
             hardware::UsbDevice usb;
+            hardware::UartDevice uart;
             driver::SoC soc;
         };
     }

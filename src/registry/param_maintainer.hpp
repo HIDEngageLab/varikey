@@ -18,23 +18,34 @@
 
 #include "parameter.hpp"
 
-/** \brief Maintainer parameter structure */
-typedef union param_maintainer
+namespace registry
 {
-	uint8_t byte;
-	struct param_maintainer_struct
+	namespace parameter
 	{
-		uint8_t value : 4;
-		uint8_t hardware : 2;
-		uint8_t protocol : 2;
-	} maintainer;
-} param_maintainer_t;
+		namespace maintainer
+		{
+			static const size_t SIZE = sizeof(uint16_t) * 1;
 
-extern param_maintainer_t g_maintainer;
+			/** \brief Maintainer parameter structure */
+			union register_t
+			{
+				uint16_t word;
+				struct __attribute__((packed)) maintainer_t
+				{
+					uint16_t protocol : 2;
+					uint16_t hardware : 4;
+					uint16_t identifier : 12;
+				} maintainer;
+			};
 
-extern void param_maintainer_init(void);
+			extern register_t g_register;
 
-extern void param_maintainer_deserialize(uint8_t const *const _space);
-extern void param_maintainer_serialize(uint8_t *const _space);
+			extern void initialize(void);
+
+			extern void deserialize(uint8_t const *const _space);
+			extern void serialize(uint8_t *const _space);
+		}
+	}
+}
 
 #endif /* __PARAM_MAINTAINER_HPP__ */

@@ -34,7 +34,7 @@ namespace platform
                 Negative delay so means we will call timer callback, and call it again
                 TICKER_DELAY ms later regardless of how long the callback took to execute.
             */
-            static const int32_t TICKER_DELAY = -3;
+            static const int32_t TICKER_DELAY = -5;
 
             virtual void initialize(void);
             virtual void shutdown(void);

@@ -10,7 +10,7 @@
 #define __BOARD_VARIKEY_1_0_HPP__
 
 #include "board_keypad.hpp"
-#include "image_identifier.hpp"
+#include "display_image.hpp"
 
 namespace platform
 {
@@ -21,8 +21,8 @@ namespace platform
             Varikey_1_0() {}
             virtual ~Varikey_1_0() {}
 
-            static constexpr const char* INTRO = "VARIKEY";
-            static const KEYPAD_ICON LOGO = KEYPAD_ICON::KEYPAD_ICON_VARIKEY_LOGO;
+            static constexpr const char *INTRO = "VARIKEY";
+            static const engine::display::ICON LOGO = engine::display::ICON::VARIKEY_LOGO;
             static const int8_t POSITION = 14;
 
             virtual void initialize();

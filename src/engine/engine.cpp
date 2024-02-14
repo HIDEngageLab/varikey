@@ -6,150 +6,195 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <pico/stdlib.h>
+#include <stdlib.h>
 
 #include "backlight3.hpp"
 #include "board.hpp"
 #include "display.hpp"
+#include "display_font.hpp"
 #include "engine.hpp"
+#include "engine_event_queue.hpp"
+#include "hid_handler.hpp"
 #include "keypad.hpp"
 #include "random.hpp"
 #include "registry.hpp"
+#include "serial.hpp"
 
-static pulp::COMPONENT_STATE mode = pulp::COMPONENT_STATE::UNDEFINED;
-static pulp::COMPONENT_STATE next_mode = pulp::COMPONENT_STATE::UNDEFINED;
-
-static void start_device_application()
+namespace engine
 {
-    backlight_mode(BACKLIGHT_PROGRAM_TURBO, 0);
+    static defines::STATE mode = defines::STATE::UNDEFINED;
+    static defines::STATE next_mode = defines::STATE::UNDEFINED;
 
-    display_set_cursor(0, 0);
-    display_draw(platform::Board::LOGO);
-    display_set_cursor(1, platform::Board::POSITION);
-    display_set_font(FONT_SIZE::FONT_BIG);
-    display_print(platform::Board::INTRO);
-}
+    static bool wakeup_enabled_flag = false;
 
-static void stop_device_application()
-{
-    backlight_mode(BACKLIGHT_OFF, 0);
-    display_clean();
-}
+    static void tick(void);
+    static void start_device_application();
+    static void stop_device_application();
+    static void push_gadget_event(const payload::gadget::COMMAND);
 
-extern void engine_initialize(void)
-{
-    assert(mode == pulp::COMPONENT_STATE::UNDEFINED);
-    mode = pulp::COMPONENT_STATE::IDLE;
-
-    random_init();
-    registry_init();
-
-    backlight_init();
-
-    /* todo: init storage/registry */
-}
-
-extern void engine_start(void)
-{
-    assert(mode != pulp::COMPONENT_STATE::UNDEFINED);
-
-    switch (mode)
+    extern void initialize(void)
     {
-    case pulp::COMPONENT_STATE::IDLE:
-        next_mode = pulp::COMPONENT_STATE::ACTIVE;
-        /* start engine ticker */
-        board.soc.ticker.start(engine_tick);
-        break;
-    case pulp::COMPONENT_STATE::ACTIVE:
-        next_mode = mode;
-        break;
-    case pulp::COMPONENT_STATE::PENDING:
-        next_mode = mode;
-        break;
-    default:
-        next_mode = mode;
-        break;
+        assert(mode == defines::STATE::UNDEFINED);
+        mode = defines::STATE::IDLE;
+
+        random_init();
+        registry::initialize();
+        backlight::initialize();
+
+        serial_init();
     }
-}
 
-extern void engine_stop(void)
-{
-    assert(mode != pulp::COMPONENT_STATE::UNDEFINED);
-
-    switch (mode)
+    extern void start(void)
     {
-    case pulp::COMPONENT_STATE::IDLE:
-        next_mode = mode;
-        break;
-    case pulp::COMPONENT_STATE::ACTIVE:
-        next_mode = pulp::COMPONENT_STATE::PENDING;
-        break;
-    case pulp::COMPONENT_STATE::PENDING:
-        next_mode = mode;
-        break;
-    default:
-        next_mode = mode;
-        break;
-    }
-}
+        assert(mode != defines::STATE::UNDEFINED);
 
-extern void engine_shutdown(void)
-{
-    /* todo: board shutdown */
-}
-
-extern void engine_perform(void)
-{
-    switch (mode)
-    {
-    case pulp::COMPONENT_STATE::IDLE:
-        if (next_mode == pulp::COMPONENT_STATE::ACTIVE)
+        switch (mode)
         {
-            mode = next_mode;
-            next_mode = pulp::COMPONENT_STATE::UNDEFINED;
-
-            /* show state */
-            start_device_application();
-        }
-        break;
-    case pulp::COMPONENT_STATE::ACTIVE:
-        backlight_perform();
-        keypad_perform();
-
-        if (next_mode == pulp::COMPONENT_STATE::PENDING)
-        {
-            mode = next_mode;
-            next_mode = pulp::COMPONENT_STATE::IDLE;
-        }
-        break;
-    case pulp::COMPONENT_STATE::PENDING:
-        if (next_mode == pulp::COMPONENT_STATE::IDLE)
-        {
-            /* todo: check event queue and execute lines below only if no more events exists */
-
-            mode = next_mode;
-            next_mode = pulp::COMPONENT_STATE::UNDEFINED;
-
+        case defines::STATE::IDLE:
+            next_mode = defines::STATE::ACTIVE;
             /* start engine ticker */
-            board.soc.ticker.stop();
-
-            /* show state */
-            stop_device_application();
+            board.soc.ticker_start(tick);
+            break;
+        case defines::STATE::ACTIVE:
+            next_mode = mode;
+            break;
+        case defines::STATE::PENDING:
+            next_mode = mode;
+            break;
+        default:
+            next_mode = mode;
+            break;
         }
-        break;
-    default:
-        next_mode = pulp::COMPONENT_STATE::UNDEFINED;
-        break;
     }
-}
 
-extern void engine_tick(void)
-{
-    board_perform();
-    engine_perform();
-}
+    extern void stop(void)
+    {
+        assert(mode != defines::STATE::UNDEFINED);
 
-extern pulp::COMPONENT_STATE engine_mode_get(void)
-{
-    return mode;
+        switch (mode)
+        {
+        case defines::STATE::IDLE:
+            next_mode = mode;
+            break;
+        case defines::STATE::ACTIVE:
+            next_mode = defines::STATE::PENDING;
+            break;
+        case defines::STATE::PENDING:
+            next_mode = mode;
+            break;
+        default:
+            next_mode = mode;
+            break;
+        }
+    }
+
+    extern void unmount()
+    {
+        push_gadget_event(payload::gadget::COMMAND::UNMOUNT);
+    }
+
+    extern void mount()
+    {
+        push_gadget_event(payload::gadget::COMMAND::MOUNT);
+    }
+
+    extern void suspend(const bool wakeup_enabled)
+    {
+        wakeup_enabled_flag = wakeup_enabled;
+        push_gadget_event(payload::gadget::COMMAND::SUSPEND);
+    }
+
+    extern void resume()
+    {
+        push_gadget_event(payload::gadget::COMMAND::RESUME);
+    }
+
+    extern void shutdown(void)
+    {
+        /* todo: board shutdown */
+    }
+
+    extern void perform(void)
+    {
+        switch (mode)
+        {
+        case defines::STATE::IDLE:
+            if (next_mode == defines::STATE::ACTIVE)
+            {
+                mode = next_mode;
+                next_mode = defines::STATE::UNDEFINED;
+
+                /* show state */
+                start_device_application();
+            }
+            break;
+        case defines::STATE::ACTIVE:
+            backlight::perform();
+            handler_perform();
+            serial_perform();
+
+            if (next_mode == defines::STATE::PENDING)
+            {
+                mode = next_mode;
+                next_mode = defines::STATE::IDLE;
+            }
+            break;
+        case defines::STATE::PENDING:
+            if (next_mode == defines::STATE::IDLE)
+            {
+                /* todo: check event queue and execute lines below only if no more events exists */
+
+                mode = next_mode;
+                next_mode = defines::STATE::UNDEFINED;
+
+                /* start engine ticker */
+                board.soc.ticker_stop();
+
+                /* show state */
+                stop_device_application();
+            }
+            break;
+        default:
+            next_mode = defines::STATE::UNDEFINED;
+            break;
+        }
+    }
+
+    extern defines::STATE get_mode(void)
+    {
+        return mode;
+    }
+
+    static void tick(void)
+    {
+        board_perform();
+        perform();
+    }
+
+    static void start_device_application()
+    {
+        backlight::set_mode(backlight::MODE::TURBO, 0);
+
+        display::set_cursor(0, 0);
+        display::draw(platform::Board::LOGO);
+        display::set_cursor(1, platform::Board::POSITION);
+        display::set_font(engine::display::FONT::BIG);
+        display::print(platform::Board::INTRO);
+    }
+
+    static void stop_device_application()
+    {
+        backlight::set_mode(backlight::MODE::OFF, 0);
+        display::clean();
+    }
+
+    static void push_gadget_event(const payload::gadget::COMMAND _identifier)
+    {
+        const engine::event_t event = {
+            .identifier = payload::IDENTIFIER::GADGET,
+            .gadget = {
+                .command = _identifier,
+            }};
+        engine::event_queue.push(event);
+    }
 }

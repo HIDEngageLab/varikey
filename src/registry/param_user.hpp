@@ -18,20 +18,29 @@
 
 #include "parameter.hpp"
 
-#define PARAMETER_USER_SIZE 2
-
-/** \brief Test register for maintainer */
-typedef struct param_user_register_struct
+namespace registry
 {
-	uint8_t value[PARAMETER_USER_SIZE];
-} param_user_register_t;
+	namespace parameter
+	{
+		namespace user
+		{
+			static const size_t SIZE = 2;
 
-/** \brief Global user register parameter */
-extern param_user_register_t g_user_register;
+			/** \brief User register; ignored by firmware. */
+			struct register_t
+			{
+				uint8_t value[SIZE];
+			};
 
-extern void param_user_init(void);
+			/** \brief Global user register parameter */
+			extern register_t g_register;
 
-extern void param_user_deserialize(uint8_t const *const _chunk);
-extern void param_user_serialize(uint8_t *const _space);
+			extern void initialize(void);
+
+			extern void deserialize(uint8_t const *const _chunk);
+			extern void serialize(uint8_t *const _space);
+		}
+	}
+}
 
 #endif /* __PARAM_USER_HPP__ */

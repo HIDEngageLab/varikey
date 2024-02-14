@@ -7,9 +7,7 @@
  */
 
 /**
-	\brief Node configuration
-
-	Depends on node parameter.
+	\brief Configuration parameter
 
 	\internal
 	\author Roman Koch, koch.roman@gmail.com
@@ -19,19 +17,14 @@
 #define __REGISTRY_HPP__
 
 #include "macros.hpp"
+#include "registry_defines.hpp"
 
-#ifdef __cplusplus
-extern "C"
+namespace registry
 {
-#endif
+	extern void initialize(void);
+	extern void shutdown(void);
 
-	extern void registry_init(void);
-	extern void registry_shutdown(void);
-
-	extern result_t registry_is_ready(void);
-
-#ifdef __cplusplus
+	extern result_t is_ready(void);
 }
-#endif
 
 #endif /* __REGISTRY_HPP__ */

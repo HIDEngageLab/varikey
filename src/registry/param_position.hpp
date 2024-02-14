@@ -18,27 +18,37 @@
 
 #include "parameter.hpp"
 
-/**
-    \brief Position parameter
-
-    Parameter with two float values for latitude and longitude.
-*/
-typedef union
+namespace registry
 {
-    uint8_t byte[sizeof(float) * 2];
-    /** \brief Node position details */
-    struct param_position_struct
+    namespace parameter
     {
-        float latitude;
-        float longitude;
-    } coordinates;
-} param_position_t;
+        namespace position
+        {
+            static const size_t SIZE = sizeof(float) * 2;
+            /**
+                \brief Position parameter
 
-extern param_position_t g_position;
+                Parameter with two float values for latitude and longitude.
+            */
+            union register_t
+            {
+                uint8_t byte[SIZE];
+                /** \brief Node position details */
+                struct __attribute__((packed)) coordinates_t
+                {
+                    float latitude;
+                    float longitude;
+                } coordinates;
+            };
 
-extern void param_position_init(void);
+            extern register_t g_register;
 
-extern void param_position_deserialize(uint8_t const *const _space);
-extern void param_position_serialize(uint8_t *const _space);
+            extern void initialize(void);
+
+            extern void deserialize(uint8_t const *const _space);
+            extern void serialize(uint8_t *const _space);
+        }
+    }
+}
 
 #endif /* __PARAM_POSITION_HPP__ */

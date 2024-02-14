@@ -20,7 +20,7 @@
                 "break main",
                 "continue"
             ],
-            "showDevDebugOutput": "none"
+            "showDevDebugOutput": "raw"
         },
         {
             "name": "Picoprobe",

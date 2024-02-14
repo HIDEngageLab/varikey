@@ -9,6 +9,9 @@
 #ifndef __PLATFORM_DISPLAY_OLED_128X32_HPP__
 #define __PLATFORM_DISPLAY_OLED_128X32_HPP__
 
+#include <cstddef>
+#include <cstdint>
+
 #include "component_interface.hpp"
 
 namespace platform
@@ -19,6 +22,13 @@ namespace platform
         {
             virtual void initialize();
             virtual void shutdown();
+
+            void symbol(uint8_t const line_start, uint8_t const line_end,
+                        uint8_t const column_start, uint8_t const column_end,
+                        uint8_t const *const data, size_t const len);
+            void clean();
+            void set_invert();
+            void set_normal();
         };
     }
 }
