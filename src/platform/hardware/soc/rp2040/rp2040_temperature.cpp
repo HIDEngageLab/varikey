@@ -28,7 +28,7 @@ namespace platform
             ENABLED
         } status_t;
 
-        status_t status = UNDEFINED;
+        static status_t status = UNDEFINED;
 
         /**
          * \brief Initialize ADC and internal temperature sensor
@@ -52,7 +52,7 @@ namespace platform
         /**
             \brief Return ADC value
         */
-        uint16_t RP2040Temperature::get_raw_value(void)
+        const uint16_t RP2040Temperature::get_raw_value(void) const
         {
             assert(status == ENABLED);
             (void)adc_read();
@@ -64,7 +64,7 @@ namespace platform
          *
          * \return scaled float temperature value
          */
-        float RP2040Temperature::get_value(void)
+        const float RP2040Temperature::get_value(void) const 
         {
             uint16_t raw = get_raw_value();
             const float conversion = 3.3f / (1 << 12);

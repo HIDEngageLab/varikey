@@ -34,7 +34,7 @@ namespace platform
             sleep_ms(500);
         }
 
-        void BacklightWs2812::put_value(const color_t &_value)
+        void BacklightWs2812::put_value(const engine::backlight::color_t &_value)
         {
             ws2812_put_pixel(_value.rgb.r, _value.rgb.g, _value.rgb.b);
         }

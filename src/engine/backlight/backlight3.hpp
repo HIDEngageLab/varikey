@@ -6,32 +6,28 @@
  * SPDX-License-Identifier: MIT
  */
 
-#ifndef __BACKLIGHT3_HPP__
-#define __BACKLIGHT3_HPP__
+#ifndef __ENGINE_BACKLIGHT3_HPP__
+#define __ENGINE_BACKLIGHT3_HPP__
 
 #include <stdint.h>
 
-typedef enum
+#include "backlight_mode.hpp"
+
+namespace engine
 {
-    BACKLIGHT_PROGRAM_MEDIUM = 0,
-    BACKLIGHT_PROGRAM_SLOW = 1,
-    BACKLIGHT_PROGRAM_TURBO = 2,
-    BACKLIGHT_CONST = 3,
-    BACKLIGHT_NOT_MOUNTED = 4,
-    BACKLIGHT_MOUNTED = 5,
-    BACKLIGHT_SUSPENDED = 6,
-    BACKLIGHT_OFF = 7,
-} backlight_mode_t;
+    namespace backlight
+    {
+        extern void initialize(void);
+        extern void perform(void);
 
-extern void backlight_init(void);
-extern void backlight_perform(void);
+        extern void set_mode(const MODE, const uint64_t _delay_ms);
 
-extern void backlight_mode(const backlight_mode_t, const uint64_t _delay_ms);
+        extern void set_left(const uint8_t r, const uint8_t g, const uint8_t b);
+        extern void set_right(const uint8_t r, const uint8_t g, const uint8_t b);
 
-extern void backlight_set_left(const uint8_t r, const uint8_t g, const uint8_t b);
-extern void backlight_set_right(const uint8_t r, const uint8_t g, const uint8_t b);
+        extern void morph_left(const uint8_t r, const uint8_t g, const uint8_t b);
+        extern void morph_right(const uint8_t r, const uint8_t g, const uint8_t b);
+    }
+}
 
-extern void backlight_morph_left(const uint8_t r, const uint8_t g, const uint8_t b);
-extern void backlight_morph_right(const uint8_t r, const uint8_t g, const uint8_t b);
-
-#endif // __BACKLIGHT3_HPP__
+#endif // __ENGINE_BACKLIGHT3_HPP__

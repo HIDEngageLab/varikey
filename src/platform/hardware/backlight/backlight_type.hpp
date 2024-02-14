@@ -37,7 +37,7 @@ namespace platform
                 using Type = platform::hardware::BacklightGossenmetrawatt;
             };
         }
-        using Backlight = backlight::Entity<platform::defines::Identifier(HARDWARE_IDENTIFIER)>::Type;
+        using Backlight = backlight::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

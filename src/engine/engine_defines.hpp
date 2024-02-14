@@ -9,6 +9,8 @@
 #ifndef __ENGINE_DEFINES_HPP__
 #define __ENGINE_DEFINES_HPP__
 
+#include <cstdint>
+
 namespace engine
 {
     struct Undefined
@@ -19,10 +21,20 @@ namespace engine
     {
         enum class Identifier
         {
-            KEYPAD_DEMO = 1,
-            KEYPAD_10BWDB = 2,
+            KEYPAD_DEMO = 1,   /* varikey demonstrator board */
+            KEYPAD_10BWDB = 2, /* 10 buttons, 1 wheel, display, backlight */
+        };
+
+        enum class STATE : uint8_t
+        {
+            ACTIVE = 0x01,
+            IDLE = 0x00,
+            PENDING = 0x03,
+            SUSPEND = 0x02,
+            UNDEFINED = 0xff,
         };
     }
+
 }
 
 #endif // __ENGINE_DEFINES_HPP__

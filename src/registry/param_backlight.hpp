@@ -16,29 +16,47 @@
 #ifndef __PARAM_BACKLIGHT_HPP__
 #define __PARAM_BACKLIGHT_HPP__
 
+#include "backlight3.hpp"
+#include "backlight_color.hpp"
 #include "parameter.hpp"
 
-/**
-    \brief Vref parameter
-
-    Parameter with two float values for latitude and longitude.
-*/
-typedef union
+namespace registry
 {
-    uint8_t byte[sizeof(float) * 2];
-    /** \brief Node backlight details */
-    struct param_backlight_struct
+    namespace parameter
     {
-        float reference;
-        float wheel;
-    } voltage;
-} param_backlight_t;
+        namespace backlight
+        {
+            static const size_t SIZE = sizeof(engine::backlight::MODE) +
+                                       sizeof(engine::backlight::color_t) +
+                                       sizeof(engine::backlight::color_t) +
+                                       sizeof(uint16_t);
 
-extern param_backlight_t g_backlight;
+            /**
+                \brief Vref parameter
 
-extern void param_backlight_init(void);
+                Parameter with two float values for latitude and longitude.
+            */
+            union register_t
+            {
+                uint8_t byte[SIZE];
+                /** \brief Node backlight details */
+                struct __attribute__((packed)) backlight_t
+                {
+                    engine::backlight::MODE mode;
+                    engine::backlight::color_t left;
+                    engine::backlight::color_t right;
+                    uint16_t timeout;
+                } param_backlight;
+            };
 
-extern void param_backlight_deserialize(uint8_t const *const _space);
-extern void param_backlight_serialize(uint8_t *const _space);
+            extern register_t g_register;
+
+            extern void initialize(void);
+
+            extern void deserialize(uint8_t const *const _space);
+            extern void serialize(uint8_t *const _space);
+        }
+    }
+}
 
 #endif /* __PARAM_BACKLIGHT_HPP__ */

@@ -17,7 +17,7 @@ namespace platform
     {
         const defines::Identifier BoardKeypad::getIdentifier() const
         {
-            return platform::defines::Identifier(HARDWARE_IDENTIFIER);
+            return platform::defines::Identifier(identity::hardware::IDENTIFIER);
         }
 
         void BoardKeypad::initialize()
@@ -26,6 +26,7 @@ namespace platform
             backlight.initialize();
             display.initialize();
             usb.initialize();
+            uart.initialize();
             keypad.initialize();
         }
 
@@ -33,6 +34,7 @@ namespace platform
         {
             soc.shutdown();
             keypad.shutdown();
+            uart.shutdown();
             usb.shutdown();
             display.shutdown();
             backlight.shutdown();
@@ -41,6 +43,7 @@ namespace platform
         void BoardKeypad::perform()
         {
             usb.perform();
+            uart.perform();
             keypad.perform();
             soc.perform();
         }

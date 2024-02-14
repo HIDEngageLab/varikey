@@ -1,7 +1,7 @@
 /**
  * \file param_display.hpp
  * \author Koch, Roman (koch.roman@googlemail.com)
- * 
+ *
  * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
  */
@@ -16,29 +16,40 @@
 #ifndef __PARAM_DISPLAY_HPP__
 #define __PARAM_DISPLAY_HPP__
 
+#include "macros.hpp"
 #include "parameter.hpp"
 
-/**
-    \brief Button parameter
-
-    Parameter with two short values for button click and push times in ms.
-*/
-typedef union
+namespace registry
 {
-    uint8_t byte[sizeof(uint16_t) * 2];
-    /** \brief Node wheel details */
-    struct param_display_struct
+    namespace parameter
     {
-        uint16_t click_ms;
-        uint16_t push_ms;
-    } display;
-} param_display_t;
+        namespace display
+        {
+            static const size_t SIZE = sizeof(uint8_t) * 1;
+            /**
+                \brief Display parameter
+            */
+            union register_t
+            {
+                uint8_t byte[SIZE];
+                /** \brief Node wheel details */
+                struct __attribute__((packed)) display_t
+                {
+                    ability_t rotate : 1;
+                    ability_t inverse : 1;
+                    ability_t slides : 1;
+                    uint8_t reserved : 5;
+                } display;
+            };
 
-extern param_display_t g_display;
+            extern register_t g_register;
 
-extern void param_display_init(void);
+            extern void initialize(void);
 
-extern void param_display_deserialize(uint8_t const *const _space);
-extern void param_display_serialize(uint8_t *const _space);
+            extern void deserialize(uint8_t const *const _space);
+            extern void serialize(uint8_t *const _space);
+        }
+    }
+}
 
 #endif /* __PARAM_DISPLAY_HPP__ */

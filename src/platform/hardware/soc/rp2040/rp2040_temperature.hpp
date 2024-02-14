@@ -32,8 +32,8 @@ namespace platform
 			virtual void initialize(void);
 			virtual void shutdown();
 
-			uint16_t get_raw_value(void);
-			float get_value(void);
+			const uint16_t get_raw_value(void) const;
+			const float get_value(void) const;
 		};
 	}
 }

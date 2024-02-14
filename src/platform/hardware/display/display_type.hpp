@@ -37,7 +37,7 @@ namespace platform
                 using Type = platform::hardware::DisplayOLED128x32Gossenmetrawatt;
             };
         }
-        using Display = display::Entity<platform::defines::Identifier(HARDWARE_IDENTIFIER)>::Type;
+        using Display = display::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

@@ -36,7 +36,7 @@ namespace platform
             using Type = platform::board::Gossenmetrawatt_1_0;
         };
     }
-    using Board = platform::board::Entity<platform::defines::Identifier(HARDWARE_IDENTIFIER)>::Type;
+    using Board = platform::board::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
 }
 
 #endif /* __PLATFORM_BOARD_TYPE_HPP__ */

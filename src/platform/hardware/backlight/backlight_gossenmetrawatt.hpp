@@ -17,7 +17,7 @@ namespace platform
     {
         struct BacklightGossenmetrawatt : public BacklightWs2812
         {
-            static const unsigned int BACKLIGHT_PIN = 22;
+            static const unsigned int BACKLIGHT_PIN = 20;
         };
     }
 }

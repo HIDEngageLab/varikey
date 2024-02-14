@@ -13,6 +13,8 @@
 #include <pico/binary_info.h>
 #include <pico/stdlib.h>
 
+#include "display_font.hpp"
+#include "display_image.hpp"
 #include "display_oled_128x32.hpp"
 #include "display_type.hpp"
 #include "ssd1306.hpp"
@@ -48,14 +50,38 @@ namespace platform
             gpio_set_dir(platform::hardware::Display::DISPLAY_CMD_SEL, GPIO_OUT);
             gpio_put(platform::hardware::Display::DISPLAY_CMD_SEL, 0);
 
-            platform_ssd1306_init(platform::hardware::Display::DISPLAY_CMD_SEL);
-            platform_ssd1306_clean();
+            ssd1306::initialize(platform::hardware::Display::DISPLAY_CMD_SEL);
+            ssd1306::clean();
         }
 
         void DisplayOLED128x32::shutdown()
         {
             gpio_put(platform::hardware::Display::DISPLAY_RESET, 1);
-            platform_ssd1306_clean();
+            ssd1306::clean();
+        }
+
+        void DisplayOLED128x32::symbol(uint8_t const line_start, uint8_t const line_end,
+                                       uint8_t const column_start, uint8_t const column_end,
+                                       uint8_t const *const data, size_t const len)
+        {
+            ssd1306::symbol(line_start, line_end,
+                            column_start, column_end,
+                            data, len);
+        }
+
+        void DisplayOLED128x32::clean()
+        {
+            platform::hardware::ssd1306::clean();
+        }
+
+        void DisplayOLED128x32::set_invert()
+        {
+            platform::hardware::ssd1306::set_inverse();
+        }
+
+        void DisplayOLED128x32::set_normal()
+        {
+            platform::hardware::ssd1306::set_normal();
         }
     }
 }

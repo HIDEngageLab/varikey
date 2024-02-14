@@ -38,7 +38,7 @@ namespace platform
                 using Type = platform::soc::RP2040Gossenmetrawatt;
             };
         }
-        using SoC = platform::driver::soc::Entity<platform::defines::Identifier(HARDWARE_IDENTIFIER)>::Type;
+        using SoC = platform::driver::soc::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

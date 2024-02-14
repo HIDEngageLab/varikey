@@ -10,7 +10,7 @@
 #define __BOARD_GOSSENMETRAWATT_1_0_HPP__
 
 #include "board_keypad.hpp"
-#include "image_identifier.hpp"
+#include "display_image.hpp"
 
 namespace platform
 {
@@ -22,7 +22,7 @@ namespace platform
             virtual ~Gossenmetrawatt_1_0() {}
 
             static constexpr const char *INTRO = "GMC-I";
-            static const KEYPAD_ICON LOGO = KEYPAD_ICON::KEYPAD_ICON_GOSSENMETRAWATT_LOGO;
+            static const engine::display::ICON LOGO = engine::display::ICON::GOSSENMETRAWATT_LOGO;
             static const int8_t POSITION = 30;
 
             virtual void initialize();
