@@ -18,12 +18,12 @@ namespace engine
     {
         struct Keypad10BWDB : public KeypadCode
         {
-            static const code_table_t number_value;
-            static const code_table_t telephon_value;
-            static const code_table_t functional_value;
-            static const code_table_t multimedia_value;
-            static const code_table_t navigation_value;
-            static const code_table_t custom_value;
+            static code_table_t number_value;
+            static code_table_t telephon_value;
+            static code_table_t functional_value;
+            static code_table_t multimedia_value;
+            static code_table_t navigation_value;
+            static code_table_t custom_value;
         };
     }
 }
