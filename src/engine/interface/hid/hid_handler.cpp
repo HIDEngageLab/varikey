@@ -10,7 +10,7 @@
 
 #include "backlight_color.hpp"
 #include "board.hpp"
-#include "engine_event_queue.hpp"
+#include "engine_event_handler.hpp"
 #include "hid_report.hpp"
 #include "usb_descriptors.hpp"
 
@@ -61,7 +61,7 @@ namespace engine
                     if (set_report.backlight.program == PROGRAM::SET ||
                         set_report.backlight.program == PROGRAM::MORPH)
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::BACKLIGHT,
                             .backlight = {
                                 .program = set_report.backlight.program,
@@ -76,18 +76,18 @@ namespace engine
                                                     .b = set_report.backlight.color_right.rgb.b,
                                                 }},
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                     }
                     else
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::BACKLIGHT,
                             .backlight = {
                                 .program = set_report.backlight.program,
                                 .color_left = {0},
                                 .color_right = {0},
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                     }
                     break;
                 case SET_REPORT::DISPLAY:
@@ -95,39 +95,39 @@ namespace engine
                     {
                     case payload::display::FUNCTION::CLEAN:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::DISPLAY,
                             .display = {
                                 .function = payload::display::FUNCTION::CLEAN,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::display::FUNCTION::FONT:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::DISPLAY,
                             .display = {
                                 .function = payload::display::FUNCTION::FONT,
                                 .font = set_report.display.font,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::display::FUNCTION::ICON:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::DISPLAY,
                             .display = {
                                 .function = payload::display::FUNCTION::ICON,
                                 .icon = set_report.display.icon,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::display::FUNCTION::POSITION:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::DISPLAY,
                             .display = {
                                 .function = payload::display::FUNCTION::POSITION,
@@ -135,12 +135,12 @@ namespace engine
                                     .line = set_report.display.position.line,
                                     .column = set_report.display.position.column,
                                 }}};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::display::FUNCTION::TEXT:
                     {
-                        event_t event = {
+                        handler::event_t event = {
                             .identifier = payload::IDENTIFIER::DISPLAY,
                             .display = {
                                 .function = payload::display::FUNCTION::TEXT,
@@ -149,7 +149,7 @@ namespace engine
                                                        (size_t)payload::display::MESSAGE_SIZE - 1);
                         memcpy(event.display.text, set_report.display.text, length);
                         event.display.text[length] = '\0';
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     default:
@@ -161,52 +161,52 @@ namespace engine
                     {
                     case payload::gadget::COMMAND::MOUNT:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
                                 .command = payload::gadget::COMMAND::MOUNT,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::gadget::COMMAND::RESET:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
                                 .command = payload::gadget::COMMAND::RESET,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::gadget::COMMAND::RESUME:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
                                 .command = payload::gadget::COMMAND::RESUME,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::gadget::COMMAND::SUSPEND:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
                                 .command = payload::gadget::COMMAND::SUSPEND,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     case payload::gadget::COMMAND::UNMOUNT:
                     {
-                        const event_t event = {
+                        const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
                                 .command = payload::gadget::COMMAND::UNMOUNT,
                             }};
-                        event_queue.push(event);
+                        handler::event_queue.push(event);
                         break;
                     }
                     default:
@@ -223,13 +223,13 @@ namespace engine
                     break;
                 case SET_REPORT::RESET:
                 {
-                    const event_t event = {
+                    const handler::event_t event = {
                         .identifier = payload::IDENTIFIER::RESET,
                         .reset = {
                             .function = set_report.reset.function,
                         },
                     };
-                    event_queue.push(event);
+                    handler::event_queue.push(event);
                     break;
                 }
                 default:

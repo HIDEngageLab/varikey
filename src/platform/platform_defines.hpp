@@ -21,7 +21,7 @@ namespace platform
 
     namespace defines
     {
-        enum class Identifier
+        enum class IDENTIFIER
         {
             VARIKEY_1_0 = 1,
             GOSSENMETRAWATT_1_0 = 2,

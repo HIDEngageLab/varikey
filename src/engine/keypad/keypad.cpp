@@ -10,7 +10,7 @@
 #include "backlight3.hpp"
 #include "board.hpp"
 #include "display.hpp"
-#include "engine_event_queue.hpp"
+#include "engine_event_handler.hpp"
 #include "hid_handler.hpp"
 #include "hid_report.hpp"
 #include "keypad_keycode_type.hpp"
@@ -57,11 +57,11 @@ namespace engine
                     .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
                     .table = engine::keypad::get_mapping(),
                 };
-                engine::event_t event = {
+                engine::handler::event_t event = {
                     .identifier = engine::payload::IDENTIFIER::KEYCODE,
                     .keycode = key_event,
                 };
-                event_queue.push(event);
+                handler::event_queue.push(event);
             };
 
             auto push_wheel_switch = [](const CONTROL _control,
@@ -74,11 +74,11 @@ namespace engine
                     .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
                     .table = engine::keypad::get_mapping(),
                 };
-                const engine::event_t event = {
+                const engine::handler::event_t event = {
                     .identifier = payload::IDENTIFIER::KEYCODE,
                     .keycode = key_event,
                 };
-                event_queue.push(event);
+                handler::event_queue.push(event);
             };
 
             auto push_joystick_event = [](const CONTROL _control,
@@ -91,11 +91,11 @@ namespace engine
                     .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
                     .table = engine::keypad::get_mapping(),
                 };
-                engine::event_t event = {
+                engine::handler::event_t event = {
                     .identifier = payload::IDENTIFIER::KEYCODE,
                     .keycode = key_event,
                 };
-                event_queue.push(event);
+                handler::event_queue.push(event);
             };
 
             switch (_identifier)
@@ -265,11 +265,11 @@ namespace engine
                     .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
                     .table = engine::keypad::get_mapping(),
                 };
-                const engine::event_t event = {
+                const engine::handler::event_t event = {
                     .identifier = payload::IDENTIFIER::KEYCODE,
                     .keycode = keycode,
                 };
-                event_queue.push(event);
+                handler::event_queue.push(event);
             };
 
             if (stack[wheel_index][0].trigger == TRIGGER::UP &&

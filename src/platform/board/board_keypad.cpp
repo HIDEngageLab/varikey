@@ -15,9 +15,9 @@ namespace platform
 {
     namespace board
     {
-        const defines::Identifier BoardKeypad::getIdentifier() const
+        const defines::IDENTIFIER BoardKeypad::getIdentifier() const
         {
-            return platform::defines::Identifier(identity::hardware::IDENTIFIER);
+            return platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER);
         }
 
         void BoardKeypad::initialize()

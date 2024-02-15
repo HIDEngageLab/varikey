@@ -20,25 +20,28 @@ namespace platform
     {
         namespace soc
         {
-            template <platform::defines::Identifier>
-            struct Entity
+            namespace variant
             {
-                using Type = platform::Undefined;
-            };
+                template <platform::defines::IDENTIFIER>
+                struct Entity
+                {
+                    using Type = platform::Undefined;
+                };
 
-            template <>
-            struct Entity<platform::defines::Identifier::VARIKEY_1_0>
-            {
-                using Type = platform::soc::RP2040Varikey;
-            };
+                template <>
+                struct Entity<platform::defines::IDENTIFIER::VARIKEY_1_0>
+                {
+                    using Type = platform::soc::RP2040Varikey;
+                };
 
-            template <>
-            struct Entity<platform::defines::Identifier::GOSSENMETRAWATT_1_0>
-            {
-                using Type = platform::soc::RP2040Gossenmetrawatt;
-            };
+                template <>
+                struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
+                {
+                    using Type = platform::soc::RP2040Gossenmetrawatt;
+                };
+            }
         }
-        using SoC = platform::driver::soc::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
+        using SoC = platform::driver::soc::variant::Entity<platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

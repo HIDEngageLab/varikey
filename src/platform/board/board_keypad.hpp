@@ -27,7 +27,7 @@ namespace platform
         {
             virtual ~BoardKeypad() {}
 
-            const defines::Identifier getIdentifier() const;
+            const defines::IDENTIFIER getIdentifier() const;
 
             virtual void initialize();
             virtual void shutdown();

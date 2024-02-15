@@ -129,8 +129,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/images/image_gmc.c
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/images/image_heart.c
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/images/image_varikey.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine_event_handler.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface//engine_event_queue.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_control.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_feature.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_setting.cpp

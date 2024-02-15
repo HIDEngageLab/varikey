@@ -18,7 +18,7 @@
 
 #include "cmd_keypad_msg.hpp"
 #include "commander.hpp"
-#include "engine_event_queue.hpp"
+#include "engine_event_handler.hpp"
 #include "hid_handler.hpp"
 #include "keypad.hpp"
 #include "macros.hpp"
@@ -66,11 +66,11 @@ namespace engine
                         case IDENTIFIER::HCI:
                             if (_msg->keypad.function == payload::keypad::FUNCTION::ENABLE)
                             {
-                                engine::set_hci_enabled(true);
+                                engine::handler::set_hci_enabled(true);
                             }
                             else if (_msg->keypad.function == payload::keypad::FUNCTION::DISABLE)
                             {
-                                engine::set_hci_enabled(false);
+                                engine::handler::set_hci_enabled(false);
                             }
                             else
                             {
@@ -81,11 +81,11 @@ namespace engine
 
                             if (_msg->keypad.function == payload::keypad::FUNCTION::ENABLE)
                             {
-                                engine::set_hid_enabled(true);
+                                engine::handler::set_hid_enabled(true);
                             }
                             else if (_msg->keypad.function == payload::keypad::FUNCTION::DISABLE)
                             {
-                                engine::set_hid_enabled(false);
+                                engine::handler::set_hid_enabled(false);
                             }
                             else
                             {

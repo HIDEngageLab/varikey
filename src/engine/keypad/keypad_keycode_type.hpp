@@ -18,7 +18,7 @@ namespace engine
 {
     namespace keypad
     {
-        namespace keycode
+        namespace variant
         {
 
             template <engine::defines::Identifier>
@@ -40,7 +40,7 @@ namespace engine
             };
         }
     }
-    using Keycode = engine::keypad::keycode::Entity<engine::defines::Identifier(identity::firmware::IDENTIFIER)>::Type;
+    using Keycode = engine::keypad::variant::Entity<engine::defines::Identifier(identity::firmware::IDENTIFIER)>::Type;
 }
 
-#endif /* __ENGINE_KEYPAD_KEYCODE_TYPE_HPP__ */
+#endif /* __ENGINE_KEYPAD_KEYCODE_VARIANT_HPP__ */
