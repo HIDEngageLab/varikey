@@ -24,7 +24,7 @@
 #include "cmd_temperature_msg.hpp"
 #include "commander.hpp"
 #include "engine_event.hpp"
-#include "engine_event_queue.hpp"
+#include "engine_event_handler.hpp"
 #include "keypad.hpp"
 #include "parameter.hpp"
 #include "serial_frame.hpp"
@@ -94,13 +94,13 @@ namespace engine
                     reset::message_t msg;
                     reset::request(_chunk, &msg);
 
-                    const event_t event = {
+                    const handler::event_t event = {
                         .identifier = payload::IDENTIFIER::RESET,
                         .reset = {
                             .function = msg.content.function,
                         },
                     };
-                    event_queue.push(event);
+                    handler::event_queue.push(event);
                 }
 
                 /**

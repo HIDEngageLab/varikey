@@ -13,7 +13,7 @@
 #include "display.hpp"
 #include "display_font.hpp"
 #include "engine.hpp"
-#include "engine_event_queue.hpp"
+#include "engine_event_handler.hpp"
 #include "hid_handler.hpp"
 #include "keypad.hpp"
 #include "random.hpp"
@@ -130,7 +130,7 @@ namespace engine
             break;
         case defines::STATE::ACTIVE:
             backlight::perform();
-            handler_perform();
+            handler::perform();
             serial_perform();
 
             if (next_mode == defines::STATE::PENDING)
@@ -190,11 +190,11 @@ namespace engine
 
     static void push_gadget_event(const payload::gadget::COMMAND _identifier)
     {
-        const engine::event_t event = {
+        const engine::handler::event_t event = {
             .identifier = payload::IDENTIFIER::GADGET,
             .gadget = {
                 .command = _identifier,
             }};
-        engine::event_queue.push(event);
+        engine::handler::event_queue.push(event);
     }
 }

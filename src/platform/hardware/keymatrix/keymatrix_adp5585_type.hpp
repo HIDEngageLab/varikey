@@ -20,28 +20,28 @@ namespace platform
     {
         namespace keymatrix
         {
-            namespace handler
+            namespace variant
             {
 
-                template <platform::defines::Identifier>
+                template <platform::defines::IDENTIFIER>
                 struct Entity
                 {
                     using Type = platform::Undefined;
                 };
 
                 template <>
-                struct Entity<platform::defines::Identifier::VARIKEY_1_0>
+                struct Entity<platform::defines::IDENTIFIER::VARIKEY_1_0>
                 {
                     using Type = platform::hardware::KeymatrixApd5585Varikey;
                 };
                 template <>
-                struct Entity<platform::defines::Identifier::GOSSENMETRAWATT_1_0>
+                struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
                 {
                     using Type = platform::hardware::KeymatrixApd5585Gossenmetrawatt;
                 };
             }
         }
-        using Keymatrix = keymatrix::handler::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
+        using Keymatrix = keymatrix::variant::Entity<platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

@@ -9,8 +9,8 @@
 #ifndef __PLATFORM_KEYMATRIX_ADP5585_HANDLER_TYPE_HPP__
 #define __PLATFORM_KEYMATRIX_ADP5585_HANDLER_TYPE_HPP__
 
-#include "keymatrix_adp5585_handler_varikey.hpp"
 #include "keymatrix_adp5585_handler_gossenmetrawatt.hpp"
+#include "keymatrix_adp5585_handler_varikey.hpp"
 #include "platform_defines.hpp"
 #include "revision.h"
 
@@ -18,27 +18,30 @@ namespace platform
 {
     namespace hardware
     {
-        namespace keymatrix
+        namespace handler
         {
-            template <platform::defines::Identifier>
-            struct Entity
+            namespace variant
             {
-                using Type = platform::Undefined;
-            };
+                template <platform::defines::IDENTIFIER>
+                struct Entity
+                {
+                    using Type = platform::Undefined;
+                };
 
-            template <>
-            struct Entity<platform::defines::Identifier::VARIKEY_1_0>
-            {
-                using Type = platform::hardware::KeymatrixHandlerVarikey;
-            };
-            template <>
-            struct Entity<platform::defines::Identifier::GOSSENMETRAWATT_1_0>
-            {
-                using Type = platform::hardware::KeymatrixHandlerGossenmetrawatt;
-            };
+                template <>
+                struct Entity<platform::defines::IDENTIFIER::VARIKEY_1_0>
+                {
+                    using Type = platform::hardware::KeymatrixHandlerVarikey;
+                };
+                template <>
+                struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
+                {
+                    using Type = platform::hardware::KeymatrixHandlerGossenmetrawatt;
+                };
 
+            }
         }
-        using KeyHandler = keymatrix::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
+        using KeyHandler = platform::hardware::handler::variant::Entity<platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER)>::Type;
     }
 }
 

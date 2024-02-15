@@ -18,25 +18,28 @@ namespace platform
 {
     namespace board
     {
-        template <platform::defines::Identifier>
-        struct Entity
+        namespace variant
         {
-            using Type = platform::Undefined;
-        };
+            template <platform::defines::IDENTIFIER>
+            struct Entity
+            {
+                using Type = platform::Undefined;
+            };
 
-        template <>
-        struct Entity<platform::defines::Identifier::VARIKEY_1_0>
-        {
-            using Type = platform::board::Varikey_1_0;
-        };
+            template <>
+            struct Entity<platform::defines::IDENTIFIER::VARIKEY_1_0>
+            {
+                using Type = platform::board::Varikey_1_0;
+            };
 
-        template <>
-        struct Entity<platform::defines::Identifier::GOSSENMETRAWATT_1_0>
-        {
-            using Type = platform::board::Gossenmetrawatt_1_0;
-        };
+            template <>
+            struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
+            {
+                using Type = platform::board::Gossenmetrawatt_1_0;
+            };
+        }
     }
-    using Board = platform::board::Entity<platform::defines::Identifier(identity::hardware::IDENTIFIER)>::Type;
+    using Board = platform::board::variant::Entity<platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER)>::Type;
 }
 
 #endif /* __PLATFORM_BOARD_TYPE_HPP__ */
