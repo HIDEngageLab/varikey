@@ -52,7 +52,7 @@ namespace engine
                     if (_msg->content.function == FUNCTION::GET)
                     {
                         _msg->result = RESULT::SUCCESS;
-                        _msg->content.value = board.soc.get_temperature();
+                        _msg->content.value = get_temperature();
                     }
                     else if (_msg->content.function == FUNCTION::ALARM)
                     {

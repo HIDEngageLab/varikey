@@ -14,6 +14,7 @@
 #include "display_font.hpp"
 #include "engine.hpp"
 #include "engine_event_handler.hpp"
+#include "engine_variant.hpp"
 #include "hid_handler.hpp"
 #include "keypad.hpp"
 #include "random.hpp"
@@ -53,7 +54,7 @@ namespace engine
         case defines::STATE::IDLE:
             next_mode = defines::STATE::ACTIVE;
             /* start engine ticker */
-            board.soc.ticker_start(tick);
+            ticker_start(tick);
             break;
         case defines::STATE::ACTIVE:
             next_mode = mode;
@@ -148,7 +149,7 @@ namespace engine
                 next_mode = defines::STATE::UNDEFINED;
 
                 /* start engine ticker */
-                board.soc.ticker_stop();
+                ticker_stop();
 
                 /* show state */
                 stop_device_application();
@@ -176,10 +177,10 @@ namespace engine
         backlight::set_mode(backlight::MODE::TURBO, 0);
 
         display::set_cursor(0, 0);
-        display::draw(platform::Board::LOGO);
-        display::set_cursor(1, platform::Board::POSITION);
-        display::set_font(engine::display::FONT::BIG);
-        display::print(platform::Board::INTRO);
+        display::draw(engine::Variant::LOGO);
+        display::set_cursor(engine::Variant::INTRO_ROW, engine::Variant::INTRO_COL);
+        display::set_font(engine::Variant::FONT_SIZE);
+        display::print(engine::Variant::INTRO);
     }
 
     static void stop_device_application()

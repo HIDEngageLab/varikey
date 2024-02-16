@@ -42,9 +42,9 @@ namespace engine
             {
                 const font::Type::Meta meta = font::get_meta(font_size);
                 uint8_t const *const symbol = engine::display::font::get_character(font_size, *ptr);
-                board.display.symbol(line, line + meta.high_pages - 1,
-                                     column, column + meta.width_cols - 1,
-                                     symbol, meta.symbol_size);
+                display_symbol(line, line + meta.high_pages - 1,
+                               column, column + meta.width_cols - 1,
+                               symbol, meta.symbol_size);
 
                 if ((column + meta.width_cols) < platform::hardware::Display::C)
                 {
@@ -69,14 +69,14 @@ namespace engine
             const uint8_t columns = image->width;
             const size_t data_size = lines * columns;
 
-            board.display.symbol(line, line + lines - 1,
-                                 column, column + columns - 1,
-                                 image->data, data_size);
+            display_symbol(line, line + lines - 1,
+                           column, column + columns - 1,
+                           image->data, data_size);
         }
 
         void clean()
         {
-            board.display.clean();
+            display_clean();
         }
     }
 }

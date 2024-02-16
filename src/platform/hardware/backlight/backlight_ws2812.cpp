@@ -34,9 +34,11 @@ namespace platform
             sleep_ms(500);
         }
 
-        void BacklightWs2812::put_value(const engine::backlight::color_t &_value)
+        void BacklightWs2812::set_backlight(const engine::backlight::color_t &_left, const engine::backlight::color_t &_right)
         {
-            ws2812_put_pixel(_value.rgb.r, _value.rgb.g, _value.rgb.b);
+            ws2812_put_pixel(_left.rgb.r, _left.rgb.g, _left.rgb.b);
+            ws2812_put_pixel((_left.rgb.r + _right.rgb.r) / 2, (_left.rgb.g + _right.rgb.g) / 2, (_left.rgb.b + _right.rgb.b) / 2);
+            ws2812_put_pixel(_right.rgb.r, _right.rgb.g, _right.rgb.b);
         }
     }
 }

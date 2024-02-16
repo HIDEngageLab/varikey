@@ -23,7 +23,7 @@ namespace platform
 {
     namespace soc
     {
-        driver::soc::gpio::callback_t gpio_handler = nullptr;
+        platform::board::callback_t gpio_handler = nullptr;
 
         typedef enum
         {
@@ -41,19 +41,19 @@ namespace platform
             uint8_t identifier = 0xff;
             if (_gpio == platform::driver::SoC::DEBUG_PIN_1)
             {
-                identifier = static_cast<uint8_t>(driver::soc::gpio::IDENTIFIER::GPIO0);
+                identifier = static_cast<uint8_t>(IDENTIFIER::GPIO0);
             }
             else if (_gpio == platform::driver::SoC::DEBUG_PIN_2)
             {
-                identifier = static_cast<uint8_t>(driver::soc::gpio::IDENTIFIER::GPIO1);
+                identifier = static_cast<uint8_t>(IDENTIFIER::GPIO1);
             }
             else if (_gpio == platform::driver::SoC::DEBUG_PIN_3)
             {
-                identifier = static_cast<uint8_t>(driver::soc::gpio::IDENTIFIER::GPIO2);
+                identifier = static_cast<uint8_t>(IDENTIFIER::GPIO2);
             }
             else if (_gpio == platform::driver::SoC::DEBUG_PIN_4)
             {
-                identifier = static_cast<uint8_t>(driver::soc::gpio::IDENTIFIER::GPIO3);
+                identifier = static_cast<uint8_t>(IDENTIFIER::GPIO3);
             }
 
             if (_events & 0x01)
@@ -105,7 +105,7 @@ namespace platform
             /* todo: restore default state */
         }
 
-        void RP2040Gpio::enable_event(driver::soc::gpio::callback_t _callback)
+        void RP2040Gpio::enable_event(platform::board::callback_t _callback)
         {
             assert(status == ENABLED);
 
@@ -127,22 +127,22 @@ namespace platform
             gpio_handler = nullptr;
         }
 
-        const driver::soc::gpio::DIRECTION RP2040Gpio::get_direction(const driver::soc::gpio::IDENTIFIER _identifier) const
+        const DIRECTION RP2040Gpio::get_direction(const IDENTIFIER _identifier) const
         {
-            driver::soc::gpio::DIRECTION direction = driver::soc::gpio::DIRECTION::UNDEFINED;
+            DIRECTION direction = DIRECTION::UNDEFINED;
             switch (_identifier)
             {
-            case driver::soc::gpio::IDENTIFIER::GPIO0:
-                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_1) == GPIO_OUT ? driver::soc::gpio::DIRECTION::OUTPUT : driver::soc::gpio::DIRECTION::INPUT;
+            case IDENTIFIER::GPIO0:
+                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_1) == GPIO_OUT ? DIRECTION::OUTPUT : DIRECTION::INPUT;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO1:
-                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_2) == GPIO_OUT ? driver::soc::gpio::DIRECTION::OUTPUT : driver::soc::gpio::DIRECTION::INPUT;
+            case IDENTIFIER::GPIO1:
+                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_2) == GPIO_OUT ? DIRECTION::OUTPUT : DIRECTION::INPUT;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO2:
-                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_3) == GPIO_OUT ? driver::soc::gpio::DIRECTION::OUTPUT : driver::soc::gpio::DIRECTION::INPUT;
+            case IDENTIFIER::GPIO2:
+                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_3) == GPIO_OUT ? DIRECTION::OUTPUT : DIRECTION::INPUT;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO3:
-                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_4) == GPIO_OUT ? driver::soc::gpio::DIRECTION::OUTPUT : driver::soc::gpio::DIRECTION::INPUT;
+            case IDENTIFIER::GPIO3:
+                direction = gpio_get_dir(platform::driver::SoC::DEBUG_PIN_4) == GPIO_OUT ? DIRECTION::OUTPUT : DIRECTION::INPUT;
                 break;
             default:
                 break;
@@ -150,42 +150,42 @@ namespace platform
             return direction;
         }
 
-        const void RP2040Gpio::set_direction(const driver::soc::gpio::IDENTIFIER _identifier, const driver::soc::gpio::DIRECTION _direction)
+        const void RP2040Gpio::set_direction(const IDENTIFIER _identifier, const DIRECTION _direction)
         {
             switch (_identifier)
             {
-            case driver::soc::gpio::IDENTIFIER::GPIO0:
-                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_1, _direction == driver::soc::gpio::DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
+            case IDENTIFIER::GPIO0:
+                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_1, _direction == DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO1:
-                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_2, _direction == driver::soc::gpio::DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
+            case IDENTIFIER::GPIO1:
+                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_2, _direction == DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO2:
-                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_3, _direction == driver::soc::gpio::DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
+            case IDENTIFIER::GPIO2:
+                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_3, _direction == DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO3:
-                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_4, _direction == driver::soc::gpio::DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
+            case IDENTIFIER::GPIO3:
+                gpio_set_dir(platform::driver::SoC::DEBUG_PIN_4, _direction == DIRECTION::INPUT ? GPIO_IN : GPIO_OUT);
                 break;
             default:
                 break;
             }
         }
 
-        const void RP2040Gpio::set_pulls(const driver::soc::gpio::IDENTIFIER _identifier,
-                                                   const bool _up, const bool _down)
+        const void RP2040Gpio::set_pulls(const IDENTIFIER _identifier,
+                                         const bool _up, const bool _down)
         {
             switch (_identifier)
             {
-            case driver::soc::gpio::IDENTIFIER::GPIO0:
+            case IDENTIFIER::GPIO0:
                 gpio_set_pulls(platform::driver::SoC::DEBUG_PIN_1, _up, _down);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO1:
+            case IDENTIFIER::GPIO1:
                 gpio_set_pulls(platform::driver::SoC::DEBUG_PIN_2, _up, _down);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO2:
+            case IDENTIFIER::GPIO2:
                 gpio_set_pulls(platform::driver::SoC::DEBUG_PIN_3, _up, _down);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO3:
+            case IDENTIFIER::GPIO3:
                 gpio_set_pulls(platform::driver::SoC::DEBUG_PIN_4, _up, _down);
                 break;
             default:
@@ -193,22 +193,22 @@ namespace platform
             }
         }
 
-        const driver::soc::gpio::VALUE RP2040Gpio::get_value(const driver::soc::gpio::IDENTIFIER _identifier) const
+        const VALUE RP2040Gpio::get_value(const IDENTIFIER _identifier) const
         {
-            driver::soc::gpio::VALUE value = driver::soc::gpio::VALUE::UNDEFINED;
+            VALUE value = VALUE::UNDEFINED;
             switch (_identifier)
             {
-            case driver::soc::gpio::IDENTIFIER::GPIO0:
-                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_1) == 0) ? driver::soc::gpio::VALUE::LOW : driver::soc::gpio::VALUE::HIGH;
+            case IDENTIFIER::GPIO0:
+                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_1) == 0) ? VALUE::LOW : VALUE::HIGH;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO1:
-                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_2) == 0) ? driver::soc::gpio::VALUE::LOW : driver::soc::gpio::VALUE::HIGH;
+            case IDENTIFIER::GPIO1:
+                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_2) == 0) ? VALUE::LOW : VALUE::HIGH;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO2:
-                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_3) == 0) ? driver::soc::gpio::VALUE::LOW : driver::soc::gpio::VALUE::HIGH;
+            case IDENTIFIER::GPIO2:
+                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_3) == 0) ? VALUE::LOW : VALUE::HIGH;
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO3:
-                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_4) == 0) ? driver::soc::gpio::VALUE::LOW : driver::soc::gpio::VALUE::HIGH;
+            case IDENTIFIER::GPIO3:
+                value = (gpio_get(platform::driver::SoC::DEBUG_PIN_4) == 0) ? VALUE::LOW : VALUE::HIGH;
                 break;
             default:
                 break;
@@ -216,21 +216,21 @@ namespace platform
             return value;
         }
 
-        const void RP2040Gpio::set_value(const driver::soc::gpio::IDENTIFIER _identifier, const driver::soc::gpio::VALUE _value) const
+        const void RP2040Gpio::set_value(const IDENTIFIER _identifier, const VALUE _value) const
         {
             switch (_identifier)
             {
-            case driver::soc::gpio::IDENTIFIER::GPIO0:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_1, _value == driver::soc::gpio::VALUE::LOW ? true : false);
+            case IDENTIFIER::GPIO0:
+                gpio_put(platform::driver::SoC::DEBUG_PIN_1, _value == VALUE::LOW ? true : false);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO1:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_2, _value == driver::soc::gpio::VALUE::LOW ? true : false);
+            case IDENTIFIER::GPIO1:
+                gpio_put(platform::driver::SoC::DEBUG_PIN_2, _value == VALUE::LOW ? true : false);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO2:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_3, _value == driver::soc::gpio::VALUE::LOW ? true : false);
+            case IDENTIFIER::GPIO2:
+                gpio_put(platform::driver::SoC::DEBUG_PIN_3, _value == VALUE::LOW ? true : false);
                 break;
-            case driver::soc::gpio::IDENTIFIER::GPIO3:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_4, _value == driver::soc::gpio::VALUE::LOW ? true : false);
+            case IDENTIFIER::GPIO3:
+                gpio_put(platform::driver::SoC::DEBUG_PIN_4, _value == VALUE::LOW ? true : false);
                 break;
             default:
                 break;

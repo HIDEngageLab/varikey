@@ -58,7 +58,7 @@ namespace engine
         {
             const uint64_t PERFORM_DELAY_NS = 15000;
             static uint64_t tsm = 0;
-            const uint64_t curr = board.soc.get_stopwatch();
+            const uint64_t curr = get_stopwatch();
 
             if ((curr - tsm) > PERFORM_DELAY_NS)
             {

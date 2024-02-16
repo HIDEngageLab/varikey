@@ -11,6 +11,9 @@
 
 #include <cstdint>
 
+#include "display_font.hpp"
+#include "display_image.hpp"
+
 namespace engine
 {
     namespace defines
@@ -19,9 +22,14 @@ namespace engine
         {
             static const bool ENABLE_SERAIL_INTERFACE_ON_START = true;
             static const bool ENABLE_USB_INTERFACE_ON_START = true;
+
+            static constexpr const char *INTRO = "VARIKEY";
+            static const display::ICON LOGO = display::ICON::VARIKEY_LOGO;
+            static const display::FONT FONT_SIZE = display::FONT::NORMAL;
+             static const int8_t INTRO_ROW = 2;
+             static const int8_t INTRO_COL = 30;
         };
     }
-
 }
 
 #endif // __ENGINE_DEFINES_HPP__

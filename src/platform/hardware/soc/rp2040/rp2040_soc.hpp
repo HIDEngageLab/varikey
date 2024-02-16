@@ -11,8 +11,8 @@
 
 #include <stdint.h>
 
+#include "board_defines.hpp"
 #include "component_interface.hpp"
-#include "gpio_defines.hpp"
 #include "rp2040_gpio.hpp"
 #include "rp2040_stopwatch.hpp"
 #include "rp2040_temperature.hpp"
@@ -23,6 +23,10 @@ namespace platform
 {
     namespace soc
     {
+        using DIRECTION = platform::board::DIRECTION;
+        using IDENTIFIER = platform::board::IDENTIFIER;
+        using VALUE = platform::board::VALUE;
+
         struct RP2040 : public pulp::ComponentInterface
         {
             RP2040();
@@ -34,16 +38,16 @@ namespace platform
             const float get_temperature(void) const { return temperature.get_value(); }
             const uint16_t get_temperature_raw(void) const { return temperature.get_raw_value(); }
 
-            void ticker_start(ticker_handler_t _handler) { ticker.start(_handler); }
+            void ticker_start(platform::board::ticker_handler_t _handler) { ticker.start(_handler); }
             void ticker_stop(void) { ticker.stop(); }
 
             const uint64_t get_stopwatch(void) const { return stopwatch.get_value(); }
 
-            const driver::soc::gpio::DIRECTION get_gpio_direction(const driver::soc::gpio::IDENTIFIER) const;
-            void set_gpio_direction(const driver::soc::gpio::IDENTIFIER, driver::soc::gpio::DIRECTION);
-            void enable_gpio_event(driver::soc::gpio::callback_t, const bool);
-            const driver::soc::gpio::VALUE get_value(const driver::soc::gpio::IDENTIFIER);
-            void set_value(const driver::soc::gpio::IDENTIFIER, const bool);
+            const DIRECTION get_gpio_direction(const IDENTIFIER) const;
+            void set_gpio_direction(const IDENTIFIER, DIRECTION);
+            void enable_gpio_event(platform::board::callback_t, const bool);
+            const VALUE get_value(const IDENTIFIER);
+            void set_value(const IDENTIFIER, const bool);
 
             void perform();
 
