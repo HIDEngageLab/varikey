@@ -14,6 +14,7 @@
 
 #include "cmd_feature.hpp"
 #include "board.hpp"
+#include "board_defines.hpp"
 #include "checksum.hpp"
 #include "cmd_backlight_msg.hpp"
 #include "cmd_display_msg.hpp"
@@ -21,7 +22,6 @@
 #include "cmd_keypad_msg.hpp"
 #include "commander.hpp"
 #include "engine.hpp"
-#include "gpio_defines.hpp"
 #include "param_keypad.hpp"
 #include "parameter.hpp"
 #include "payload_gpio.hpp"
@@ -115,20 +115,20 @@ namespace engine
 
                     msg.result = gpio::RESULT::FAILURE;
 
-                    platform::driver::soc::gpio::IDENTIFIER identifier;
+                    platform::board::IDENTIFIER identifier;
                     switch (msg.content.identifier)
                     {
                     case payload::gpio::IDENTIFIER::PIN1:
-                        identifier = platform::driver::soc::gpio::IDENTIFIER::GPIO0;
+                        identifier = platform::board::IDENTIFIER::GPIO0;
                         break;
                     case payload::gpio::IDENTIFIER::PIN2:
-                        identifier = platform::driver::soc::gpio::IDENTIFIER::GPIO1;
+                        identifier = platform::board::IDENTIFIER::GPIO1;
                         break;
                     case payload::gpio::IDENTIFIER::PIN3:
-                        identifier = platform::driver::soc::gpio::IDENTIFIER::GPIO2;
+                        identifier = platform::board::IDENTIFIER::GPIO2;
                         break;
                     case payload::gpio::IDENTIFIER::PIN4:
-                        identifier = platform::driver::soc::gpio::IDENTIFIER::GPIO3;
+                        identifier = platform::board::IDENTIFIER::GPIO3;
                         break;
                     default:
                         msg.result = gpio::RESULT::WRONG_IDENTIFIER;
@@ -141,14 +141,14 @@ namespace engine
                         {
                         case payload::gpio::FUNCTION::DIRECTION_GET:
                         {
-                            platform::driver::soc::gpio::DIRECTION direction = board.soc.get_gpio_direction(identifier);
+                            platform::board::DIRECTION direction = get_gpio_direction(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
                             switch (direction)
                             {
-                            case platform::driver::soc::gpio::DIRECTION::INPUT:
+                            case platform::board::DIRECTION::INPUT:
                                 msg.content.direction = payload::gpio::DIRECTION::INPUT;
                                 break;
-                            case platform::driver::soc::gpio::DIRECTION::OUTPUT:
+                            case platform::board::DIRECTION::OUTPUT:
                                 msg.content.direction = payload::gpio::DIRECTION::OUTPUT;
                                 break;
                             default:
@@ -162,10 +162,10 @@ namespace engine
                             switch (msg.content.direction)
                             {
                             case payload::gpio::DIRECTION::INPUT:
-                                board.soc.set_gpio_direction(identifier, platform::driver::soc::gpio::DIRECTION::INPUT);
+                                set_gpio_direction(identifier, platform::board::DIRECTION::INPUT);
                                 break;
                             case payload::gpio::DIRECTION::OUTPUT:
-                                board.soc.set_gpio_direction(identifier, platform::driver::soc::gpio::DIRECTION::OUTPUT);
+                                set_gpio_direction(identifier, platform::board::DIRECTION::OUTPUT);
                                 break;
                             default:
                                 msg.result = gpio::RESULT::WRONG_DIRECTION;
@@ -174,22 +174,22 @@ namespace engine
                             break;
                         case payload::gpio::FUNCTION::ENABLE:
                             msg.result = gpio::RESULT::SUCCESS;
-                            board.soc.enable_gpio_event(gpio_callback, true);
+                            enable_gpio_event(gpio_callback, true);
                             break;
                         case payload::gpio::FUNCTION::DISABLE:
                             msg.result = gpio::RESULT::SUCCESS;
-                            board.soc.enable_gpio_event(gpio_callback, false);
+                            enable_gpio_event(gpio_callback, false);
                             break;
                         case payload::gpio::FUNCTION::LEVEL_GET:
                         {
-                            platform::driver::soc::gpio::VALUE value = board.soc.get_value(identifier);
+                            platform::board::VALUE value = get_value(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
                             switch (value)
                             {
-                            case platform::driver::soc::gpio::VALUE::LOW:
+                            case platform::board::VALUE::LOW:
                                 msg.content.level = payload::gpio::LEVEL::LOW;
                                 break;
-                            case platform::driver::soc::gpio::VALUE::HIGH:
+                            case platform::board::VALUE::HIGH:
                                 msg.content.level = payload::gpio::LEVEL::HIGH;
                                 break;
                             default:
@@ -201,19 +201,19 @@ namespace engine
                         }
                         case payload::gpio::FUNCTION::LEVEL_SET:
                         {
-                            platform::driver::soc::gpio::DIRECTION direction = board.soc.get_gpio_direction(identifier);
+                            platform::board::DIRECTION direction = get_gpio_direction(identifier);
 
-                            if (direction == platform::driver::soc::gpio::DIRECTION::OUTPUT)
+                            if (direction == platform::board::DIRECTION::OUTPUT)
                             {
                                 msg.result = gpio::RESULT::SUCCESS;
                                 switch (msg.content.level)
                                 {
                                 case payload::gpio::LEVEL::LOW:
-                                    board.soc.set_value(identifier, false);
+                                    set_value(identifier, false);
                                     msg.result = gpio::RESULT::SUCCESS;
                                     break;
                                 case payload::gpio::LEVEL::HIGH:
-                                    board.soc.set_value(identifier, true);
+                                    set_value(identifier, true);
                                     msg.result = gpio::RESULT::SUCCESS;
                                     break;
                                 default:
@@ -271,7 +271,7 @@ namespace engine
                 {
                     keypad::message_t msg;
                     msg.result = engine::hci::cmd::keypad::RESULT::SUCCESS;
-                    
+
                     msg.keycode.control = _event.control;
                     msg.keycode.key_id = _event.key_id;
                     msg.keycode.state = _event.state;

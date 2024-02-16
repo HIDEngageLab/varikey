@@ -29,7 +29,7 @@ namespace platform
     {
         struct repeating_timer timer;
 
-        ticker_handler_t ticker_handler = nullptr;
+        platform::board::ticker_handler_t ticker_handler = nullptr;
 
         static bool timer_callback(struct repeating_timer *const _timer);
 
@@ -56,7 +56,7 @@ namespace platform
             If the delay is negative (see below) then the next call to the callback will be exactly TICKER_DELAY ms
             after the start of the call to the last callback.
         */
-        void RP2040Ticker::start(ticker_handler_t _callback)
+        void RP2040Ticker::start(platform::board::ticker_handler_t _callback)
         {
             ticker_handler = _callback;
             add_repeating_timer_ms(TICKER_DELAY,

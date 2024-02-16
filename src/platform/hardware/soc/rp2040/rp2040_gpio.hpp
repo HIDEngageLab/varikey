@@ -18,13 +18,17 @@
 
 #include <stdint.h>
 
+#include "board_defines.hpp"
 #include "component_interface.hpp"
-#include "gpio_defines.hpp"
 
 namespace platform
 {
 	namespace soc
 	{
+		using IDENTIFIER = platform::board::IDENTIFIER;
+		using DIRECTION = platform::board::DIRECTION;
+		using VALUE = platform::board::VALUE;
+
 		struct RP2040Gpio : public pulp::ComponentInterface
 		{
 			virtual ~RP2040Gpio() {}
@@ -32,16 +36,16 @@ namespace platform
 			virtual void initialize(void);
 			virtual void shutdown();
 
-			void enable_event(driver::soc::gpio::callback_t);
+			void enable_event(platform::board::callback_t);
 			void disable_event(void);
 
-			const driver::soc::gpio::DIRECTION get_direction(const driver::soc::gpio::IDENTIFIER) const;
-			const void set_direction(const driver::soc::gpio::IDENTIFIER, const driver::soc::gpio::DIRECTION);
+			const DIRECTION get_direction(const IDENTIFIER) const;
+			const void set_direction(const IDENTIFIER, const DIRECTION);
 
-			const void set_pulls(const driver::soc::gpio::IDENTIFIER, const bool, const bool);
+			const void set_pulls(const IDENTIFIER, const bool, const bool);
 
-			const driver::soc::gpio::VALUE get_value(const driver::soc::gpio::IDENTIFIER) const;
-			const void set_value(const driver::soc::gpio::IDENTIFIER, const driver::soc::gpio::VALUE) const;
+			const VALUE get_value(const IDENTIFIER) const;
+			const void set_value(const IDENTIFIER, const VALUE) const;
 		};
 	}
 }

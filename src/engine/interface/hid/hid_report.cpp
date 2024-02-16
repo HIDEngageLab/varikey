@@ -93,7 +93,7 @@ namespace engine
             {
                 const engine::payload::temperature::content_t temperature{
                     .function = engine::payload::temperature::FUNCTION::GET,
-                    .value = board.soc.get_temperature() * 1000,
+                    .value = get_temperature() * 1000,
                 };
                 temperature.serialize(_buffer.space);
             }

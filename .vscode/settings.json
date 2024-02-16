@@ -25,6 +25,7 @@
         "EPNUM",
         "fifos",
         "GAMEPAD",
+        "GMCI",
         "gossenmetrawatt",
         "GPINTENA",
         "gpio",

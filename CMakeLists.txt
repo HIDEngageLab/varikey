@@ -156,9 +156,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_varikey.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_gossenmetrawatt_1_0.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_keypad.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_varikey_1_0.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/backlight_ws2812.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/ws2812.cpp

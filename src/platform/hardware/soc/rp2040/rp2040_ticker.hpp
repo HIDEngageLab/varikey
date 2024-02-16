@@ -18,14 +18,13 @@
 
 #include <hardware/timer.h>
 
+#include "board_defines.hpp"
 #include "component_interface.hpp"
 
 namespace platform
 {
     namespace soc
     {
-        typedef void (*ticker_handler_t)(void);
-
         struct RP2040Ticker : public pulp::ComponentInterface
         {
             virtual ~RP2040Ticker() {}
@@ -39,7 +38,7 @@ namespace platform
             virtual void initialize(void);
             virtual void shutdown(void);
 
-            void start(ticker_handler_t);
+            void start(platform::board::ticker_handler_t);
             void stop(void);
 
             void delay_ms(uint32_t);

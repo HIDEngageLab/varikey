@@ -40,7 +40,6 @@ namespace engine
         typedef struct
         {
             led_t left;
-            color_t middle;
             led_t right;
             status_t status;
             MODE mode;
@@ -90,8 +89,8 @@ namespace engine
 
             if (backlight.mode != backlight.next_mode)
             {
-                static uint64_t timestamp = board.soc.get_stopwatch();
-                const uint64_t us_diff = board.soc.get_stopwatch() - timestamp;
+                static uint64_t timestamp = get_stopwatch();
+                const uint64_t us_diff = get_stopwatch() - timestamp;
                 if (us_diff > backlight.next_delay_ms * 1000)
                 {
                     backlight.mode = backlight.next_mode;
@@ -228,8 +227,8 @@ namespace engine
 
         static void perform_step(const int _delay)
         {
-            static uint64_t timestamp = board.soc.get_stopwatch();
-            const uint64_t current_time = board.soc.get_stopwatch();
+            static uint64_t timestamp = get_stopwatch();
+            const uint64_t current_time = get_stopwatch();
             if ((current_time - timestamp) < static_cast<uint64_t>(_delay) * 1000)
             {
                 return;
@@ -360,13 +359,7 @@ namespace engine
 
             if (left_changed || right_changed)
             {
-                backlight.middle.rgb.r = (backlight.left.curent.rgb.r + backlight.right.curent.rgb.r) / 2;
-                backlight.middle.rgb.g = (backlight.left.curent.rgb.g + backlight.right.curent.rgb.g) / 2;
-                backlight.middle.rgb.b = (backlight.left.curent.rgb.b + backlight.right.curent.rgb.b) / 2;
-
-                board.backlight.put_value(backlight.left.curent);
-                board.backlight.put_value(backlight.middle);
-                board.backlight.put_value(backlight.right.curent);
+                set_backlight(backlight.left.curent, backlight.right.curent);
             }
         }
 
