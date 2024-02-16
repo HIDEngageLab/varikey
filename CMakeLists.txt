@@ -23,6 +23,7 @@ add_compile_options(-Wall
 -Wno-unused-function # we have some for the docs that aren't called
 -Wno-maybe-uninitialized
 -Waddress
+-g
 -O0
 )
 
@@ -65,26 +66,14 @@ else()
 endif()
 message(STATUS "product is ${FIRMWARE_PRODUCT} (internal ID:${FIRMWARE_IDENTIFIER} REV:${PROJECT_VERSION})")
 
+execute_process (COMMAND bash -c "git rev-parse --short=8 HEAD | tr -d '\n'" OUTPUT_VARIABLE GIT_HASH)
 configure_file(${PROJECT_SOURCE_DIR}/build/revision.h.in ${PROJECT_SOURCE_DIR}/src/revision.h @ONLY)
 
 set(EXECUTABLE_NAME "${PROJECT_NAME}_${FIRMWARE_PRODUCT}_${HARDWARE_PLATFORM}_${HARDWARE_NUMBER}_${HARDWARE_VARIANT}")
 string(TOLOWER ${EXECUTABLE_NAME} EXECUTABLE_NAME)
 
-find_program(FIGLET figlet)
-if(FIGLET)
-        add_custom_target(
-                ascii_art
-                COMMAND sh -c "figlet ${PROJECT_NAME} && figlet -f small custom keypad ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} && echo && echo Copyright 2023 Roman Koch, roman.koch@gmail.com && echo"
-                VERBATIM
-        )
-else()
-        add_custom_target(
-                ascii_art
-                COMMAND sh -c "echo && echo ${PROJECT_NAME} && echo custom keypad ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} && echo && echo Copyright 2023 Roman Koch, roman.koch@gmail.com && echo"
-                VERBATIM
-        )
-endif()
-    
+include("${CMAKE_SOURCE_DIR}/build/graffiti.cmake")
+  
 add_executable(${EXECUTABLE_NAME})
 
 add_dependencies(${EXECUTABLE_NAME} ascii_art)
