@@ -41,6 +41,7 @@ namespace identity
         static const uint16_t PATCH{((@PROJECT_VERSION_PATCH@+0) << 8) + (@PROJECT_VERSION_TWEAK@+0)};
         static const uint16_t BUILD{(BUILD_NUMBER)};
         static const uint16_t VENDOR{(@FIRMWARE_VENDOR@)};
+        static constexpr char FIRMWARE_HASH[]="@GIT_HASH@";
         /* @} */
     }
 
