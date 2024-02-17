@@ -9,6 +9,7 @@
 #include <pico/assert.h>
 #include <pico/time.h>
 
+#include "backlight_type.hpp"
 #include "backlight_ws2812.hpp"
 #include "ws2812.hpp"
 
@@ -16,29 +17,106 @@ namespace platform
 {
     namespace hardware
     {
-        void BacklightWs2812::initialize()
+        namespace backlight
         {
-            ws2812_init();
+            inline void set_three_colors(const engine::backlight::color_t &_left,
+                                         const engine::backlight::color_t &_median,
+                                         const engine::backlight::color_t &_right)
+            {
+                ws2812::put_pixel(_left.rgb.r, _left.rgb.g, _left.rgb.b);
+                ws2812::put_pixel(_median.rgb.r, _median.rgb.g, _median.rgb.b);
+                ws2812::put_pixel(_right.rgb.r, _right.rgb.g, _right.rgb.b);
+            }
 
-            ws2812_put_pixel(0, 0, 0);
-            ws2812_put_pixel(0, 0, 0);
-            ws2812_put_pixel(0, 0, 0);
-            sleep_ms(500);
-        }
+            template <backlight::INDEX, backlight::INDEX, backlight::INDEX>
+            void set_led_sequence(const engine::backlight::color_t &_first,
+                                  const engine::backlight::color_t &_second,
+                                  const engine::backlight::color_t &_third)
+            {
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::FIRST,
+                                  backlight::INDEX::SECOND,
+                                  backlight::INDEX::THIRD>(const engine::backlight::color_t &_first,
+                                                           const engine::backlight::color_t &_second,
+                                                           const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_first, _second, _third);
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::FIRST,
+                                  backlight::INDEX::THIRD,
+                                  backlight::INDEX::SECOND>(const engine::backlight::color_t &_first,
+                                                            const engine::backlight::color_t &_second,
+                                                            const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_first, _third, _second);
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::SECOND,
+                                  backlight::INDEX::FIRST,
+                                  backlight::INDEX::THIRD>(const engine::backlight::color_t &_first,
+                                                           const engine::backlight::color_t &_second,
+                                                           const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_second, _first, _third);
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::SECOND,
+                                  backlight::INDEX::THIRD,
+                                  backlight::INDEX::FIRST>(const engine::backlight::color_t &_first,
+                                                           const engine::backlight::color_t &_second,
+                                                           const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_second, _third, _first);
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::THIRD,
+                                  backlight::INDEX::FIRST,
+                                  backlight::INDEX::SECOND>(const engine::backlight::color_t &_first,
+                                                            const engine::backlight::color_t &_second,
+                                                            const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_third, _first, _second);
+            }
+            template <>
+            void set_led_sequence<backlight::INDEX::THIRD,
+                                  backlight::INDEX::SECOND,
+                                  backlight::INDEX::FIRST>(const engine::backlight::color_t &_first,
+                                                           const engine::backlight::color_t &_second,
+                                                           const engine::backlight::color_t &_third)
+            {
+                set_three_colors(_third, _second, _first);
+            }
 
-        void BacklightWs2812::shutdown()
-        {
-            ws2812_put_pixel(0, 0, 0);
-            ws2812_put_pixel(0, 0, 0);
-            ws2812_put_pixel(0, 0, 0);
-            sleep_ms(500);
-        }
+            void BacklightWs2812::initialize()
+            {
+                ws2812::init();
 
-        void BacklightWs2812::set_backlight(const engine::backlight::color_t &_left, const engine::backlight::color_t &_right)
-        {
-            ws2812_put_pixel(_left.rgb.r, _left.rgb.g, _left.rgb.b);
-            ws2812_put_pixel((_left.rgb.r + _right.rgb.r) / 2, (_left.rgb.g + _right.rgb.g) / 2, (_left.rgb.b + _right.rgb.b) / 2);
-            ws2812_put_pixel(_right.rgb.r, _right.rgb.g, _right.rgb.b);
+                ws2812::put_pixel(0, 0, 0);
+                ws2812::put_pixel(0, 0, 0);
+                ws2812::put_pixel(0, 0, 0);
+
+                sleep_ms(500);
+            }
+
+            void BacklightWs2812::shutdown()
+            {
+                ws2812::put_pixel(0, 0, 0);
+                ws2812::put_pixel(0, 0, 0);
+                ws2812::put_pixel(0, 0, 0);
+
+                sleep_ms(500);
+            }
+
+            void BacklightWs2812::set_backlight(const engine::backlight::color_t &_left, const engine::backlight::color_t &_right)
+            {
+                const engine::backlight::color_t median{.rgb = {.r = static_cast<const uint8_t>((_left.rgb.r + _right.rgb.r) >> 1),
+                                                                .g = static_cast<const uint8_t>((_left.rgb.g + _right.rgb.g) >> 1),
+                                                                .b = static_cast<const uint8_t>((_left.rgb.b + _right.rgb.b) >> 1)}};
+
+                set_led_sequence<Backlight::first, Backlight::second, Backlight::third>(_left, median, _right);
+            }
         }
     }
 }

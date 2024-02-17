@@ -16,8 +16,11 @@ namespace platform
 {
     namespace hardware
     {
-        extern void ws2812_init(void);
-        extern void ws2812_put_pixel(uint8_t r, uint8_t g, uint8_t b);
+        namespace ws2812
+        {
+            extern void init(void);
+            extern void put_pixel(uint8_t r, uint8_t g, uint8_t b);
+        }
     }
 }
 

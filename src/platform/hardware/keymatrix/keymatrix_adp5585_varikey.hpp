@@ -22,7 +22,7 @@ namespace platform
             static const unsigned int PICO_I2C_SCL = 5;
             static const unsigned int AD5585_RST = 14;
             static const unsigned int AD5585_INT = 15;
-            static const unsigned int PICO_I2C_SPEED = (100 * 1000);
+            static const unsigned int PICO_I2C_SPEED = (400 * 1000);
 
             static const unsigned int W = 128;
             static const unsigned int H = 32;
