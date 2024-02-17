@@ -15,10 +15,17 @@ namespace platform
 {
     namespace hardware
     {
-        struct BacklightGossenmetrawatt : public BacklightWs2812
+        namespace backlight
         {
-            static const unsigned int BACKLIGHT_PIN = 20;
-        };
+            struct GMCI1 : public BacklightWs2812
+            {
+                static const unsigned int BACKLIGHT_PIN = 20;
+
+                static const backlight::INDEX first = backlight::FIRST;
+                static const backlight::INDEX second = backlight::THIRD;
+                static const backlight::INDEX third = backlight::SECOND;
+            };
+        }
     }
 }
 

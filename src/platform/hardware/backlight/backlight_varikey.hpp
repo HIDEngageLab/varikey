@@ -15,10 +15,17 @@ namespace platform
 {
     namespace hardware
     {
-        struct BacklightVarikey : public BacklightWs2812
+        namespace backlight
         {
-            static const unsigned int BACKLIGHT_PIN = 22;
-        };
+            struct VarikeyPrototype : public BacklightWs2812
+            {
+                static const unsigned int BACKLIGHT_PIN = 22;
+
+                static const backlight::INDEX first = backlight::FIRST;
+                static const backlight::INDEX second = backlight::SECOND;
+                static const backlight::INDEX third = backlight::THIRD;
+            };
+        }
     }
 }
 

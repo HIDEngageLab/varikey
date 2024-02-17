@@ -17,10 +17,10 @@ namespace platform
     {
         struct RP2040Gossenmetrawatt : public RP2040
         {
-            static const uint8_t DEBUG_PIN_1 = 6;
-            static const uint8_t DEBUG_PIN_2 = 7;
-            static const uint8_t DEBUG_PIN_3 = 8;
-            static const uint8_t DEBUG_PIN_4 = 9;
+            static const uint8_t DEBUG_PIN_1 = 2;
+            static const uint8_t DEBUG_PIN_2 = 3;
+            static const uint8_t DEBUG_PIN_3 = 4;
+            static const uint8_t DEBUG_PIN_4 = 5;
         };
     }
 }

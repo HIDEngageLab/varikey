@@ -31,12 +31,12 @@ namespace platform
                 template <>
                 struct Entity<platform::defines::IDENTIFIER::VARIKEY_1_0>
                 {
-                    using Type = platform::hardware::BacklightVarikey;
+                    using Type = VarikeyPrototype;
                 };
                 template <>
                 struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
                 {
-                    using Type = platform::hardware::BacklightGossenmetrawatt;
+                    using Type = GMCI1;
                 };
             }
         }

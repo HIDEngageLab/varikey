@@ -16,14 +16,24 @@ namespace platform
 {
     namespace hardware
     {
-        struct BacklightWs2812 : public pulp::ComponentInterface
+        namespace backlight
         {
-            virtual void initialize();
-            virtual void shutdown();
+            enum INDEX
+            {
+                FIRST,
+                SECOND,
+                THIRD
+            };
 
-            void set_backlight(const engine::backlight::color_t &,
-                               const engine::backlight::color_t &);
-        };
+            struct BacklightWs2812 : public pulp::ComponentInterface
+            {
+                virtual void initialize();
+                virtual void shutdown();
+
+                void set_backlight(const engine::backlight::color_t &,
+                                   const engine::backlight::color_t &);
+            };
+        }
     }
 }
 
