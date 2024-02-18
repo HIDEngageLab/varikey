@@ -43,10 +43,111 @@ namespace engine
 
         keycode_item_t stack[2][4];
 
-        static void push_wheel_turn(const CONTROL, const TRIGGER,
-                                    const engine::keypad::KEY_ID, const keypad::STATE);
+        static void push_wheel_turn(const CONTROL _control, const TRIGGER _trigger,
+                                    const KEY_ID _key_id, const STATE _state)
+        {
+            int wheel_index = 0;
+            if (_control == CONTROL::WHEEL_1)
+            {
+                wheel_index = 0;
+            }
+            else if (_control == CONTROL::WHEEL_2)
+            {
+                wheel_index = 1;
+            }
+            else
+            {
+                /* todo: wheel? */
+            }
 
-        extern void push_key_event(const KEY_ID _identifier, const STATE _state)
+            if (_trigger != stack[wheel_index][3].trigger)
+            {
+                for (uint8_t stack_index = 0; stack_index < 3; ++stack_index)
+                {
+                    stack[wheel_index][stack_index].content.state = stack[wheel_index][stack_index + 1].content.state;
+                    stack[wheel_index][stack_index].content.key_id = stack[wheel_index][stack_index + 1].content.key_id;
+                    stack[wheel_index][stack_index].trigger = stack[wheel_index][stack_index + 1].trigger;
+                }
+            }
+
+            stack[wheel_index][3].content.state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state);
+            stack[wheel_index][3].content.key_id = _key_id;
+            stack[wheel_index][3].trigger = _trigger;
+
+            auto cleanup_stack = [&]()
+            {
+                stack[wheel_index][0].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
+                stack[wheel_index][1].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
+                stack[wheel_index][2].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
+                stack[wheel_index][3].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
+                stack[wheel_index][0].content.state = payload::keycode::STATE::UNDEFINED;
+                stack[wheel_index][1].content.state = payload::keycode::STATE::UNDEFINED;
+                stack[wheel_index][2].content.state = payload::keycode::STATE::UNDEFINED;
+                stack[wheel_index][3].content.state = payload::keycode::STATE::UNDEFINED;
+                stack[wheel_index][0].trigger = TRIGGER::UNDEFINED;
+                stack[wheel_index][1].trigger = TRIGGER::UNDEFINED;
+                stack[wheel_index][2].trigger = TRIGGER::UNDEFINED;
+                stack[wheel_index][3].trigger = TRIGGER::UNDEFINED;
+            };
+
+            auto check_state = [&]()
+            {
+                return (stack[wheel_index][0].content.state == payload::keycode::STATE::PRESS &&
+                        stack[wheel_index][1].content.state == payload::keycode::STATE::PRESS &&
+                        stack[wheel_index][2].content.state == payload::keycode::STATE::RELEASE &&
+                        stack[wheel_index][3].content.state == payload::keycode::STATE::RELEASE)
+                           ? true
+                           : false;
+            };
+
+            auto push_wheel_event = [](auto _control,
+                                       auto _identifier,
+                                       auto _state)
+            {
+                const payload::keycode::content_t keycode = {
+                    .control = _control,
+                    .key_id = _identifier,
+                    .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
+                    .table = engine::keypad::get_mapping(),
+                };
+                const engine::handler::event_t event = {
+                    .identifier = payload::IDENTIFIER::KEYCODE,
+                    .keycode = keycode,
+                };
+                handler::event_queue.push(event);
+            };
+
+            if (stack[wheel_index][0].trigger == TRIGGER::UP &&
+                stack[wheel_index][1].trigger == TRIGGER::DN &&
+                stack[wheel_index][2].trigger == TRIGGER::UP &&
+                stack[wheel_index][3].trigger == TRIGGER::DN &&
+                check_state())
+            {
+                cleanup_stack();
+                push_wheel_event(_control,
+                                 _key_id,
+                                 engine::keypad::STATE::PRESS);
+                push_wheel_event(_control,
+                                 _key_id,
+                                 engine::keypad::STATE::RELEASE);
+            }
+            else if (stack[wheel_index][0].trigger == TRIGGER::DN &&
+                     stack[wheel_index][1].trigger == TRIGGER::UP &&
+                     stack[wheel_index][2].trigger == TRIGGER::DN &&
+                     stack[wheel_index][3].trigger == TRIGGER::UP &&
+                     check_state())
+            {
+                cleanup_stack();
+                push_wheel_event(_control,
+                                 _key_id,
+                                 engine::keypad::STATE::PRESS);
+                push_wheel_event(_control,
+                                 _key_id,
+                                 engine::keypad::STATE::RELEASE);
+            }
+        }
+
+        extern void switch_key(const KEY_ID _identifier, const STATE _state)
         {
             auto push_key_event = [](const engine::keypad::KEY_ID _identifier,
                                      const engine::keypad::STATE _state)
@@ -198,138 +299,55 @@ namespace engine
             }
         }
 
-        static void push_wheel_turn(const CONTROL _control, const TRIGGER _trigger,
-                                    const engine::keypad::KEY_ID _key_id, const keypad::STATE _state)
+        extern void press_key(const KEY_ID _identifier)
         {
-            int wheel_index = 0;
-            if (_control == CONTROL::WHEEL_1)
+            switch_key(_identifier, STATE::PRESS);
+        }
+
+        extern void release_ley(const KEY_ID _identifier)
+        {
+            switch_key(_identifier, STATE::RELEASE);
+        }
+
+        extern void set_mapping(const TABLE _table)
+        {
+            if (_table == TABLE::CUSTOM ||
+                _table == TABLE::FUNCTIONAL ||
+                _table == TABLE::MULTIMEDIA ||
+                _table == TABLE::NAVIGATION ||
+                _table == TABLE::NUMBER ||
+                _table == TABLE::TELEFON)
             {
-                wheel_index = 0;
-            }
-            else if (_control == CONTROL::WHEEL_2)
-            {
-                wheel_index = 1;
+                keypad_code_table.set_table(_table);
             }
             else
             {
-                /* todo: wheel? */
-            }
-
-            if (_trigger != stack[wheel_index][3].trigger)
-            {
-                for (uint8_t stack_index = 0; stack_index < 3; ++stack_index)
-                {
-                    stack[wheel_index][stack_index].content.state = stack[wheel_index][stack_index + 1].content.state;
-                    stack[wheel_index][stack_index].content.key_id = stack[wheel_index][stack_index + 1].content.key_id;
-                    stack[wheel_index][stack_index].trigger = stack[wheel_index][stack_index + 1].trigger;
-                }
-            }
-
-            stack[wheel_index][3].content.state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state);
-            stack[wheel_index][3].content.key_id = _key_id;
-            stack[wheel_index][3].trigger = _trigger;
-
-            auto cleanup_stack = [&]()
-            {
-                stack[wheel_index][0].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
-                stack[wheel_index][1].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
-                stack[wheel_index][2].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
-                stack[wheel_index][3].content.key_id = engine::keypad::KEY_ID::UNDEFINED;
-                stack[wheel_index][0].content.state = payload::keycode::STATE::UNDEFINED;
-                stack[wheel_index][1].content.state = payload::keycode::STATE::UNDEFINED;
-                stack[wheel_index][2].content.state = payload::keycode::STATE::UNDEFINED;
-                stack[wheel_index][3].content.state = payload::keycode::STATE::UNDEFINED;
-                stack[wheel_index][0].trigger = TRIGGER::UNDEFINED;
-                stack[wheel_index][1].trigger = TRIGGER::UNDEFINED;
-                stack[wheel_index][2].trigger = TRIGGER::UNDEFINED;
-                stack[wheel_index][3].trigger = TRIGGER::UNDEFINED;
-            };
-
-            auto check_state = [&]()
-            {
-                return (stack[wheel_index][0].content.state == payload::keycode::STATE::PRESS &&
-                        stack[wheel_index][1].content.state == payload::keycode::STATE::PRESS &&
-                        stack[wheel_index][2].content.state == payload::keycode::STATE::RELEASE &&
-                        stack[wheel_index][3].content.state == payload::keycode::STATE::RELEASE)
-                           ? true
-                           : false;
-            };
-
-            auto push_wheel_event = [](auto _control,
-                                       auto _identifier,
-                                       auto _state)
-            {
-                const payload::keycode::content_t keycode = {
-                    .control = _control,
-                    .key_id = _identifier,
-                    .state = transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
-                    .table = engine::keypad::get_mapping(),
-                };
-                const engine::handler::event_t event = {
-                    .identifier = payload::IDENTIFIER::KEYCODE,
-                    .keycode = keycode,
-                };
-                handler::event_queue.push(event);
-            };
-
-            if (stack[wheel_index][0].trigger == TRIGGER::UP &&
-                stack[wheel_index][1].trigger == TRIGGER::DN &&
-                stack[wheel_index][2].trigger == TRIGGER::UP &&
-                stack[wheel_index][3].trigger == TRIGGER::DN &&
-                check_state())
-            {
-                cleanup_stack();
-                push_wheel_event(_control,
-                                 _key_id,
-                                 engine::keypad::STATE::PRESS);
-                push_wheel_event(_control,
-                                 _key_id,
-                                 engine::keypad::STATE::RELEASE);
-            }
-            else if (stack[wheel_index][0].trigger == TRIGGER::DN &&
-                     stack[wheel_index][1].trigger == TRIGGER::UP &&
-                     stack[wheel_index][2].trigger == TRIGGER::DN &&
-                     stack[wheel_index][3].trigger == TRIGGER::UP &&
-                     check_state())
-            {
-                cleanup_stack();
-                push_wheel_event(_control,
-                                 _key_id,
-                                 engine::keypad::STATE::PRESS);
-                push_wheel_event(_control,
-                                 _key_id,
-                                 engine::keypad::STATE::RELEASE);
+                keypad_code_table.set_table(KeypadCode::DEFAULT_MAPPING_TABLE);
             }
         }
 
-        extern void set_mapping(const engine::keypad::TABLE _table)
+        extern const TABLE get_mapping(void)
         {
-            if (!(_table == TABLE::CUSTOM ||
-                  _table == TABLE::FUNCTIONAL ||
-                  _table == TABLE::MULTIMEDIA ||
-                  _table == TABLE::NAVIGATION ||
-                  _table == TABLE::NUMBER ||
-                  _table == TABLE::TELEFON))
-            {
-                keypad_code_table.table = KeypadCode::DEFAULT_MAPPING_TABLE;
-            }
-            else
-            {
-                keypad_code_table.table = _table;
-            }
+            return keypad_code_table.get_table();
         }
 
-        extern const engine::keypad::TABLE get_mapping(void)
+        extern void perform_hid_key(const KEY_ID _identifier, const TABLE _table)
         {
-            return keypad_code_table.table;
+            keypad_code_table.set_table(_table);
+            keypad_code_table.perform(_identifier);
         }
 
-        extern const uint8_t to_int(const engine::keypad::KEY_ID _identifier, const engine::keypad::TABLE _mode)
+        extern void clean(void)
         {
-            return keypad_code_table.key_code(_identifier, _mode);
+            keypad_code_table.clean();
         }
 
-        extern const engine::keypad::KEY_ID to_identifier(const uint8_t _value)
+        extern const uint8_t id2int(const KEY_ID _identifier)
+        {
+            return keypad_code_table.get_code(_identifier);
+        }
+
+        extern const KEY_ID int2id(const uint8_t _value)
         {
             if (_value >= 0x00 && _value <= 0x17)
             {

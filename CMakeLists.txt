@@ -9,7 +9,7 @@ include(build/pico_extras_import_optional.cmake)
 include(build/cppcheck.cmake)
 
 project(varikey
-VERSION 1.1.0.0
+VERSION 1.1.0.2
 DESCRIPTION "Custom composed keypad HID device"
 LANGUAGES C CXX ASM)
 

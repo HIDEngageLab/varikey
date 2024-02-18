@@ -15,11 +15,18 @@ namespace engine
 {
     namespace keypad
     {
-        extern void push_key_event(const KEY_ID, const STATE);
-        extern void set_mapping(const engine::keypad::TABLE);
-        extern const engine::keypad::TABLE get_mapping(void);
-        extern const uint8_t to_int(const engine::keypad::KEY_ID, const engine::keypad::TABLE);
-        extern const engine::keypad::KEY_ID to_identifier(const uint8_t);
+        extern void switch_key(const KEY_ID, const STATE);
+        extern void press_key(const KEY_ID);
+        extern void release_ley(const KEY_ID);
+
+        extern void set_mapping(const TABLE);
+        extern const TABLE get_mapping(void);
+
+        extern void perform_hid_key(const KEY_ID, const TABLE);
+        extern void clean(void);
+
+        extern const uint8_t id2int(const KEY_ID);
+        extern const KEY_ID int2id(const uint8_t);
     }
 }
 

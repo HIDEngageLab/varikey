@@ -22,10 +22,6 @@ namespace engine
     {
         event_queue_t event_queue;
 
-        static bool caps = false;
-        static bool nums = false;
-        static bool scrl = false;
-
         static bool events_over_serial_enabled = engine::Variant::ENABLE_SERAIL_INTERFACE_ON_START;
         static bool events_over_usb_enabled = engine::Variant::ENABLE_USB_INTERFACE_ON_START;
 
@@ -185,9 +181,6 @@ namespace engine
                     backlight::set_mode(backlight::MODE::MOUNT,
                                         registry::parameter::backlight::g_register.param_backlight.timeout);
                     break;
-                case payload::gadget::COMMAND::RESET:
-                    /* unsupported */
-                    break;
                 default:
                     break;
                 }
@@ -195,6 +188,10 @@ namespace engine
             case payload::IDENTIFIER::GPIO:
                 break;
             case payload::IDENTIFIER::KEYCODE:
+            {
+                if (_event.keycode.state == payload::keycode::STATE::PRESS)
+                    engine::keypad::perform_hid_key(_event.keycode.key_id, _event.keycode.table);
+
                 if (events_over_serial_enabled)
                 {
                     hci::cmd::feature::key_indication(_event.keycode);
@@ -204,7 +201,7 @@ namespace engine
                 {
                     if (_event.keycode.state == payload::keycode::STATE::PRESS)
                     {
-                        uint8_t code = engine::keypad::to_int(_event.keycode.key_id, _event.keycode.table);
+                        const uint8_t code = engine::keypad::id2int(_event.keycode.key_id);
                         platform::usb::sent_keycode(code);
                     }
                     else
@@ -212,53 +209,17 @@ namespace engine
                         platform::usb::sent_keycode();
                     }
                 }
+
                 break;
+            }
             case payload::IDENTIFIER::KEYPAD:
                 switch (_event.keypad.identifier)
                 {
-                case payload::keypad::IDENTIFIER::MAPPING:
-                    if (_event.keypad.function == payload::keypad::FUNCTION::SET)
-                    {
-                        engine::keypad::set_mapping(_event.keypad.table);
-                    }
-                    /*
-                    // todo: get report handler
-                    else if (_event.keyboard.function == payload::keypad::FUNCTION::GET)
-                    {
-                        _event.keyboard.table = engine::keypad::get_mapping();
-                    }
-                    */
-
-                    switch (_event.keypad.table)
-                    {
-                    case payload::keypad::TABLE::CUSTOM:
-                        break;
-                    case payload::keypad::TABLE::FUNCTIONAL:
-                        if (_event.keypad.function == payload::keypad::FUNCTION::SET)
-                            caps = true;
-                        else
-                            caps = false;
-                        break;
-                    case payload::keypad::TABLE::MULTIMEDIA:
-                        if (_event.keypad.function == payload::keypad::FUNCTION::SET)
-                            nums = true;
-                        else
-                            nums = false;
-                        break;
-                    case payload::keypad::TABLE::NAVIGATION:
-                        if (_event.keypad.function == payload::keypad::FUNCTION::SET)
-                            scrl = true;
-                        else
-                            scrl = false;
-                        break;
-                    case payload::keypad::TABLE::NUMBER:
-                        break;
-                    case payload::keypad::TABLE::TELEFON:
-                        break;
-
-                    default:
-                        break;
-                    }
+                case payload::keypad::IDENTIFIER::HCI:
+                    if (_event.keypad.function == payload::keypad::FUNCTION::ENABLE)
+                        set_hci_enabled(true);
+                    else
+                        set_hci_enabled(false);
                     break;
                 case payload::keypad::IDENTIFIER::HID:
                     if (_event.keypad.function == payload::keypad::FUNCTION::ENABLE)
@@ -266,33 +227,19 @@ namespace engine
                     else
                         set_hid_enabled(false);
                     break;
-                case payload::keypad::IDENTIFIER::HCI:
-                    if (_event.keypad.function == payload::keypad::FUNCTION::ENABLE)
-                        set_hci_enabled(true);
-                    else
-                        set_hci_enabled(false);
+                case payload::keypad::IDENTIFIER::KEYCODE:
+                    /* do nothing */
+                    break;
+                case payload::keypad::IDENTIFIER::MAPPING:
+                    if (_event.keypad.function == payload::keypad::FUNCTION::SET &&
+                        _event.keypad.table != engine::payload::keypad::TABLE::UNDEFINED)
+                    {
+                        engine::keypad::set_mapping(_event.keypad.table);
+                    }
                     break;
                 default:
                     break;
                 }
-
-                if (caps && nums && scrl)
-                    backlight::set_mode(backlight::MODE::TURBO, 0);
-                else if (caps && nums && !scrl)
-                    backlight::set_mode(backlight::MODE::CONST, 0);
-                else if (caps && !nums && scrl)
-                    backlight::set_mode(backlight::MODE::MOUNT, 0);
-                else if (caps && !nums && !scrl)
-                    backlight::set_mode(backlight::MODE::SUSPEND, 0);
-                else if (!caps && nums && scrl)
-                    backlight::set_mode(backlight::MODE::MEDIUM, 0);
-                else if (!caps && nums && !scrl)
-                    backlight::set_mode(backlight::MODE::OFF, 0);
-                else if (!caps && !nums && scrl)
-                    backlight::set_mode(backlight::MODE::SLOW, 0);
-                else if (!caps && !nums && !scrl)
-                    backlight::set_mode(backlight::MODE::ALERT, 0);
-
                 break;
             case payload::IDENTIFIER::PARAMETER:
                 break;

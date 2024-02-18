@@ -40,6 +40,7 @@ namespace engine
                 ENABLE = common::function::ENABLE,
                 GET = common::function::GET,
                 SET = common::function::SET,
+                CLEAN = common::function::CLEAN,
 
                 UNDEFINED = to_underlying(common::function::UNDEFINED),
             };
@@ -80,21 +81,27 @@ namespace engine
                     else if (identifier == IDENTIFIER::MAPPING)
                     {
                         function = static_cast<const FUNCTION>(_space[1]);
-                        if (!(function == FUNCTION::SET ||
-                              function == FUNCTION::GET))
+                        if (function == FUNCTION::SET ||
+                            function == FUNCTION::GET)
                         {
-                            function = FUNCTION::UNDEFINED;
+                            table = static_cast<const TABLE>(_space[2]);
+                            if (!(table == TABLE::CUSTOM ||
+                                  table == TABLE::FUNCTIONAL ||
+                                  table == TABLE::MULTIMEDIA ||
+                                  table == TABLE::NAVIGATION ||
+                                  table == TABLE::NUMBER ||
+                                  table == TABLE::TELEFON))
+                            {
+                                table = TABLE::UNDEFINED;
+                            }
                         }
-
-                        table = static_cast<const TABLE>(_space[2]);
-                        if (!(table == TABLE::CUSTOM ||
-                              table == TABLE::FUNCTIONAL ||
-                              table == TABLE::MULTIMEDIA ||
-                              table == TABLE::NAVIGATION ||
-                              table == TABLE::NUMBER ||
-                              table == TABLE::TELEFON))
+                        else if (function == FUNCTION::CLEAN)
                         {
                             table = TABLE::UNDEFINED;
+                        }
+                        else
+                        {
+                            function = FUNCTION::UNDEFINED;
                         }
                     }
                     else if (identifier == IDENTIFIER::KEYCODE)
@@ -107,7 +114,7 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space)
+                void serialize(uint8_t *const _space) const
                 {
                     uint8_t *ptr = _space;
                     *ptr++ = (uint8_t)identifier;
@@ -119,7 +126,11 @@ namespace engine
                     else if (identifier == IDENTIFIER::MAPPING)
                     {
                         *ptr++ = (uint8_t)function;
-                        *ptr++ = (uint8_t)table;
+                        if (function == FUNCTION::SET ||
+                            function == FUNCTION::GET)
+                        {
+                            *ptr++ = (uint8_t)table;
+                        }
                     }
                     else if (identifier == IDENTIFIER::KEYCODE)
                     {

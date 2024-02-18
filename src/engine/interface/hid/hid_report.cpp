@@ -36,14 +36,6 @@ namespace engine
         {
             switch (identifier)
             {
-            case GET_REPORT::SERIAL:
-                identity.identifier = engine::payload::identity::IDENTIFIER::SERIAL;
-                identity.deserialize(_buffer.space);
-                break;
-            case GET_REPORT::UNIQUE:
-                identity.identifier = engine::payload::identity::IDENTIFIER::UNIQUE;
-                identity.deserialize(_buffer.space);
-                break;
             case GET_REPORT::FIRMWARE:
                 identity.identifier = engine::payload::identity::IDENTIFIER::FIRMWARE;
                 identity.deserialize(_buffer.space);
@@ -52,8 +44,20 @@ namespace engine
                 identity.identifier = engine::payload::identity::IDENTIFIER::HARDWARE;
                 identity.deserialize(_buffer.space);
                 break;
+            case GET_REPORT::MAPPING:
+                keypad.identifier = engine::payload::keypad::IDENTIFIER::MAPPING;
+                keypad.deserialize(_buffer.space);
+                break;
+            case GET_REPORT::SERIAL:
+                identity.identifier = engine::payload::identity::IDENTIFIER::SERIAL;
+                identity.deserialize(_buffer.space);
+                break;
             case GET_REPORT::TEMPERATURE:
                 temperature.deserialize(_buffer.space);
+                break;
+            case GET_REPORT::UNIQUE:
+                identity.identifier = engine::payload::identity::IDENTIFIER::UNIQUE;
+                identity.deserialize(_buffer.space);
                 break;
 
             default:
@@ -65,18 +69,6 @@ namespace engine
         {
             switch (identifier)
             {
-            case GET_REPORT::SERIAL:
-            {
-                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::SERIAL};
-                identity.serialize(_buffer.space);
-                break;
-            }
-            case GET_REPORT::UNIQUE:
-            {
-                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::UNIQUE};
-                identity.serialize(_buffer.space);
-                break;
-            }
             case GET_REPORT::FIRMWARE:
             {
                 const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::FIRMWARE};
@@ -89,6 +81,22 @@ namespace engine
                 identity.serialize(_buffer.space);
                 break;
             }
+            case GET_REPORT::MAPPING:
+            {
+                const engine::payload::keypad::content_t keypad{
+                    .identifier = engine::payload::keypad::IDENTIFIER::MAPPING,
+                    .function = engine::payload::keypad::FUNCTION::GET,
+                    .table = engine::keypad::get_mapping(),
+                };
+                keypad.serialize(_buffer.space);
+                break;
+            }
+            case GET_REPORT::SERIAL:
+            {
+                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::SERIAL};
+                identity.serialize(_buffer.space);
+                break;
+            }
             case GET_REPORT::TEMPERATURE:
             {
                 const engine::payload::temperature::content_t temperature{
@@ -97,6 +105,13 @@ namespace engine
                 };
                 temperature.serialize(_buffer.space);
             }
+            case GET_REPORT::UNIQUE:
+            {
+                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::UNIQUE};
+                identity.serialize(_buffer.space);
+                break;
+            }
+
             default:
                 break;
             }

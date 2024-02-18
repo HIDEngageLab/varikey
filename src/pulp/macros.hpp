@@ -58,7 +58,7 @@ namespace common
 		/** \brief Anonymous function data type */
 		enum VALUE
 		{
-			CUSTOM = 0x80,
+			CLEAN = 0x08,
 			DISABLE = 0x03,
 			ENABLE = 0x02,
 			GET = 0x00,
@@ -67,6 +67,8 @@ namespace common
 			SET = 0x01,
 			START = 0x04,
 			STOP = 0x05,
+
+			CUSTOM = 0x80,
 
 			UNDEFINED = 0xFF,
 		};

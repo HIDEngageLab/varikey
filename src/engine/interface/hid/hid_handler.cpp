@@ -169,16 +169,6 @@ namespace engine
                         handler::event_queue.push(event);
                         break;
                     }
-                    case payload::gadget::COMMAND::RESET:
-                    {
-                        const handler::event_t event = {
-                            .identifier = payload::IDENTIFIER::GADGET,
-                            .gadget = {
-                                .command = payload::gadget::COMMAND::RESET,
-                            }};
-                        handler::event_queue.push(event);
-                        break;
-                    }
                     case payload::gadget::COMMAND::RESUME:
                     {
                         const handler::event_t event = {
@@ -218,6 +208,66 @@ namespace engine
                 case SET_REPORT::KEYCODE:
                     break;
                 case SET_REPORT::KEYPAD:
+                    switch (set_report.keypad.identifier)
+                    {
+                    case payload::keypad::IDENTIFIER::HCI:
+                        switch (set_report.keypad.function)
+                        {
+                        case payload::keypad::FUNCTION::ENABLE:
+                            engine::handler::set_hci_enabled(true);
+                            break;
+                        case payload::keypad::FUNCTION::DISABLE:
+                            engine::handler::set_hci_enabled(false);
+                            break;
+                        default:
+                            break;
+                        }
+                        break;
+                    case payload::keypad::IDENTIFIER::HID:
+                        switch (set_report.keypad.function)
+                        {
+                        case payload::keypad::FUNCTION::ENABLE:
+                            engine::handler::set_hid_enabled(true);
+                            break;
+                        case payload::keypad::FUNCTION::DISABLE:
+                            engine::handler::set_hid_enabled(false);
+                            break;
+                        default:
+                            break;
+                        }
+                        break;
+                    case payload::keypad::IDENTIFIER::KEYCODE:
+                    {
+                        const engine::keypad::KEY_ID key_code_id = engine::keypad::int2id(set_report.keypad.code);
+                        if (key_code_id != engine::keypad::KEY_ID::UNDEFINED)
+                        {
+                            engine::keypad::press_key(key_code_id);
+                            engine::keypad::release_ley(key_code_id);
+                        }
+                        break;
+                    }
+                    case payload::keypad::IDENTIFIER::MAPPING:
+                        switch (set_report.keypad.function)
+                        {
+                        case payload::keypad::FUNCTION::SET:
+                            if (set_report.keypad.table != engine::payload::keypad::TABLE::UNDEFINED)
+                            {
+                                engine::keypad::set_mapping(set_report.keypad.table);
+                            }
+                            break;
+                        case payload::keypad::FUNCTION::GET:
+                            /* get mapping implemented with a get report */
+                            break;
+                        case payload::keypad::FUNCTION::CLEAN:
+                            engine::keypad::clean();
+                            break;
+                        default:
+                            break;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
                     break;
                 case SET_REPORT::PARAMETER:
                     break;
