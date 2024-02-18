@@ -73,7 +73,7 @@ namespace engine
                 {
                     uint8_t *ptr = _space;
                     *ptr++ = (uint8_t)control;
-                    *ptr++ = (uint8_t)engine::keypad::to_int(key_id, table);
+                    *ptr++ = (uint8_t)engine::keypad::id2int(key_id);
                     *ptr++ = (uint8_t)state;
                     *ptr++ = (uint8_t)key_id;
                     *ptr++ = (uint8_t)table;

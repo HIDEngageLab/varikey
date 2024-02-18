@@ -36,10 +36,10 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::UNDEFINED:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R0_C0:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_01, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_01, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R0_C1:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_06, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_06, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R0_C2:
                 break;
@@ -48,10 +48,10 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::R0_C4:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R1_C0:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_02, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_02, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R1_C1:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_07, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_07, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R1_C2:
                 break;
@@ -60,10 +60,10 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::R1_C4:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R2_C0:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_03, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_03, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R2_C1:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_08, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_08, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R2_C2:
                 break;
@@ -72,10 +72,10 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::R2_C4:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R3_C0:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_04, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_04, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R3_C1:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_09, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_09, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R3_C2:
                 break;
@@ -84,10 +84,10 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::R3_C4:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R4_C0:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_05, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_05, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R4_C1:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_10, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_10, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R4_C2:
                 break;
@@ -106,19 +106,19 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::R5_C4:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R0_GND:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_01, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_01, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R1_GND:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_02, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_02, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R2_GND:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_03, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_03, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R3_GND:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_04, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_04, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R4_GND:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_05, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_05, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::R5_GND:
                 break;
@@ -139,13 +139,13 @@ namespace platform
             case platform::hardware::adp5585::event::IDENTIFIER::C1_GPI_8:
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::C2_GPI_9:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_72, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_72, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::C3_GPI_10:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_70, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_70, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::C4_GPI_11:
-                engine::keypad::push_key_event(engine::keypad::KEY_ID::KEY_71, get_key_state(_event.state));
+                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_71, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::LOGIC:
                 break;

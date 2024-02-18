@@ -9,8 +9,6 @@
 #ifndef __ENGINE_KEYPAD_KEYCODE_VARIKEY_HPP__
 #define __ENGINE_KEYPAD_KEYCODE_VARIKEY_HPP__
 
-#include <cstdint>
-
 #include "keypad_keycode.hpp"
 #include "tusb.h"
 

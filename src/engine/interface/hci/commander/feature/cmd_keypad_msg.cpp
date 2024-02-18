@@ -92,10 +92,23 @@ namespace engine
                                 _msg->result = RESULT::WRONG_FUNCTION;
                             }
                             break;
+                        case IDENTIFIER::KEYCODE:
+                        {
+                            const engine::keypad::KEY_ID key_code_id = engine::keypad::int2id(_msg->keypad.code);
+                            if (key_code_id != engine::keypad::KEY_ID::UNDEFINED)
+                            {
+                                engine::keypad::press_key(key_code_id);
+                                engine::keypad::release_ley(key_code_id);
+                            }
+                            break;
+                        }
                         case IDENTIFIER::MAPPING:
                             if (_msg->keypad.function == payload::keypad::FUNCTION::SET)
                             {
-                                engine::keypad::set_mapping(_msg->keypad.table);
+                                if (_msg->keypad.table != payload::keypad::TABLE::UNDEFINED)
+                                {
+                                    engine::keypad::set_mapping(_msg->keypad.table);
+                                }
                                 _msg->keypad.table = engine::keypad::get_mapping();
                             }
                             else if (_msg->keypad.function == payload::keypad::FUNCTION::GET)
@@ -106,12 +119,6 @@ namespace engine
                             {
                                 _msg->result = RESULT::WRONG_FUNCTION;
                             }
-                            break;
-                        case IDENTIFIER::KEYCODE:
-                            engine::keypad::push_key_event(engine::keypad::to_identifier(_msg->keypad.code),
-                                                           engine::keypad::STATE::PRESS);
-                            engine::keypad::push_key_event(engine::keypad::to_identifier(_msg->keypad.code),
-                                                           engine::keypad::STATE::RELEASE);
                             break;
                         default:
                             _msg->result = RESULT::WRONG_IDENTIFIER;

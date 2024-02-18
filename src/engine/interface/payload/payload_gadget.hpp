@@ -32,7 +32,6 @@ namespace engine
                 GET = common::function::GET,
 
                 MOUNT = GADGET_ID + 1,
-                RESET = GADGET_ID + 5,
                 RESUME = GADGET_ID + 4,
                 SUSPEND = GADGET_ID + 3,
                 UNMOUNT = GADGET_ID + 2,
@@ -50,7 +49,6 @@ namespace engine
                 {
                     command = static_cast<const COMMAND>(_space[0]);
                     if (!(command == COMMAND::MOUNT ||
-                          command == COMMAND::RESET ||
                           command == COMMAND::RESUME ||
                           command == COMMAND::SUSPEND ||
                           command == COMMAND::UNMOUNT))

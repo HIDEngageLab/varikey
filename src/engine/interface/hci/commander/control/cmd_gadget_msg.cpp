@@ -133,9 +133,6 @@ namespace engine
                                 _msg->result = RESULT::WRONG_STATE;
                             }
                             break;
-                        case payload::gadget::COMMAND::RESET:
-                            _msg->result = RESULT::UNSUPPORTED;
-                            break;
                         default:
                             _msg->result = RESULT::UNKNOWN;
                             break;

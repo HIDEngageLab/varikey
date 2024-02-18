@@ -58,11 +58,13 @@ namespace engine
 
         enum class GET_REPORT : uint8_t
         {
-            SERIAL = (int)payload::identity::IDENTIFIER::SERIAL,
-            UNIQUE = (int)payload::identity::IDENTIFIER::UNIQUE,
             FIRMWARE = (int)payload::identity::IDENTIFIER::FIRMWARE,
             HARDWARE = (int)payload::identity::IDENTIFIER::HARDWARE,
+            MAPPING = (int)payload::keypad::IDENTIFIER::MAPPING,
+            SERIAL = (int)payload::identity::IDENTIFIER::SERIAL,
             TEMPERATURE = (int)payload::IDENTIFIER::TEMPERATURE,
+            UNIQUE = (int)payload::identity::IDENTIFIER::UNIQUE,
+
             UNDEFINED = (int)payload::IDENTIFIER::UNDEFINED,
         };
 
@@ -74,6 +76,7 @@ namespace engine
                 u_int8_t buffer[MAX_REPORT_SIZE];
                 payload::identity::content_t identity;
                 payload::temperature::content_t temperature;
+                payload::keypad::content_t keypad;
             };
 
             void deserialize(const const_chunk_t &);

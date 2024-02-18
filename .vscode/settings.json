@@ -166,10 +166,21 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cstring": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "iostream": "cpp",
+        "numbers": "cpp"
     },
-    "workbench.preferredDarkColorTheme": "Default Dark+",
-    "workbench.colorTheme": "Default Dark+",
-    "markdown.extension.print.theme": "light",
-    "markdown-mermaid.darkModeTheme": "default"
+    "workbench.preferredDarkColorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorCustomizations": {
+        "[Default Dark Modern]": {
+            "tab.activeBackground": "#3f3f3f",
+            "tab.activeBorder": "#5f5f5f",
+            "tab.hoverBorder": "#5f5f5f",
+            "editor.background": "#0e0e0f",
+            "terminal.background": "#0e0e0f",
+            "outputView.background": "#0e0e0f"
+        }
+    },
+    "r.lsp.promptToInstall": false
 }
