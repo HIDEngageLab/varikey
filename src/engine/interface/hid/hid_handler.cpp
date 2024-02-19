@@ -238,6 +238,7 @@ namespace engine
                         break;
                     case payload::keypad::IDENTIFIER::KEYCODE:
                     {
+                        /* todo: function click or push... */
                         const engine::keypad::KEY_ID key_code_id = engine::keypad::int2id(set_report.keypad.code);
                         if (key_code_id != engine::keypad::KEY_ID::UNDEFINED)
                         {

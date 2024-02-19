@@ -10,12 +10,13 @@
 #define __PLATFORM_KEYMATRIX_ADP5585_HANDLER_GOSSENMETRAWATT_HPP__
 
 #include "keymatrix_adp5585_event.hpp"
+#include "keymatrix_adp5585_handler.hpp"
 
 namespace platform
 {
     namespace hardware
     {
-        struct KeymatrixHandlerGossenmetrawatt
+        struct KeymatrixHandlerGossenmetrawatt : public KeymatrixHandler
         {
             void event_handler(const platform::hardware::adp5585::event_t);
         };

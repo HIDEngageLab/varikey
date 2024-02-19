@@ -11,6 +11,8 @@
 
 #include <cstdint>
 
+#include "macros.hpp"
+
 #include "keypad_keycode.hpp"
 #include "payload_identifier.hpp"
 
@@ -42,6 +44,9 @@ namespace engine
                 SET = common::function::SET,
                 CLEAN = common::function::CLEAN,
 
+                CLICK = common::function::CUSTOM,
+                PUSH = common::function::CUSTOM + 1,
+
                 UNDEFINED = to_underlying(common::function::UNDEFINED),
             };
 
@@ -49,8 +54,11 @@ namespace engine
             {
                 IDENTIFIER identifier;
                 FUNCTION function;
-                TABLE table;
-                uint8_t code;
+                union
+                {
+                    TABLE table;
+                    uint8_t code;
+                };
 
                 const size_t size() const
                 {
@@ -106,7 +114,8 @@ namespace engine
                     }
                     else if (identifier == IDENTIFIER::KEYCODE)
                     {
-                        code = static_cast<uint8_t>(_space[1]);
+                        function = static_cast<const FUNCTION>(_space[1]);
+                        code = static_cast<uint8_t>(_space[2]);
                     }
                     else
                     {
@@ -134,6 +143,7 @@ namespace engine
                     }
                     else if (identifier == IDENTIFIER::KEYCODE)
                     {
+                        *ptr++ = (uint8_t)function;
                         *ptr++ = (uint8_t)code;
                     }
                 }
