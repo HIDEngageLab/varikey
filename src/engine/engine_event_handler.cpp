@@ -69,23 +69,6 @@ namespace engine
             }
         }
 
-        extern void push_wheel_event(const payload::keycode::CONTROL _control,
-                                     const engine::keypad::KEY_ID _identifier,
-                                     const engine::keypad::STATE _state)
-        {
-            const payload::keycode::content_t keycode = {
-                .control = _control,
-                .key_id = _identifier,
-                .state = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
-                .table = engine::keypad::get_mapping(),
-            };
-            const engine::handler::event_t event = {
-                .identifier = payload::IDENTIFIER::KEYCODE,
-                .keycode = keycode,
-            };
-            handler::event_queue.push(event);
-        };
-
         extern void push_key_event(const engine::keypad::KEY_ID _identifier,
                                    const engine::keypad::STATE _state)
         {
@@ -102,11 +85,11 @@ namespace engine
             handler::event_queue.push(event);
         };
 
-        extern void push_wheel_switch(const payload::keycode::CONTROL _control,
-                                      const engine::keypad::KEY_ID _identifier,
-                                      const engine::keypad::STATE _state)
+        extern void push_control_event(const payload::keycode::CONTROL _control,
+                                       const engine::keypad::KEY_ID _identifier,
+                                       const engine::keypad::STATE _state)
         {
-            const payload::keycode::content_t key_event = {
+            const payload::keycode::content_t keycode = {
                 .control = _control,
                 .key_id = _identifier,
                 .state = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
@@ -114,24 +97,7 @@ namespace engine
             };
             const engine::handler::event_t event = {
                 .identifier = payload::IDENTIFIER::KEYCODE,
-                .keycode = key_event,
-            };
-            handler::event_queue.push(event);
-        };
-
-        extern void push_joystick_event(const payload::keycode::CONTROL _control,
-                                        const engine::keypad::KEY_ID _identifier,
-                                        const engine::keypad::STATE _state)
-        {
-            payload::keycode::content_t key_event = {
-                .control = _control,
-                .key_id = _identifier,
-                .state = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
-                .table = engine::keypad::get_mapping(),
-            };
-            engine::handler::event_t event = {
-                .identifier = payload::IDENTIFIER::KEYCODE,
-                .keycode = key_event,
+                .keycode = keycode,
             };
             handler::event_queue.push(event);
         };
@@ -270,7 +236,8 @@ namespace engine
                     if (_event.keycode.state == payload::keycode::STATE::PRESS)
                     {
                         const uint8_t code = engine::keypad::id2int(_event.keycode.key_id);
-                        platform::usb::sent_keycode(code);
+                        const uint8_t mode = engine::keypad::get_modifier();
+                        platform::usb::sent_keycode(mode, code);
                     }
                     else
                     {

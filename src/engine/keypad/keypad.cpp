@@ -14,6 +14,7 @@
 #include "hid_handler.hpp"
 #include "hid_report.hpp"
 #include "keypad_keycode_type.hpp"
+#include "keypad_modifiers.hpp"
 #include "macros.hpp"
 #include "param_serial_number.hpp"
 #include "payload_keycode.hpp"
@@ -64,47 +65,47 @@ namespace engine
                 break;
 
             case KEY_ID::KEY_70:
-                engine::handler::push_wheel_event(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_71:
-                engine::handler::push_wheel_event(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_72:
-                engine::handler::push_wheel_switch(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_73:
-                engine::handler::push_wheel_event(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
                 break;
             case KEY_ID::KEY_74:
-                engine::handler::push_wheel_event(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
                 break;
             case KEY_ID::KEY_75:
-                engine::handler::push_wheel_switch(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
                 break;
 
             case KEY_ID::KEY_80:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_81:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_82:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_83:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
                 break;
             case KEY_ID::KEY_84:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
                 break;
             case KEY_ID::KEY_85:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
                 break;
             case KEY_ID::KEY_86:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
                 break;
             case KEY_ID::KEY_87:
-                engine::handler::push_joystick_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
                 break;
 
             default:
@@ -142,6 +143,29 @@ namespace engine
         extern const TABLE get_mapping(void)
         {
             return keypad_code_table.get_table();
+        }
+
+        extern void enable_nums(const bool _enable)
+        {
+            static TABLE last_mode = keypad_code_table.get_table();
+            if (_enable)
+            {
+                last_mode = keypad_code_table.get_table();
+                keypad_code_table.set_table(TABLE::NUMBER);
+            }
+            else
+            {
+                keypad_code_table.set_table(last_mode);
+            }
+        }
+
+        extern void enable_cups(const bool _enable)
+        {
+            enable_shift(_enable);
+        }
+
+        extern void enable_scroll(const bool _enable)
+        {
         }
 
         extern void perform_hid_key(const KEY_ID _identifier, const TABLE _table)

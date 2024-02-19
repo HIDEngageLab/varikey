@@ -144,6 +144,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_10bwdb.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_varikey.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_modifiers.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_keypad.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board.cpp
