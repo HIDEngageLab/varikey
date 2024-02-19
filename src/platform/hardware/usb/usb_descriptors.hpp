@@ -23,7 +23,7 @@ namespace platform
             CUSTOM = 0xE0,
         };
 
-        extern void sent_keycode(const uint8_t _code);
+        extern void sent_keycode(const uint8_t _modifier, const uint8_t _code);
         extern void sent_keycode();
     }
 }

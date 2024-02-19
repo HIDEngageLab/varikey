@@ -91,6 +91,7 @@ namespace engine
             const TABLE get_table() const { return table; }
 
             const uint8_t get_code(const KEY_ID) const;
+
             void perform(const KEY_ID);
             void clean(void);
 

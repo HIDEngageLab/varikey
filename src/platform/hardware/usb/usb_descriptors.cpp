@@ -457,11 +457,12 @@ namespace platform
 {
     namespace usb
     {
-        extern void sent_keycode(const uint8_t _code)
+        extern void sent_keycode(const uint8_t _modifier, const uint8_t _code)
         {
             uint8_t keycode[6] = {0};
             keycode[0] = _code;
-            tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), 0, keycode);
+
+            tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), _modifier, keycode);
         }
 
         extern void sent_keycode()

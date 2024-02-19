@@ -77,6 +77,7 @@ namespace engine
                     *ptr++ = (uint8_t)state;
                     *ptr++ = (uint8_t)key_id;
                     *ptr++ = (uint8_t)table;
+                    *ptr++ = (uint8_t)engine::keypad::get_modifier();
                 }
             };
         }

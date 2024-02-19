@@ -26,25 +26,21 @@ namespace engine
             if (set_report.command == platform::usb::COMMAND::KEYBOARD)
             {
                 const uint8_t led_flags = _buffer.space[0];
+                
+                if ((led_flags & 0x01) == 0x01)
+                    engine::keypad::enable_nums(true);
+                else
+                    engine::keypad::enable_nums(false);
 
-                static bool num{false};
-                static bool caps{false};
-                static bool scroll{false};
+                if ((led_flags & 0x02) == 0x02)
+                    engine::keypad::enable_cups(true);
+                else
+                    engine::keypad::enable_cups(false);
 
-                if (led_flags & 0x01)
-                {
-                    num = !num;
-                }
-
-                if (led_flags & 0x02)
-                {
-                    caps = !caps;
-                }
-
-                if (led_flags & 0x04)
-                {
-                    scroll = !scroll;
-                }
+                if ((led_flags & 0x04) == 0x04)
+                    engine::keypad::enable_scroll(true);
+                else
+                    engine::keypad::enable_scroll(false);
             }
             else if (set_report.command == platform::usb::COMMAND::MOUSE)
             {

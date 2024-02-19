@@ -27,10 +27,8 @@ namespace engine
 
         extern void perform(void);
 
-        extern void push_wheel_event(const payload::keycode::CONTROL, const engine::keypad::KEY_ID, const engine::keypad::STATE);
         extern void push_key_event(const engine::keypad::KEY_ID, const engine::keypad::STATE);
-        extern void push_wheel_switch(const payload::keycode::CONTROL, const engine::keypad::KEY_ID, const engine::keypad::STATE);
-        extern void push_joystick_event(const payload::keycode::CONTROL, const engine::keypad::KEY_ID, const engine::keypad::STATE);
+        extern void push_control_event(const payload::keycode::CONTROL, const engine::keypad::KEY_ID, const engine::keypad::STATE);
 
         extern event_queue_t event_queue;
     }
