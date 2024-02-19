@@ -93,7 +93,9 @@ namespace engine
             }
             case GET_REPORT::SERIAL:
             {
-                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::SERIAL};
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::SERIAL,
+                };
                 identity.serialize(_buffer.space);
                 break;
             }
@@ -101,13 +103,16 @@ namespace engine
             {
                 const engine::payload::temperature::content_t temperature{
                     .function = engine::payload::temperature::FUNCTION::GET,
-                    .value = get_temperature() * 1000,
+                    .value = get_temperature(),
                 };
                 temperature.serialize(_buffer.space);
+                break;
             }
             case GET_REPORT::UNIQUE:
             {
-                const engine::payload::identity::content_t identity{.identifier = engine::payload::identity::IDENTIFIER::UNIQUE};
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::UNIQUE,
+                };
                 identity.serialize(_buffer.space);
                 break;
             }

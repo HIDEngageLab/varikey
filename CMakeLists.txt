@@ -154,6 +154,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keymatrix/adp5585.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keymatrix/keymatrix_adp5585_handler_gossenmetrawatt.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keymatrix/keymatrix_adp5585_handler_varikey.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keymatrix/keymatrix_adp5585_handler.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/keymatrix/keymatrix_adp5585.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_gpio.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/soc/rp2040/rp2040_soc.cpp

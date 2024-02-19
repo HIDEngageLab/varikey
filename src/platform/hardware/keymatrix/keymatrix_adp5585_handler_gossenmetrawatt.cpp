@@ -7,8 +7,8 @@
  */
 
 #include "keymatrix_adp5585_handler_gossenmetrawatt.hpp"
+#include "keymatrix_adp5585_handler.hpp"
 #include "keypad.hpp"
-#include "keypad_keycode.hpp"
 
 namespace platform
 {
@@ -142,10 +142,10 @@ namespace platform
                 engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_72, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::C3_GPI_10:
-                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_70, get_key_state(_event.state));
+                push_wheel_turn(TRIGGER::UP, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::C4_GPI_11:
-                engine::keypad::switch_key(engine::keypad::KEY_ID::KEY_71, get_key_state(_event.state));
+                push_wheel_turn(TRIGGER::DN, get_key_state(_event.state));
                 break;
             case platform::hardware::adp5585::event::IDENTIFIER::LOGIC:
                 break;
@@ -153,6 +153,5 @@ namespace platform
                 break;
             }
         }
-
     }
 }
