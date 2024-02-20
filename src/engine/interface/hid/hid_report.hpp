@@ -28,17 +28,17 @@ namespace engine
             DISPLAY = (int)payload::IDENTIFIER::DISPLAY,
             GADGET = (int)payload::IDENTIFIER::GADGET,
             GPIO = (int)payload::IDENTIFIER::GPIO,
-            KEYCODE = (int)payload::IDENTIFIER::KEYCODE,
             KEYPAD = (int)payload::IDENTIFIER::KEYPAD,
             PARAMETER = (int)payload::IDENTIFIER::PARAMETER,
             RESET = (int)payload::IDENTIFIER::RESET,
+
             UNDEFINED = (int)payload::IDENTIFIER::UNDEFINED,
         };
 
         struct __attribute__((__packed__)) set_report_t
         {
             platform::usb::COMMAND command;
-            SET_REPORT identifier;
+            SET_REPORT report;
             union
             {
                 u_int8_t buffer[MAX_REPORT_SIZE];
@@ -59,6 +59,7 @@ namespace engine
         enum class GET_REPORT : uint8_t
         {
             FIRMWARE = (int)payload::identity::IDENTIFIER::FIRMWARE,
+            GPIO = (int)payload::IDENTIFIER::GPIO,
             HARDWARE = (int)payload::identity::IDENTIFIER::HARDWARE,
             MAPPING = (int)payload::keypad::IDENTIFIER::MAPPING,
             SERIAL = (int)payload::identity::IDENTIFIER::SERIAL,
@@ -68,19 +69,29 @@ namespace engine
             UNDEFINED = (int)payload::IDENTIFIER::UNDEFINED,
         };
 
+        enum class RESULT : uint8_t
+        {
+            CUSTOM = common::result::CUSTOM,
+            ERROR = common::result::ERROR,
+            FAILURE = common::result::FAILURE,
+            SUCCESS = common::result::SUCCESS,
+            UNKNOWN = common::result::UNKNOWN,
+            UNSUPPORTED = common::result::UNSUPPORTED,
+
+            UNDEFINED = (int)common::result::UNDEFINED,
+        };
+
         struct __attribute__((__packed__)) get_report_t
         {
-            GET_REPORT identifier;
+            GET_REPORT report;
+            RESULT result;
             union
             {
-                u_int8_t buffer[MAX_REPORT_SIZE];
+                payload::gpio::content_t gpio;
                 payload::identity::content_t identity;
-                payload::temperature::content_t temperature;
                 payload::keypad::content_t keypad;
+                payload::temperature::content_t temperature;
             };
-
-            void deserialize(const const_chunk_t &);
-            void serialize(const chunk_t &) const;
         };
     }
 }

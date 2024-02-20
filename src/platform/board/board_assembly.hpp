@@ -23,9 +23,9 @@ namespace platform
 {
     namespace board
     {
-        struct BoardKeypad : public pulp::ComponentInterface
+        struct Assembly : public pulp::ComponentInterface
         {
-            virtual ~BoardKeypad() {}
+            virtual ~Assembly() {}
 
             const defines::IDENTIFIER getIdentifier() const;
 
@@ -41,6 +41,8 @@ namespace platform
             hardware::UartDevice uart;
             driver::SoC soc;
         };
+
+        extern Assembly assembly;
     }
 }
 

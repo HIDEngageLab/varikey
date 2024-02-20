@@ -36,7 +36,7 @@
 #include "hid_handler.hpp"
 #include "hid_report.hpp"
 
-#define PRINT_EXTENDED_OUTPUT
+#define _PRINT_EXTENDED_OUTPUT
 
 #define TUD_HID_REPORT_DESC_CUSTOM(...)                      \
     HID_USAGE_PAGE_N(HID_USAGE_PAGE_VENDOR, 2),              \
@@ -395,13 +395,49 @@ void tud_hid_set_report_cb(uint8_t instance,
 
     if (report_type == HID_REPORT_TYPE_FEATURE)
     {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### HID_REPORT_TYPE_FEATURE\n");
+#endif
         /* do nothing */
     }
     else if (report_type == HID_REPORT_TYPE_OUTPUT)
     {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### HID_REPORT_TYPE_OUTPUT\n");
+#endif
         const_chunk_t chunk{.space = buffer, .size = bufsize};
         engine::hid::set_report_handler(_report_id, chunk);
     }
+    else if (HID_REPORT_TYPE_INPUT)
+    {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### HID_REPORT_TYPE_INPUT\n");
+#endif
+    }
+    else if (HID_REPORT_TYPE_INVALID)
+    {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### HID_REPORT_TYPE_INVALID\n");
+#endif
+    }
+    else
+    {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### unknown report type\n");
+#endif
+    }
+
+#if defined(PRINT_EXTENDED_OUTPUT)
+    printf("tud_hid_set_report_cb\n");
+
+    printf("report_id 0x%x\n", _report_id);
+    printf("report_type 0x%x\n", report_type);
+    for (int i = 0; i < bufsize; ++i)
+    {
+        printf("0x%x\n", buffer[i]);
+    }
+    printf("\n");
+#endif
 }
 
 /**
@@ -426,16 +462,29 @@ uint16_t tud_hid_get_report_cb(uint8_t instance,
 
     if (report_type == HID_REPORT_TYPE_FEATURE)
     {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("##### HID_REPORT_TYPE_FEATURE\n");
+#endif
         chunk_t chunk{.space = buffer, .size = bufsize};
         engine::hid::get_report_handler(report_id, chunk);
     }
     else if (report_type == HID_REPORT_TYPE_INPUT)
     {
-        printf("input\n");
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("##### HID_REPORT_TYPE_INPUT\n");
+#endif
     }
     else if (report_type == HID_REPORT_TYPE_OUTPUT)
     {
-        printf("output\n");
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("##### HID_REPORT_TYPE_OUTPUT\n");
+#endif
+    }
+    else
+    {
+#if defined(PRINT_EXTENDED_OUTPUT)
+        printf("###### unknown report type\n");
+#endif
     }
 
 #if defined(PRINT_EXTENDED_OUTPUT)

@@ -12,7 +12,7 @@
 #include "backlight3.hpp"
 #include "backlight_color.hpp"
 #include "backlight_settings.hpp"
-#include "board.hpp"
+#include "board_assembly.hpp"
 
 namespace engine
 {
@@ -89,8 +89,8 @@ namespace engine
 
             if (backlight.mode != backlight.next_mode)
             {
-                static uint64_t timestamp = get_stopwatch();
-                const uint64_t us_diff = get_stopwatch() - timestamp;
+                static uint64_t timestamp = platform::board::assembly.soc.get_stopwatch();
+                const uint64_t us_diff = platform::board::assembly.soc.get_stopwatch() - timestamp;
                 if (us_diff > backlight.next_delay_ms * 1000)
                 {
                     backlight.mode = backlight.next_mode;
@@ -227,8 +227,8 @@ namespace engine
 
         static void perform_step(const int _delay)
         {
-            static uint64_t timestamp = get_stopwatch();
-            const uint64_t current_time = get_stopwatch();
+            static uint64_t timestamp = platform::board::assembly.soc.get_stopwatch();
+            const uint64_t current_time = platform::board::assembly.soc.get_stopwatch();
             if ((current_time - timestamp) < static_cast<uint64_t>(_delay) * 1000)
             {
                 return;
@@ -359,7 +359,7 @@ namespace engine
 
             if (left_changed || right_changed)
             {
-                set_backlight(backlight.left.curent, backlight.right.curent);
+                platform::board::assembly.backlight.set_backlight(backlight.left.curent, backlight.right.curent);
             }
         }
 

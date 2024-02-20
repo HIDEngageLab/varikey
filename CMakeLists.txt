@@ -120,6 +120,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/images/image_varikey.c
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine_event_handler.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/engine.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/gpio/engine_gpio.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_control.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_feature.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/cmd_setting.cpp
@@ -146,8 +147,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_modifiers.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_keypad.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/platform/board/board_assembly.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/backlight_ws2812.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/backlight/ws2812.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/display/display_oled_128x32.cpp
@@ -196,6 +196,7 @@ target_include_directories(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/fonts
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/display/resources/images
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/event/
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/gpio/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hci/commander/

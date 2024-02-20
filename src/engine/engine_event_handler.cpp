@@ -7,7 +7,7 @@
  */
 
 #include "engine_event_handler.hpp"
-#include "board.hpp"
+#include "board_assembly.hpp"
 #include "cmd_control.hpp"
 #include "cmd_feature.hpp"
 #include "cmd_setting.hpp"
@@ -55,7 +55,7 @@ namespace engine
         {
             const uint64_t PERFORM_DELAY_NS = 15000;
             static uint64_t tsm = 0;
-            const uint64_t curr = get_stopwatch();
+            const uint64_t curr = platform::board::assembly.soc.get_stopwatch();
 
             if ((curr - tsm) > PERFORM_DELAY_NS)
             {
@@ -101,6 +101,20 @@ namespace engine
             };
             handler::event_queue.push(event);
         };
+
+        extern void push_gpio_event(const platform::board::IDENTIFIER _identifier, const platform::board::VALUE _value)
+        {
+            const payload::gpio::content_t content = {
+                .function = payload::gpio::FUNCTION::LEVEL_SET,
+                .identifier = _identifier,
+                .level = _value,
+            };
+            const engine::handler::event_t event = {
+                .identifier = payload::IDENTIFIER::KEYCODE,
+                .gpio = content,
+            };
+            handler::event_queue.push(event);
+        }
 
         static void keypad_handle_event(event_t const _event)
         {
@@ -220,7 +234,17 @@ namespace engine
                 }
                 break;
             case payload::IDENTIFIER::GPIO:
+            {
+                if (events_over_serial_enabled)
+                {
+                    engine::hci::cmd::feature::gpio_indication(_event.gpio.identifier, _event.gpio.level);
+                }
+                if (events_over_usb_enabled)
+                {
+                    /* todo: idea send gpio level changes as a key press/release sequences */
+                }
                 break;
+            }
             case payload::IDENTIFIER::KEYCODE:
             {
                 if (_event.keycode.state == payload::keycode::STATE::PRESS)

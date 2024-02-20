@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "backlight3.hpp"
-#include "board.hpp"
+#include "board_assembly.hpp"
 #include "display.hpp"
 #include "display_font.hpp"
 #include "engine.hpp"
@@ -54,7 +54,7 @@ namespace engine
         case defines::STATE::IDLE:
             next_mode = defines::STATE::ACTIVE;
             /* start engine ticker */
-            ticker_start(tick);
+            platform::board::assembly.soc.ticker_start(tick);
             break;
         case defines::STATE::ACTIVE:
             next_mode = mode;
@@ -149,7 +149,7 @@ namespace engine
                 next_mode = defines::STATE::UNDEFINED;
 
                 /* start engine ticker */
-                ticker_stop();
+                platform::board::assembly.soc.ticker_stop();
 
                 /* show state */
                 stop_device_application();
@@ -168,7 +168,7 @@ namespace engine
 
     static void tick(void)
     {
-        board_perform();
+        platform::board::assembly.perform();
         perform();
     }
 

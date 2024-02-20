@@ -30,6 +30,8 @@ namespace engine
         extern void push_key_event(const engine::keypad::KEY_ID, const engine::keypad::STATE);
         extern void push_control_event(const payload::keycode::CONTROL, const engine::keypad::KEY_ID, const engine::keypad::STATE);
 
+        extern void push_gpio_event(const platform::board::IDENTIFIER, const platform::board::VALUE);
+
         extern event_queue_t event_queue;
     }
 }
