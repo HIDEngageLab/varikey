@@ -8,19 +8,21 @@
 
 #include <stdio.h>
 
-#include "board_keypad.hpp"
+#include "board_assembly.hpp"
 #include "revision.h"
 
 namespace platform
 {
     namespace board
     {
-        const defines::IDENTIFIER BoardKeypad::getIdentifier() const
+        platform::board::Assembly assembly;
+
+        const defines::IDENTIFIER Assembly::getIdentifier() const
         {
             return platform::defines::IDENTIFIER(identity::hardware::IDENTIFIER);
         }
 
-        void BoardKeypad::initialize()
+        void Assembly::initialize()
         {
             soc.initialize();
             backlight.initialize();
@@ -30,7 +32,7 @@ namespace platform
             keypad.initialize();
         }
 
-        void BoardKeypad::shutdown()
+        void Assembly::shutdown()
         {
             soc.shutdown();
             keypad.shutdown();
@@ -40,7 +42,7 @@ namespace platform
             backlight.shutdown();
         }
 
-        void BoardKeypad::perform()
+        void Assembly::perform()
         {
             usb.perform();
             uart.perform();

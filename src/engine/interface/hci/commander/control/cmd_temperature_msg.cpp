@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "board.hpp"
+#include "board_assembly.hpp"
 #include "chunk.h"
 #include "cmd_temperature_msg.hpp"
 #include "commander.hpp"
@@ -52,7 +52,7 @@ namespace engine
                     if (_msg->content.function == FUNCTION::GET)
                     {
                         _msg->result = RESULT::SUCCESS;
-                        _msg->content.value = get_temperature();
+                        _msg->content.value = platform::board::assembly.soc.get_temperature();
                     }
                     else if (_msg->content.function == FUNCTION::ALARM)
                     {

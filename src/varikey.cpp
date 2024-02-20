@@ -7,14 +7,14 @@
  */
 
 #include "varikey.hpp"
-#include "board.hpp"
+#include "board_assembly.hpp"
 #include "engine.hpp"
 
 static bool running = true;
 
 int main(void)
 {
-    board_initialize();
+    platform::board::assembly.initialize();
     engine::initialize();
     engine::start();
 
@@ -30,5 +30,5 @@ extern void varikey_shutdown(void)
 
     engine::stop();
     engine::shutdown();
-    board_shutdown();
+    platform::board::assembly.shutdown();
 }

@@ -9,8 +9,9 @@
 #include <tusb.h>
 
 #include "backlight_color.hpp"
-#include "board.hpp"
+#include "board_assembly.hpp"
 #include "engine_event_handler.hpp"
+#include "engine_gpio.hpp"
 #include "hid_report.hpp"
 #include "usb_descriptors.hpp"
 
@@ -18,6 +19,8 @@ namespace engine
 {
     namespace hid
     {
+        payload::gpio::content_t pin_request;
+
         extern void set_report_handler(const uint8_t _identifier, const const_chunk_t &_buffer)
         {
             set_report_t set_report;
@@ -26,7 +29,7 @@ namespace engine
             if (set_report.command == platform::usb::COMMAND::KEYBOARD)
             {
                 const uint8_t led_flags = _buffer.space[0];
-                
+
                 if ((led_flags & 0x01) == 0x01)
                     engine::keypad::enable_nums(true);
                 else
@@ -50,7 +53,7 @@ namespace engine
             {
                 set_report.deserialize(_buffer);
 
-                switch (set_report.identifier)
+                switch (set_report.report)
                 {
                 case SET_REPORT::BACKLIGHT:
                     using PROGRAM = engine::backlight::MODE;
@@ -200,8 +203,32 @@ namespace engine
                     }
                     break;
                 case SET_REPORT::GPIO:
-                    break;
-                case SET_REPORT::KEYCODE:
+                    switch (set_report.gpio.function)
+                    {
+                    case engine::payload::gpio::FUNCTION::DISABLE:
+                        engine::gpio::enable_event(false);
+                        break;
+                    case engine::payload::gpio::FUNCTION::ENABLE:
+                        engine::gpio::enable_event(true);
+                        break;
+                    case engine::payload::gpio::FUNCTION::DIRECTION_GET:
+                        pin_request.function = set_report.gpio.function;
+                        pin_request.identifier = set_report.gpio.identifier;
+                        break;
+                    case engine::payload::gpio::FUNCTION::DIRECTION_SET:
+                        engine::gpio::set_direction(set_report.gpio.identifier, set_report.gpio.direction);
+                        break;
+                    case engine::payload::gpio::FUNCTION::LEVEL_GET:
+                        pin_request.function = set_report.gpio.function;
+                        pin_request.identifier = set_report.gpio.identifier;
+                        break;
+                    case engine::payload::gpio::FUNCTION::LEVEL_SET:
+                        engine::gpio::set_value(set_report.gpio.identifier, set_report.gpio.level == platform::board::VALUE::HIGH);
+                        break;
+
+                    default:
+                        break;
+                    }
                     break;
                 case SET_REPORT::KEYPAD:
                     switch (set_report.keypad.identifier)
@@ -289,11 +316,108 @@ namespace engine
             }
         }
 
-        extern void get_report_handler(const uint8_t _identifier, const chunk_t &_buffer)
+        extern void get_report_handler(const uint8_t identifier, const chunk_t &_buffer)
         {
-            engine::hid::get_report_t _report;
-            _report.identifier = static_cast<engine::hid::GET_REPORT>(_identifier);
-            _report.serialize(_buffer);
+            engine::hid::get_report_t report;
+            report.report = static_cast<engine::hid::GET_REPORT>(identifier);
+            report.result = engine::hid::RESULT::SUCCESS;
+
+            uint8_t *ptr = _buffer.space;
+            *ptr++ = (uint8_t)report.result;
+
+            switch (report.report)
+            {
+            case GET_REPORT::FIRMWARE:
+            {
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::FIRMWARE,
+                };
+                identity.serialize(ptr);
+                break;
+            }
+            case GET_REPORT::GPIO:
+            {
+                if (pin_request.function == engine::payload::gpio::FUNCTION::DIRECTION_GET)
+                {
+                    const engine::gpio::DIRECTION direction = engine::gpio::get_direction(pin_request.identifier);
+                    if (direction == engine::gpio::DIRECTION::UNDEFINED)
+                    {
+                        report.result = engine::hid::RESULT::FAILURE;
+                    }
+                    const engine::payload::gpio::content_t gpio{
+                        .function = engine::payload::gpio::FUNCTION::DIRECTION_GET,
+                        .identifier = pin_request.identifier,
+                        .direction = direction,
+                    };
+                    gpio.serialize(ptr);
+                }
+                else if (pin_request.function == engine::payload::gpio::FUNCTION::LEVEL_GET)
+                {
+                    const engine::gpio::VALUE value = engine::gpio::get_value(pin_request.identifier);
+                    if (value == engine::gpio::VALUE::UNDEFINED)
+                    {
+                        report.result = engine::hid::RESULT::FAILURE;
+                    }
+                    const engine::payload::gpio::content_t gpio{
+                        .function = engine::payload::gpio::FUNCTION::LEVEL_GET,
+                        .identifier = pin_request.identifier,
+                        .level = value,
+                    };
+                    gpio.serialize(ptr);
+                }
+                else
+                {
+                    report.result = engine::hid::RESULT::UNKNOWN;
+                }
+                break;
+            }
+            case GET_REPORT::HARDWARE:
+            {
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::HARDWARE,
+                };
+                identity.serialize(ptr);
+                break;
+            }
+            case GET_REPORT::MAPPING:
+            {
+                const engine::payload::keypad::content_t keypad{
+                    .identifier = engine::payload::keypad::IDENTIFIER::MAPPING,
+                    .function = engine::payload::keypad::FUNCTION::GET,
+                    .table = engine::keypad::get_mapping(),
+                };
+                keypad.serialize(ptr);
+                break;
+            }
+            case GET_REPORT::SERIAL:
+            {
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::SERIAL,
+                };
+                identity.serialize(ptr);
+                break;
+            }
+            case GET_REPORT::TEMPERATURE:
+            {
+                const engine::payload::temperature::content_t temperature{
+                    .function = engine::payload::temperature::FUNCTION::GET,
+                    .value = platform::board::assembly.soc.get_temperature(),
+                };
+                temperature.serialize(ptr);
+                break;
+            }
+            case GET_REPORT::UNIQUE:
+            {
+                const engine::payload::identity::content_t identity{
+                    .identifier = engine::payload::identity::IDENTIFIER::UNIQUE,
+                };
+                identity.serialize(ptr);
+                break;
+            }
+
+            default:
+                break;
+            }
         }
     }
 }

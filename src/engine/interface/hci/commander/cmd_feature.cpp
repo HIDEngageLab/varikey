@@ -13,7 +13,6 @@
 */
 
 #include "cmd_feature.hpp"
-#include "board.hpp"
 #include "board_defines.hpp"
 #include "checksum.hpp"
 #include "cmd_backlight_msg.hpp"
@@ -22,6 +21,7 @@
 #include "cmd_keypad_msg.hpp"
 #include "commander.hpp"
 #include "engine.hpp"
+#include "engine_gpio.hpp"
 #include "param_keypad.hpp"
 #include "parameter.hpp"
 #include "payload_gpio.hpp"
@@ -65,47 +65,6 @@ namespace engine
                 }
 
                 /**
-                 * \brief Module local GPIO interrupt handler
-                 *
-                 * \param _identifier
-                 * \param _level
-                 */
-                void gpio_callback(uint8_t _identifier, bool _level)
-                {
-                    using IDENTIFIER = engine::payload::gpio::IDENTIFIER;
-                    using LEVEL = engine::payload::gpio::LEVEL;
-
-                    IDENTIFIER identifier{IDENTIFIER::UNDEFINED};
-                    LEVEL level = LEVEL::UNDEFINED;
-                    switch (_identifier)
-                    {
-                    case 0:
-                        identifier = IDENTIFIER::PIN1;
-                        break;
-                    case 1:
-                        identifier = IDENTIFIER::PIN2;
-                        break;
-                    case 2:
-                        identifier = IDENTIFIER::PIN3;
-                        break;
-                    case 3:
-                        identifier = IDENTIFIER::PIN4;
-                        break;
-                    default:
-                        break;
-                    }
-                    if (_level)
-                    {
-                        level = LEVEL::HIGH;
-                    }
-                    else
-                    {
-                        level = LEVEL::LOW;
-                    }
-                    gpio_indication(identifier, level);
-                }
-
-                /**
                     \brief Handle gpio request
                 */
                 extern void gpio_request(chunk_t const *const _chunk)
@@ -118,16 +77,16 @@ namespace engine
                     platform::board::IDENTIFIER identifier;
                     switch (msg.content.identifier)
                     {
-                    case payload::gpio::IDENTIFIER::PIN1:
+                    case payload::gpio::IDENTIFIER::GPIO0:
                         identifier = platform::board::IDENTIFIER::GPIO0;
                         break;
-                    case payload::gpio::IDENTIFIER::PIN2:
+                    case payload::gpio::IDENTIFIER::GPIO1:
                         identifier = platform::board::IDENTIFIER::GPIO1;
                         break;
-                    case payload::gpio::IDENTIFIER::PIN3:
+                    case payload::gpio::IDENTIFIER::GPIO2:
                         identifier = platform::board::IDENTIFIER::GPIO2;
                         break;
-                    case payload::gpio::IDENTIFIER::PIN4:
+                    case payload::gpio::IDENTIFIER::GPIO3:
                         identifier = platform::board::IDENTIFIER::GPIO3;
                         break;
                     default:
@@ -141,7 +100,7 @@ namespace engine
                         {
                         case payload::gpio::FUNCTION::DIRECTION_GET:
                         {
-                            platform::board::DIRECTION direction = get_gpio_direction(identifier);
+                            platform::board::DIRECTION direction = engine::gpio::get_direction(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
                             switch (direction)
                             {
@@ -162,10 +121,10 @@ namespace engine
                             switch (msg.content.direction)
                             {
                             case payload::gpio::DIRECTION::INPUT:
-                                set_gpio_direction(identifier, platform::board::DIRECTION::INPUT);
+                                engine::gpio::set_direction(identifier, platform::board::DIRECTION::INPUT);
                                 break;
                             case payload::gpio::DIRECTION::OUTPUT:
-                                set_gpio_direction(identifier, platform::board::DIRECTION::OUTPUT);
+                                engine::gpio::set_direction(identifier, platform::board::DIRECTION::OUTPUT);
                                 break;
                             default:
                                 msg.result = gpio::RESULT::WRONG_DIRECTION;
@@ -174,15 +133,15 @@ namespace engine
                             break;
                         case payload::gpio::FUNCTION::ENABLE:
                             msg.result = gpio::RESULT::SUCCESS;
-                            enable_gpio_event(gpio_callback, true);
+                            engine::gpio::enable_event(true);
                             break;
                         case payload::gpio::FUNCTION::DISABLE:
                             msg.result = gpio::RESULT::SUCCESS;
-                            enable_gpio_event(gpio_callback, false);
+                            engine::gpio::enable_event(false);
                             break;
                         case payload::gpio::FUNCTION::LEVEL_GET:
                         {
-                            platform::board::VALUE value = get_value(identifier);
+                            platform::board::VALUE value = engine::gpio::get_value(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
                             switch (value)
                             {
@@ -201,7 +160,7 @@ namespace engine
                         }
                         case payload::gpio::FUNCTION::LEVEL_SET:
                         {
-                            platform::board::DIRECTION direction = get_gpio_direction(identifier);
+                            platform::board::DIRECTION direction = engine::gpio::get_direction(identifier);
 
                             if (direction == platform::board::DIRECTION::OUTPUT)
                             {
@@ -209,11 +168,11 @@ namespace engine
                                 switch (msg.content.level)
                                 {
                                 case payload::gpio::LEVEL::LOW:
-                                    set_value(identifier, false);
+                                    engine::gpio::set_value(identifier, false);
                                     msg.result = gpio::RESULT::SUCCESS;
                                     break;
                                 case payload::gpio::LEVEL::HIGH:
-                                    set_value(identifier, true);
+                                    engine::gpio::set_value(identifier, true);
                                     msg.result = gpio::RESULT::SUCCESS;
                                     break;
                                 default:

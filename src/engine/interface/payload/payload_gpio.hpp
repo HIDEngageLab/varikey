@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 
+#include "board_defines.hpp"
 #include "payload_identifier.hpp"
 
 namespace engine
@@ -35,42 +36,25 @@ namespace engine
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            enum class IDENTIFIER : uint8_t
-            {
-                PIN1 = GPIO_ID + 0x0a,
-                PIN2 = GPIO_ID + 0x0b,
-                PIN3 = GPIO_ID + 0x0c,
-                PIN4 = GPIO_ID + 0x0d,
-
-                UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
-            };
+            using IDENTIFIER = platform::board::IDENTIFIER;
 
             /** \brief GPIO message direction code */
-            enum class DIRECTION : uint8_t
-            {
-                INPUT = 0x00,
-                OUTPUT = 0x01,
-                UNDEFINED = 0xFF,
-            };
+            using DIRECTION = platform::board::DIRECTION;
 
             /** \brief GPIO message level code */
-            enum class LEVEL : uint8_t
-            {
-                LOW = 0x00,
-                HIGH = 0x01,
-                UNDEFINED = 0xff,
-            };
+            using LEVEL = platform::board::VALUE;
 
             struct __attribute__((packed)) content_t
             {
-                static const size_t CFM_SIZE = 4;
-
                 FUNCTION function;
                 IDENTIFIER identifier;
-                DIRECTION direction;
-                LEVEL level;
+                union
+                {
+                    DIRECTION direction;
+                    LEVEL level;
+                };
 
-                static const size_t size() { return CFM_SIZE; }
+                static const size_t size() { return 3; }
 
                 void deserialize(uint8_t const *const _space)
                 {
@@ -86,10 +70,10 @@ namespace engine
                     }
 
                     identifier = static_cast<const IDENTIFIER>(_space[1]);
-                    if (!(identifier == IDENTIFIER::PIN1 ||
-                          identifier == IDENTIFIER::PIN2 ||
-                          identifier == IDENTIFIER::PIN3 ||
-                          identifier == IDENTIFIER::PIN4))
+                    if (!(identifier == IDENTIFIER::GPIO0 ||
+                          identifier == IDENTIFIER::GPIO1 ||
+                          identifier == IDENTIFIER::GPIO2 ||
+                          identifier == IDENTIFIER::GPIO3))
                     {
                         identifier = IDENTIFIER::UNDEFINED;
                     }
@@ -114,7 +98,7 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space)
+                void serialize(uint8_t *const _space) const
                 {
                     uint8_t *ptr = _space;
                     *ptr++ = (uint8_t)identifier;

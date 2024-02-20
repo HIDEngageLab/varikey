@@ -20,7 +20,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "board.hpp"
 #include "bytering.hpp"
 #include "usart.hpp"
 
