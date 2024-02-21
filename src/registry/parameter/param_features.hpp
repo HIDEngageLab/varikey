@@ -26,6 +26,7 @@ namespace registry
         namespace features
         {
             static const size_t SIZE = sizeof(uint16_t);
+
             /** \brief Features parameter */
             union register_t
             {
@@ -38,16 +39,17 @@ namespace registry
                     ability_t keypad : 1;
                     ability_t wakeup : 1;
                     uint16_t reserved : 12;
-                } features;
+                } value;
+
+                void initialize(void);
+
+                void deserialize(uint8_t const *const _space);
+                void serialize(uint8_t *const _space) const;
             };
 
             /** \brief Global parameter "features" */
             extern register_t g_register;
 
-            extern void initialize(void);
-
-            extern void deserialize(uint8_t const *const _space);
-            extern void serialize(uint8_t *const _space);
         }
     }
 }

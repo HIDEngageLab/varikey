@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "identity_settings.hpp"
 #include "macros.hpp"
 #include "param_position.hpp"
 
@@ -25,10 +26,6 @@ namespace registry
     {
         namespace position
         {
-
-            static constexpr float MAGIC_LATITUDE = 49.441607f;
-            static constexpr float MAGIC_LONGITUDE = 11.053841f;
-
             register_t g_register = {{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
 
             /**
@@ -36,28 +33,28 @@ namespace registry
 
                 magic values ;)
             */
-            extern void initialize(void)
+            void register_t::initialize(void)
             {
-                g_register.coordinates.latitude = MAGIC_LATITUDE;
-                g_register.coordinates.longitude = MAGIC_LONGITUDE;
+                value.latitude = identity::Settings::MAGIC_LATITUDE;
+                value.longitude = identity::Settings::MAGIC_LONGITUDE;
             }
 
             /**
                 \brief Deserialize position parameter value
             */
-            extern void deserialize(uint8_t const *const _space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(g_register.byte, _space, sizeof(register_t));
+                memcpy(byte, _space, sizeof(register_t));
             }
 
             /**
                 \brief Serialize position parameter value
             */
-            extern void serialize(uint8_t *const _space)
+            void register_t::serialize(uint8_t *const _space) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, g_register.byte, sizeof(register_t));
+                memcpy(_space, byte, sizeof(register_t));
             }
         }
     }

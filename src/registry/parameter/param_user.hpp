@@ -30,15 +30,16 @@ namespace registry
 			struct register_t
 			{
 				uint8_t value[SIZE];
+
+				void initialize(void);
+
+				void deserialize(uint8_t const *const _chunk);
+				void serialize(uint8_t *const _space) const;
 			};
 
 			/** \brief Global user register parameter */
 			extern register_t g_register;
 
-			extern void initialize(void);
-
-			extern void deserialize(uint8_t const *const _chunk);
-			extern void serialize(uint8_t *const _space);
 		}
 	}
 }

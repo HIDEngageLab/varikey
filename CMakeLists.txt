@@ -142,6 +142,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hid/hid_handler.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hid/hid_report.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_backlight.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_parameter.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_10bwdb.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_varikey.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode.cpp
@@ -170,16 +171,17 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/checksum.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/macros.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/random.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_backlight.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_display.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_features.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_keypad.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_maintainer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_mapping.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_position.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_serial_number.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/registry/param_user.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_backlight.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_display.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_features.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_keypad.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_maintainer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_mapping.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_position.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_serial_number.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/param_user.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/parameter_identifier.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry_interface.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/registry.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/varikey.cpp
@@ -221,6 +223,7 @@ target_include_directories(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/platform/hardware/usb/
         ${CMAKE_CURRENT_LIST_DIR}/src/pulp/
         ${CMAKE_CURRENT_LIST_DIR}/src/registry/
+        ${CMAKE_CURRENT_LIST_DIR}/src/registry/parameter/
 )
 
 # Uncomment this line to enable fix for Errata RP2040-E5 (the fix requires use of GPIO 15)

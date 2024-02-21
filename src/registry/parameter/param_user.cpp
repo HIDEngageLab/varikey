@@ -33,30 +33,30 @@ namespace registry
             /**
                 \brief Initialize with default values
             */
-            extern void initialize()
+            void register_t::initialize()
             {
-                g_register.value[0] = 0xff;
-                g_register.value[1] = 0xff;
+                value[0] = 0xff;
+                value[1] = 0xff;
             }
 
             /**
-                \brief Set test register value
+                \brief Deserialize parameter value
             */
-            extern void deserialize(uint8_t const *const _space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                g_register.value[0] = _space[0];
-                g_register.value[1] = _space[1];
+                value[0] = _space[0];
+                value[1] = _space[1];
             }
 
             /**
                 \brief Serialize parameter value
             */
-            extern void serialize(uint8_t *const _space)
+            void register_t::serialize(uint8_t *const _space) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = g_register.value[0];
-                _space[1] = g_register.value[1];
+                _space[0] = value[0];
+                _space[1] = value[1];
             }
         }
     }

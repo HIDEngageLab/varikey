@@ -29,21 +29,23 @@ namespace registry
 			/** \brief Maintainer parameter structure */
 			union register_t
 			{
+				uint8_t byte[2];
 				uint16_t word;
 				struct __attribute__((packed)) maintainer_t
 				{
 					uint16_t protocol : 2;
 					uint16_t hardware : 4;
 					uint16_t identifier : 12;
-				} maintainer;
+				} value;
+
+				void initialize(void);
+
+				void deserialize(uint8_t const *const _space);
+				void serialize(uint8_t *const _space) const;
 			};
 
 			extern register_t g_register;
 
-			extern void initialize(void);
-
-			extern void deserialize(uint8_t const *const _space);
-			extern void serialize(uint8_t *const _space);
 		}
 	}
 }

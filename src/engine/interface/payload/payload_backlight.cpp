@@ -53,7 +53,7 @@ namespace engine
                     color_right.rgb.b = _space[6];
                 }
             }
-            void content_t::serialize(uint8_t *const _space)
+            void content_t::serialize(uint8_t *const _space) const
             {
                 uint8_t *ptr = _space;
                 *ptr++ = (uint8_t)program;

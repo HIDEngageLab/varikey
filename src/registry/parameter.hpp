@@ -13,10 +13,10 @@
     \author Roman Koch, koch.roman@gmail.com
 */
 
-#ifndef __PARAMETER_HPP__
-#define __PARAMETER_HPP__
+#ifndef __REGISTRY_PARAMETER_HPP__
+#define __REGISTRY_PARAMETER_HPP__
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "macros.hpp"
 #include "registry_defines.hpp"
@@ -25,25 +25,6 @@ namespace registry
 {
     namespace parameter
     {
-        /**
-            \brief Parameter identifier type
-        */
-        enum class IDENTIFIER : uint8_t
-        {
-            BACKLIGHT = 0xA1,
-            DISPLAY = 0xA3,
-            FEATURES = 0x51,
-            KEYPAD = 0xA2,
-            MAINTAINER = 0x23,
-            MAPPING = 0xB0,
-            POSITION = 0x24,
-            SERIAL_NUMBER = 0x11,
-            UNDEFINED = 0xff,
-            USER = 0x70,
-        };
-
-        extern const IDENTIFIER to_identifier(const uint8_t);
-
         extern result_t param_format(void);
         extern result_t param_check(void);
 
@@ -79,8 +60,7 @@ namespace registry
         extern result_t param_user_store(void);
 
         extern void debug_out_mem();
-
     }
 }
 
-#endif /* __PARAMETER_HPP__ */
+#endif /* __REGISTRY_PARAMETER_HPP__ */

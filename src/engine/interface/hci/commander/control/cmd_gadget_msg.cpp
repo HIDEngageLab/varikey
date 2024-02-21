@@ -114,7 +114,7 @@ namespace engine
                             if (mode == defines::STATE::ACTIVE ||
                                 mode == defines::STATE::IDLE)
                             {
-                                engine::suspend(registry::parameter::features::g_register.features.wakeup);
+                                engine::suspend(registry::parameter::features::g_register.value.wakeup);
                                 _msg->result = RESULT::SUCCESS;
                             }
                             else

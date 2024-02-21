@@ -33,7 +33,7 @@ namespace engine
 
                 const size_t size() const;
                 void deserialize(uint8_t const *const _space);
-                void serialize(uint8_t *const _space);
+                void serialize(uint8_t *const _space) const;
             };
         }
     }

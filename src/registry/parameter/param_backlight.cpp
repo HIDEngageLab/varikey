@@ -34,30 +34,30 @@ namespace registry
             /**
                 \brief initialize field with default values
             */
-            extern void initialize(void)
+            void register_t::initialize(void)
             {
-                g_register.param_backlight.mode = engine::BacklightSetting::DEFAULT_MODE;
-                g_register.param_backlight.left = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT;
-                g_register.param_backlight.right = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT;
-                g_register.param_backlight.timeout = engine::BacklightSetting::DEFAULT_MOUNT_TIMEOUT;
+                value.mode = engine::BacklightSetting::DEFAULT_MODE;
+                value.left = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT;
+                value.right = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT;
+                value.timeout = engine::BacklightSetting::DEFAULT_MOUNT_TIMEOUT;
             }
 
             /**
-                \brief Deserialize vref parameter value
+                \brief Deserialize parameter value
             */
-            extern void deserialize(uint8_t const *const _space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(g_register.byte, _space, sizeof(register_t));
+                memcpy(byte, _space, sizeof(register_t));
             }
 
             /**
-                \brief Serialize vref parameter value
+                \brief Serialize parameter value
             */
-            extern void serialize(uint8_t *const _space)
+            void register_t::serialize(uint8_t *const _space) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, g_register.byte, sizeof(register_t));
+                memcpy(_space, byte, sizeof(register_t));
             }
         }
     }

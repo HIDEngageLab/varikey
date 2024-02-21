@@ -58,17 +58,20 @@ namespace engine
                     mode = MODE::UNDEFINED;
                 }
 
-                void serialize(uint8_t *const _space)
+                void serialize(uint8_t *const _space) const
                 {
                     uint8_t *ptr = _space;
                     *ptr++ = (uint8_t)command;
-                    if (!(mode == MODE::ACTIVE ||
-                          mode == MODE::IDLE ||
-                          mode == MODE::PENDING))
+                    if (mode == MODE::ACTIVE ||
+                        mode == MODE::IDLE ||
+                        mode == MODE::PENDING)
                     {
-                        mode = MODE::UNDEFINED;
+                        *ptr++ = (uint8_t)mode;
                     }
-                    *ptr++ = (uint8_t)mode;
+                    else
+                    {
+                        *ptr++ = (uint8_t)MODE::UNDEFINED;
+                    }
                 }
             };
         }

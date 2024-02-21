@@ -216,7 +216,7 @@ namespace engine
                 case payload::gadget::COMMAND::MOUNT:
                     backlight::set_mode(backlight::MODE::TURBO, 0);
                     backlight::set_mode(backlight::MODE::MOUNT,
-                                        registry::parameter::backlight::g_register.param_backlight.timeout);
+                                        registry::parameter::backlight::g_register.value.timeout);
                     break;
                 case payload::gadget::COMMAND::UNMOUNT:
                     backlight::set_mode(backlight::MODE::ALERT, 0);
@@ -227,7 +227,7 @@ namespace engine
                 case payload::gadget::COMMAND::RESUME:
                     backlight::set_mode(backlight::MODE::TURBO, 0);
                     backlight::set_mode(backlight::MODE::MOUNT,
-                                        registry::parameter::backlight::g_register.param_backlight.timeout);
+                                        registry::parameter::backlight::g_register.value.timeout);
                     break;
                 default:
                     break;

@@ -25,7 +25,8 @@ namespace registry
     {
         namespace display
         {
-            static const size_t SIZE = sizeof(uint8_t) * 1;
+            static const size_t SIZE = sizeof(uint8_t);
+
             /**
                 \brief Display parameter
             */
@@ -39,15 +40,16 @@ namespace registry
                     ability_t inverse : 1;
                     ability_t slides : 1;
                     uint8_t reserved : 5;
-                } display;
+                } value;
+
+                void initialize(void);
+
+                void deserialize(uint8_t const *const _space);
+                void serialize(uint8_t *const _space) const;
             };
 
             extern register_t g_register;
 
-            extern void initialize(void);
-
-            extern void deserialize(uint8_t const *const _space);
-            extern void serialize(uint8_t *const _space);
         }
     }
 }

@@ -21,27 +21,28 @@
 
 #include "chunk.h"
 #include "macros.hpp"
+#include "parameter_identifier.hpp"
 
 namespace registry
 {
-    extern result_t backlight_get(chunk_t *const _chunk);
-    extern result_t backlight_set(chunk_t const *const _chunk);
-    extern result_t display_get(chunk_t *const _chunk);
-    extern result_t display_set(chunk_t const *const _chunk);
-    extern result_t features_get(chunk_t *const _chunk);
-    extern result_t features_set(chunk_t const *const _chunk);
-    extern result_t keypad_get(chunk_t *const _chunk);
-    extern result_t keypad_set(chunk_t const *const _chunk);
-    extern result_t maintainer_get(chunk_t *const _chunk);
-    extern result_t maintainer_set(chunk_t const *const _chunk);
-    extern result_t mapping_get(chunk_t *const _chunk);
-    extern result_t mapping_set(chunk_t const *const _chunk);
-    extern result_t position_get(chunk_t *const _chunk);
-    extern result_t position_set(chunk_t const *const _chunk);
-    extern result_t serial_number_get(chunk_t *const _chunk);
-    extern result_t serial_number_set(chunk_t const *const _chunk);
-    extern result_t user_get(chunk_t *const_chunk);
-    extern result_t user_set(chunk_t const *const _chunk);
+    extern result_t backlight_get(chunk_t &_chunk);
+    extern result_t backlight_set(const const_chunk_t &_chunk);
+    extern result_t display_get(chunk_t &_chunk);
+    extern result_t display_set(const const_chunk_t &_chunk);
+    extern result_t features_get(chunk_t &_chunk);
+    extern result_t features_set(const const_chunk_t &_chunk);
+    extern result_t keypad_get(chunk_t &_chunk);
+    extern result_t keypad_set(const const_chunk_t &_chunk);
+    extern result_t maintainer_get(chunk_t &_chunk);
+    extern result_t maintainer_set(const const_chunk_t &_chunk);
+    extern result_t mapping_get(chunk_t &_chunk);
+    extern result_t mapping_set(const const_chunk_t &_chunk);
+    extern result_t position_get(chunk_t &_chunk);
+    extern result_t position_set(const const_chunk_t &_chunk);
+    extern result_t serial_number_get(chunk_t &_chunk);
+    extern result_t serial_number_set(const const_chunk_t &_chunk);
+    extern result_t user_get(chunk_t &_chunk);
+    extern result_t user_set(const const_chunk_t &_chunk);
 }
 
 #endif /* __REGISTRY_INTERFACE_HPP__ */

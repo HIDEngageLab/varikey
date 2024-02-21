@@ -38,15 +38,16 @@ namespace registry
                 {
                     uint16_t click_ms;
                     uint16_t push_ms;
-                } keypad;
+                } value;
+
+                void initialize(void);
+
+                void deserialize(uint8_t const *const _space);
+                void serialize(uint8_t *const _space) const;
             };
 
             extern register_t g_register;
 
-            extern void initialize(void);
-
-            extern void deserialize(uint8_t const *const _space);
-            extern void serialize(uint8_t *const _space);
         }
     }
 }

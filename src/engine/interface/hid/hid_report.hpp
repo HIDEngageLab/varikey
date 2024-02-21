@@ -62,6 +62,7 @@ namespace engine
             GPIO = (int)payload::IDENTIFIER::GPIO,
             HARDWARE = (int)payload::identity::IDENTIFIER::HARDWARE,
             MAPPING = (int)payload::keypad::IDENTIFIER::MAPPING,
+            PARAMETER = (int)payload::IDENTIFIER::PARAMETER,
             SERIAL = (int)payload::identity::IDENTIFIER::SERIAL,
             TEMPERATURE = (int)payload::IDENTIFIER::TEMPERATURE,
             UNIQUE = (int)payload::identity::IDENTIFIER::UNIQUE,
@@ -90,6 +91,7 @@ namespace engine
                 payload::gpio::content_t gpio;
                 payload::identity::content_t identity;
                 payload::keypad::content_t keypad;
+                payload::parameter::content_t parameter;
                 payload::temperature::content_t temperature;
             };
         };

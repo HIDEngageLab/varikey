@@ -13,6 +13,7 @@
 #include "engine_event_handler.hpp"
 #include "engine_gpio.hpp"
 #include "hid_report.hpp"
+#include "registry_defines.hpp"
 #include "usb_descriptors.hpp"
 
 namespace engine
@@ -20,6 +21,7 @@ namespace engine
     namespace hid
     {
         payload::gpio::content_t pin_request;
+        payload::parameter::content_t parameter_request;
 
         extern void set_report_handler(const uint8_t _identifier, const const_chunk_t &_buffer)
         {
@@ -294,6 +296,19 @@ namespace engine
                     }
                     break;
                 case SET_REPORT::PARAMETER:
+                    switch (set_report.parameter.function)
+                    {
+                    case engine::payload::parameter::FUNCTION::GET:
+                        parameter_request.identifier = set_report.parameter.identifier;
+                        parameter_request.function = set_report.parameter.function;
+                        break;
+                    case engine::payload::parameter::FUNCTION::SET:
+                        engine::payload::parameter::set_parameter(set_report.parameter);
+                        break;
+
+                    default:
+                        break;
+                    }
                     break;
                 case SET_REPORT::RESET:
                 {
@@ -389,6 +404,10 @@ namespace engine
                 keypad.serialize(ptr);
                 break;
             }
+            case GET_REPORT::PARAMETER:
+                engine::payload::parameter::get_parameter(parameter_request);
+                parameter_request.serialize(ptr);
+                break;
             case GET_REPORT::SERIAL:
             {
                 const engine::payload::identity::content_t identity{

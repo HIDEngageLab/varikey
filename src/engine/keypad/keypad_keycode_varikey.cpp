@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "keypad_keycode_varikey.hpp"
+#include "tusb.h"
 
 namespace engine
 {
