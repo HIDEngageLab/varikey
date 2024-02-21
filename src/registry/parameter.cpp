@@ -31,6 +31,7 @@
 #include "param_serial_number.hpp"
 #include "param_user.hpp"
 #include "parameter.hpp"
+#include "parameter_identifier.hpp"
 
 namespace registry
 {
@@ -139,32 +140,6 @@ namespace registry
             printf("\n");
         }
 #endif
-
-        /**
-         * \brief
-         *
-         * \param _value
-         * \return const IDENTIFIER
-         */
-        extern const IDENTIFIER to_identifier(const uint8_t _value)
-        {
-            IDENTIFIER tmp = static_cast<IDENTIFIER>(_value);
-            if (tmp == IDENTIFIER::BACKLIGHT ||
-                tmp == IDENTIFIER::DISPLAY ||
-                tmp == IDENTIFIER::FEATURES ||
-                tmp == IDENTIFIER::KEYPAD ||
-                tmp == IDENTIFIER::MAINTAINER ||
-                tmp == IDENTIFIER::MAPPING ||
-                tmp == IDENTIFIER::POSITION ||
-                tmp == IDENTIFIER::SERIAL_NUMBER ||
-                tmp == IDENTIFIER::USER)
-            {
-                return tmp;
-            }
-
-            return IDENTIFIER::UNDEFINED;
-        }
-
         /**
             \brief Erase a sector with parameter data page and backup page
 
@@ -178,15 +153,15 @@ namespace registry
             restore_interrupts(ints);
 
             /* create node parameter */
-            backlight::initialize();
-            display::initialize();
-            features::initialize();
-            keypad::initialize();
-            maintainer::initialize();
-            mapping::initialize();
-            position::initialize();
-            serial_number::initialize();
-            user::initialize();
+            backlight::g_register.initialize();
+            display::g_register.initialize();
+            features::g_register.initialize();
+            keypad::g_register.initialize();
+            maintainer::g_register.initialize();
+            mapping::g_register.initialize();
+            position::g_register.initialize();
+            serial_number::g_register.initialize();
+            user::g_register.initialize();
 
             return param_save(registry_start);
         }
@@ -671,12 +646,12 @@ namespace registry
             if (identifier != IDENTIFIER::BACKLIGHT ||
                 length != sizeof(backlight::register_t))
             {
-                backlight::initialize();
+                backlight::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            backlight::initialize();
+            backlight::g_register.initialize();
 
             /* load latitude and longitude */
             for (uint8_t i = 0; i < sizeof(backlight::register_t); ++i)
@@ -696,12 +671,12 @@ namespace registry
             if (identifier != IDENTIFIER::DISPLAY ||
                 length != sizeof(display::register_t))
             {
-                display::initialize();
+                display::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            display::initialize();
+            display::g_register.initialize();
 
             /* load latitude and longitude */
             for (uint8_t i = 0; i < sizeof(display::register_t); ++i)
@@ -722,7 +697,7 @@ namespace registry
                 length != sizeof(features::register_t))
             {
                 /* set default values */
-                features::initialize();
+                features::g_register.initialize();
                 return FAILURE;
             }
 
@@ -744,12 +719,12 @@ namespace registry
             if (identifier != IDENTIFIER::KEYPAD ||
                 length != sizeof(keypad::register_t))
             {
-                keypad::initialize();
+                keypad::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            keypad::initialize();
+            keypad::g_register.initialize();
 
             /* load latitude and longitude */
             for (uint8_t i = 0; i < sizeof(keypad::register_t); ++i)
@@ -769,12 +744,12 @@ namespace registry
             if (identifier != IDENTIFIER::MAINTAINER ||
                 length != sizeof(maintainer::register_t))
             {
-                maintainer::initialize();
+                maintainer::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            maintainer::initialize();
+            maintainer::g_register.initialize();
 
             /* load maintainer */
             maintainer::g_register.word = SETWORD(_source[2], _source[3]);
@@ -791,12 +766,12 @@ namespace registry
             if (identifier != IDENTIFIER::MAPPING ||
                 length != sizeof(mapping::register_t))
             {
-                mapping::initialize();
+                mapping::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            mapping::initialize();
+            mapping::g_register.initialize();
 
             /* load parameter value */
             for (uint8_t i = 0; i < mapping::SIZE; ++i)
@@ -816,12 +791,12 @@ namespace registry
             if (identifier != IDENTIFIER::POSITION ||
                 length != sizeof(position::register_t))
             {
-                position::initialize();
+                position::g_register.initialize();
                 return FAILURE;
             }
 
             /* set default values */
-            position::initialize();
+            position::g_register.initialize();
 
             /* load latitude and longitude */
             for (uint8_t i = 0; i < sizeof(position::register_t); ++i)
@@ -855,7 +830,7 @@ namespace registry
                 serial_number::g_unique_key == serial_number::INVALID_VALUE)
             {
                 /* serial number is not valid => create new one */
-                serial_number::initialize();
+                serial_number::g_register.initialize();
                 return FAILURE;
             }
 
@@ -871,7 +846,7 @@ namespace registry
             if (identifier != IDENTIFIER::USER ||
                 length != registry::parameter::user::SIZE)
             {
-                user::initialize();
+                user::g_register.initialize();
                 return FAILURE;
             }
 

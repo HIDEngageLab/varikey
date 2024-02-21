@@ -26,15 +26,17 @@ namespace registry
     {
         namespace backlight
         {
-            static const size_t SIZE = sizeof(engine::backlight::MODE) +
-                                       sizeof(engine::backlight::color_t) +
-                                       sizeof(engine::backlight::color_t) +
+            using namespace engine::backlight;
+
+            static const size_t SIZE = sizeof(MODE) +
+                                       sizeof(color_t) +
+                                       sizeof(color_t) +
                                        sizeof(uint16_t);
 
             /**
                 \brief Vref parameter
 
-                Parameter with two float values for latitude and longitude.
+                Backlight default configuration.
             */
             union register_t
             {
@@ -42,19 +44,19 @@ namespace registry
                 /** \brief Node backlight details */
                 struct __attribute__((packed)) backlight_t
                 {
-                    engine::backlight::MODE mode;
-                    engine::backlight::color_t left;
-                    engine::backlight::color_t right;
+                    MODE mode;
+                    color_t left;
+                    color_t right;
                     uint16_t timeout;
-                } param_backlight;
+                } value;
+
+                void initialize(void);
+                
+                void deserialize(uint8_t const *const _space);
+                void serialize(uint8_t *const _space) const;
             };
 
             extern register_t g_register;
-
-            extern void initialize(void);
-
-            extern void deserialize(uint8_t const *const _space);
-            extern void serialize(uint8_t *const _space);
         }
     }
 }

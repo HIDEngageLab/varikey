@@ -79,7 +79,7 @@ namespace engine
                     case IDENTIFIER::PLATFORM:
                         break;
                     case IDENTIFIER::SERIAL:
-                        registry::parameter::serial_number::deserialize(&_space[1]);
+                        registry::parameter::serial_number::g_register.deserialize(&_space[1]);
                         break;
                     case IDENTIFIER::UNIQUE:
                         break;
@@ -115,7 +115,7 @@ namespace engine
                         memcpy(_space, ::identity::hardware::PLATFORM, strlen(::identity::hardware::PLATFORM));
                         break;
                     case IDENTIFIER::SERIAL:
-                        registry::parameter::serial_number::serialize(ptr);
+                        registry::parameter::serial_number::g_register.serialize(ptr);
                         break;
                     case IDENTIFIER::UNIQUE:
                         serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);

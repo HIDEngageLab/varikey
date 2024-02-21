@@ -29,31 +29,31 @@ namespace registry
             register_t g_register = {0xff};
 
             /**
-                \brief initialize field with default values
+                \brief Initialize field with default values
             */
-            extern void initialize(void)
+            void register_t::initialize(void)
             {
-                g_register.display.inverse = DISABLE;
-                g_register.display.rotate = DISABLE;
-                g_register.display.slides = ENABLE;
+                value.inverse = DISABLE;
+                value.rotate = DISABLE;
+                value.slides = ENABLE;
             }
 
             /**
-                \brief Deserialize wheel parameter value
+                \brief Deserialize parameter value
             */
-            extern void deserialize(uint8_t const *const _space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                g_register.byte[0] = _space[0];
+                byte[0] = _space[0];
             }
 
             /**
-                \brief Serialize wheel parameter value
+                \brief Serialize parameter value
             */
-            extern void serialize(uint8_t *const _space)
+            void register_t::serialize(uint8_t *const _space) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = g_register.byte[0];
+                _space[0] = byte[0];
             }
         }
     }

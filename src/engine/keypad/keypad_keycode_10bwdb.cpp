@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "keypad_keycode_10bwdb.hpp"
+#include "tusb.h"
 
 namespace engine
 {

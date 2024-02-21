@@ -69,7 +69,7 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space)
+                void serialize(uint8_t *const _space) const
                 {
                     uint8_t *ptr = _space;
                     *ptr++ = (uint8_t)control;

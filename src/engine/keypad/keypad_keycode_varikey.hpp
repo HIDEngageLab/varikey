@@ -10,7 +10,6 @@
 #define __ENGINE_KEYPAD_KEYCODE_VARIKEY_HPP__
 
 #include "keypad_keycode.hpp"
-#include "tusb.h"
 
 namespace engine
 {
@@ -24,6 +23,9 @@ namespace engine
             static code_table_t multimedia_value;
             static code_table_t navigation_value;
             static code_table_t custom_value;
+
+            static const uint16_t DEFAULT_CLICK_MS{128};
+            static const uint16_t DEFAULT_PUSH_MS{384};
         };
     }
 }

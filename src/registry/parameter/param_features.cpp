@@ -32,32 +32,32 @@ namespace registry
             /**
                 \brief Initialize features field with default values
             */
-            extern void initialize(void)
+            void register_t::initialize(void)
             {
-                g_register.features.autostart = ENABLE;
-                g_register.features.display = ENABLE;
-                g_register.features.keypad = ENABLE;
-                g_register.features.wakeup = DISABLE;
+                value.autostart = ENABLE;
+                value.display = ENABLE;
+                value.keypad = ENABLE;
+                value.wakeup = DISABLE;
             }
 
             /**
                 \brief Set features level parameter value
             */
-            extern void deserialize(uint8_t const *const _space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                g_register.byte[0] = _space[0];
-                g_register.byte[1] = _space[1];
+                byte[0] = _space[0];
+                byte[1] = _space[1];
             }
 
             /**
                 \brief Serialize parameter value
             */
-            extern void serialize(uint8_t *const _space)
+            void register_t::serialize(uint8_t *const _space) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = g_register.byte[0];
-                _space[1] = g_register.byte[1];
+                _space[0] = byte[0];
+                _space[1] = byte[1];
             }
         }
     }

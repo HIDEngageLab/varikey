@@ -37,24 +37,24 @@ namespace registry
             /**
                 \brief Initialize with default values
             */
-            extern void initialize(void) {}
+            void register_t::initialize(void) {}
 
             /**
-                \brief Deserialize serial number value from chunk
+                \brief Deserialize parameter value from chunk
             */
-            extern void deserialize(uint8_t const *_space)
+            void register_t::deserialize(uint8_t const *_space)
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(g_register.value, _space, SIZE);
+                memcpy(value, _space, SIZE);
             }
 
             /**
-                \brief Serialize serial number value to chunk
+                \brief Serialize parameter value to chunk
             */
-            extern void serialize(uint8_t *_space)
+            void register_t::serialize(uint8_t *_space) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, g_register.value, SIZE);
+                memcpy(_space, value, SIZE);
             }
         }
     }

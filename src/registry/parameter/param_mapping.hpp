@@ -1,5 +1,5 @@
 /**
- * \file param_serial_number.hpp
+ * \file param_mapping.hpp
  * \author Koch, Roman (koch.roman@gmail.com)
  *
  * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
@@ -7,14 +7,14 @@
  */
 
 /**
-	\brief Configuration parameter serial number
+	\brief Configuration parameter keypad mapping
 
 	\internal
 	\author Roman Koch, koch.roman@gmail.com
 */
 
-#ifndef __PARAM_SERIAL_NUMBER_HPP__
-#define __PARAM_SERIAL_NUMBER_HPP__
+#ifndef __PARAM_MAPPING_HPP__
+#define __PARAM_MAPPING_HPP__
 
 #include "parameter.hpp"
 
@@ -22,10 +22,9 @@ namespace registry
 {
 	namespace parameter
 	{
-		namespace serial_number
+		namespace mapping
 		{
-			static const uint32_t INVALID_VALUE = 0xffffffff;
-			static const size_t SIZE = 12;
+			static const size_t SIZE = 24;
 
 			/**
 				\brief Serial number parameter
@@ -35,20 +34,17 @@ namespace registry
 			struct register_t
 			{
 				uint8_t value[SIZE];
+
+				void initialize(void);
+
+				void deserialize(uint8_t const *_space);
+				void serialize(uint8_t *_space) const;
 			};
 
 			/** \brief Global serial number parameter */
 			extern register_t g_register;
-
-			/** \brief Global unique key parameter */
-			extern uint32_t g_unique_key;
-
-			extern void initialize(void);
-
-			extern void deserialize(uint8_t const *_space);
-			extern void serialize(uint8_t *_space);
 		}
 	}
 }
 
-#endif /* __PARAM_SERIAL_NUMBER_HPP__ */
+#endif /* __PARAM_MAPPING_HPP__ */

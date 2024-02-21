@@ -6,8 +6,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-#ifndef __PAYLOAD_PARAMETER_HPP__
-#define __PAYLOAD_PARAMETER_HPP__
+#ifndef __ENGINE_PAYLOAD_PARAMETER_HPP__
+#define __ENGINE_PAYLOAD_PARAMETER_HPP__
 
 #include <cstdint>
 #include <cstdlib>
@@ -16,8 +16,17 @@
 #include "engine_defines.hpp"
 #include "macros.hpp"
 #include "param_backlight.hpp"
+#include "param_display.hpp"
+#include "param_features.hpp"
+#include "param_keypad.hpp"
+#include "param_maintainer.hpp"
+#include "param_mapping.hpp"
+#include "param_position.hpp"
+#include "param_serial_number.hpp"
+#include "param_user.hpp"
 #include "parameter.hpp"
 #include "payload_identifier.hpp"
+#include "registry_defines.hpp"
 #include "registry_interface.hpp"
 
 namespace engine
@@ -48,31 +57,32 @@ namespace engine
 
             struct __attribute__((packed)) content_t
             {
-                static const size_t size() { return 2; }
 
                 IDENTIFIER identifier;
                 FUNCTION function;
-                chunk_t value;
-
-                void deserialize(uint8_t const *const _space)
+                union
                 {
-                    identifier = registry::parameter::to_identifier(_space[0]);
-                    function = static_cast<FUNCTION>(_space[1]);
-                }
+                    registry::parameter::backlight::register_t backlight;
+                    registry::parameter::display::register_t display;
+                    registry::parameter::features::register_t features;
+                    registry::parameter::keypad::register_t keypad;
+                    registry::parameter::maintainer::register_t maintainer;
+                    registry::parameter::mapping::register_t mapping;
+                    registry::parameter::position::register_t position;
+                    registry::parameter::serial_number::register_t serial_number;
+                    registry::parameter::user::register_t user;
+                } parameter;
 
-                void serialize(uint8_t *const _space)
-                {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)identifier;
-                    *ptr++ = (uint8_t)function;
-                    for (size_t i = 0; i < value.size; ++i)
-                    {
-                        *ptr++ = value.space[i];
-                    }
-                }
+                const size_t size() const;
+
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t *const) const; 
             };
+
+            extern registry::result_t set_parameter(const engine::payload::parameter::content_t &);
+            extern registry::result_t get_parameter(engine::payload::parameter::content_t &);
         }
     }
 }
 
-#endif // __PAYLOAD_PARAMETER_HPP__
+#endif // __ENGINE_PAYLOAD_PARAMETER_HPP__

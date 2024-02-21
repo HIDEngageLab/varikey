@@ -70,159 +70,27 @@ namespace engine
 
                     /* deserialize */
                     _msg->content.deserialize(_chunk->space);
-                    if (_msg->content.identifier == IDENTIFIER::UNDEFINED)
+                    if (_msg->content.identifier != IDENTIFIER::UNDEFINED)
                     {
-                        _msg->result = RESULT::UNKNOWN;
-                    }
-                    if (!(_msg->content.function == FUNCTION::GET ||
-                          _msg->content.function == FUNCTION::SET))
-                    {
-                        _msg->result = RESULT::UNKNOWN;
-                    }
-
-                    if (_msg->result != RESULT::UNKNOWN)
-                    {
-                        const chunk_t parameter_space{.space = (uint8_t *const)&_chunk->space[2],
-                                                      .size = registry::parameter::backlight::SIZE};
-                        registry::result_t result;
-
                         if (_msg->content.function == FUNCTION::SET)
                         {
-                            switch (_msg->content.identifier)
-                            {
-                            case IDENTIFIER::BACKLIGHT:
-                                result = registry::backlight_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::DISPLAY:
-                                result = registry::display_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::FEATURES:
-                                result = registry::features_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::KEYPAD:
-                                result = registry::keypad_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::MAINTAINER:
-                                result = registry::maintainer_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::MAPPING:
-                                result = registry::mapping_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::POSITION:
-                                result = registry::position_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::SERIAL_NUMBER:
-                                result = registry::serial_number_set(&parameter_space);
-                                break;
-                            case IDENTIFIER::USER:
-                                result = registry::user_set(&parameter_space);
-                                break;
-
-                            default:
-                                _msg->result = engine::hci::cmd::param::RESULT::UNKNOWN;
-                                break;
-                            }
-
+                            const registry::result_t result = engine::payload::parameter::set_parameter(_msg->content);
                             set_message_result(result);
                         }
                         else if (_msg->content.function == FUNCTION::GET)
                         {
-                            using IDENTIFIER = registry::parameter::IDENTIFIER;
-
-                            auto handle_backlight_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::backlight_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::backlight::register_t);
-                            };
-
-                            auto handle_display_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::display_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::display::register_t);
-                            };
-
-                            auto handle_feature_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::features_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::features::register_t);
-                            };
-
-                            auto handle_keypad_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::keypad_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::keypad::register_t);
-                            };
-
-                            auto handle_maintainer_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::maintainer_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::maintainer::register_t);
-                            };
-
-                            auto handle_mapping_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::mapping_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::mapping::register_t);
-                            };
-
-                            auto handle_position_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::position_get(&_msg->value));
-                                _msg->value.size = sizeof(registry::parameter::position::register_t);
-                            };
-
-                            auto handle_serial_number_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::serial_number_get(&_msg->value));
-                                _msg->value.size = registry::parameter::serial_number::SIZE;
-                            };
-
-                            auto handle_user_request = [&]()
-                            {
-                                _msg->result = static_cast<const param::RESULT>(registry::user_get(&_msg->value));
-                                _msg->value.size = registry::parameter::user::SIZE;
-                            };
-
-                            switch (_msg->content.identifier)
-                            {
-                            case IDENTIFIER::BACKLIGHT:
-                                handle_backlight_request();
-                                break;
-                            case IDENTIFIER::DISPLAY:
-                                handle_display_request();
-                                break;
-                            case IDENTIFIER::FEATURES:
-                                handle_feature_request();
-                                break;
-                            case IDENTIFIER::KEYPAD:
-                                handle_keypad_request();
-                                break;
-                            case IDENTIFIER::MAINTAINER:
-                                handle_maintainer_request();
-                                break;
-                            case IDENTIFIER::MAPPING:
-                                handle_mapping_request();
-                                break;
-                            case IDENTIFIER::POSITION:
-                                handle_position_request();
-                                break;
-                            case IDENTIFIER::SERIAL_NUMBER:
-                                handle_serial_number_request();
-                                break;
-                            case IDENTIFIER::USER:
-                                handle_user_request();
-                                break;
-
-                            default:
-                                _msg->result = engine::hci::cmd::param::RESULT::UNKNOWN;
-                                break;
-                            }
+                            const registry::result_t result = engine::payload::parameter::get_parameter(_msg->content);
                             set_message_result(result);
                         }
                         else
                         {
                             _msg->content.function = FUNCTION::UNDEFINED;
+                            _msg->result = RESULT::UNKNOWN;
                         }
+                    }
+                    else
+                    {
+                        _msg->result = RESULT::UNKNOWN;
                     }
                 }
 
