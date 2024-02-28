@@ -134,22 +134,10 @@ namespace engine
                     backlight::set_mode(backlight::MODE::MEDIUM, 0);
                     break;
                 case PROGRAM::MORPH:
-                {
                     backlight::set_mode(backlight::MODE::CONST, 0);
-                    {
-                        const uint8_t r = _event.backlight.color_left.rgb.r;
-                        const uint8_t g = _event.backlight.color_left.rgb.g;
-                        const uint8_t b = _event.backlight.color_left.rgb.b;
-                        backlight::morph_left(r, g, b);
-                    }
-                    {
-                        const uint8_t r = _event.backlight.color_right.rgb.r;
-                        const uint8_t g = _event.backlight.color_right.rgb.g;
-                        const uint8_t b = _event.backlight.color_right.rgb.b;
-                        backlight::morph_right(r, g, b);
-                    }
+                    backlight::morph_left(_event.backlight.color_left);
+                    backlight::morph_right(_event.backlight.color_right);
                     break;
-                }
                 case PROGRAM::MOUNT:
                     backlight::set_mode(backlight::MODE::MOUNT, 0);
                     break;
@@ -157,22 +145,10 @@ namespace engine
                     backlight::set_mode(backlight::MODE::OFF, 0);
                     break;
                 case PROGRAM::SET:
-                {
                     backlight::set_mode(backlight::MODE::CONST, 0);
-                    {
-                        const uint8_t r = _event.backlight.color_left.rgb.r;
-                        const uint8_t g = _event.backlight.color_left.rgb.g;
-                        const uint8_t b = _event.backlight.color_left.rgb.b;
-                        backlight::set_left(r, g, b);
-                    }
-                    {
-                        const uint8_t r = _event.backlight.color_right.rgb.r;
-                        const uint8_t g = _event.backlight.color_right.rgb.g;
-                        const uint8_t b = _event.backlight.color_right.rgb.b;
-                        backlight::set_right(r, g, b);
-                    }
+                    backlight::set_left(_event.backlight.color_left);
+                    backlight::set_right(_event.backlight.color_right);
                     break;
-                }
                 case PROGRAM::SLOW:
                     backlight::set_mode(backlight::MODE::SLOW, 0);
                     break;

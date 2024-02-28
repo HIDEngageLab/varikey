@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 
+#include "backlight_color.hpp"
 #include "backlight_mode.hpp"
 
 namespace engine
@@ -27,6 +28,11 @@ namespace engine
 
         extern void morph_left(const uint8_t r, const uint8_t g, const uint8_t b);
         extern void morph_right(const uint8_t r, const uint8_t g, const uint8_t b);
+
+        extern inline void set_left(const color_t &_color) { set_left(_color.rgb.r, _color.rgb.g, _color.rgb.b); }
+        extern inline void set_right(const color_t &_color) { set_right(_color.rgb.r, _color.rgb.g, _color.rgb.b); }
+        extern inline void morph_left(const color_t &_color) { morph_left(_color.rgb.r, _color.rgb.g, _color.rgb.b); }
+        extern inline void morph_right(const color_t &_color) { morph_right(_color.rgb.r, _color.rgb.g, _color.rgb.b); }
     }
 }
 

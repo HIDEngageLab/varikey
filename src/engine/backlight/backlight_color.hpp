@@ -26,6 +26,9 @@ namespace engine
             } rgb;
         } color_t;
 
+        static const color_t BLACK_COLOR{.rgb = {.r = 0, .g = 0, .b = 0}};
+        static const color_t ALERT_COLOR{.rgb = {.r = 0x3f, .g = 0, .b = 0}};
+        static const color_t SUSPEND_COLOR{.rgb = {.r = 0x1f, .g = 0x1f, .b = 0}};
     }
 
     static bool operator==(const backlight::color_t &left, const backlight::color_t &right)
