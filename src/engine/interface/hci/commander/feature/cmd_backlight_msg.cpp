@@ -55,12 +55,8 @@ namespace engine
                         break;
                     case engine::backlight::MODE::MORPH:
                         engine::backlight::set_mode(engine::backlight::MODE::CONST, 0);
-                        engine::backlight::morph_left(_msg->content.color_left.rgb.r,
-                                                      _msg->content.color_left.rgb.g,
-                                                      _msg->content.color_left.rgb.b);
-                        engine::backlight::morph_right(_msg->content.color_right.rgb.r,
-                                                       _msg->content.color_right.rgb.g,
-                                                       _msg->content.color_right.rgb.b);
+                        engine::backlight::morph_left(_msg->content.color_left);
+                        engine::backlight::morph_right(_msg->content.color_right);
                         break;
                     case engine::backlight::MODE::MOUNT:
                         engine::backlight::set_mode(engine::backlight::MODE::MOUNT, 0);
@@ -70,12 +66,8 @@ namespace engine
                         break;
                     case engine::backlight::MODE::SET:
                         engine::backlight::set_mode(engine::backlight::MODE::CONST, 0);
-                        engine::backlight::set_left(_msg->content.color_left.rgb.r,
-                                                    _msg->content.color_left.rgb.g,
-                                                    _msg->content.color_left.rgb.b);
-                        engine::backlight::set_right(_msg->content.color_right.rgb.r,
-                                                     _msg->content.color_right.rgb.g,
-                                                     _msg->content.color_right.rgb.b);
+                        engine::backlight::set_left(_msg->content.color_left);
+                        engine::backlight::set_right(_msg->content.color_right);
                         break;
                     case engine::backlight::MODE::SLOW:
                         engine::backlight::set_mode(engine::backlight::MODE::SLOW, 0);

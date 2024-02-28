@@ -64,9 +64,9 @@ namespace engine
             {.left = {.rgb = {0xff, 0x00, 0xff}}, .right = {.rgb = {0xff, 0xff, 0x00}}},
         };
 
-        int const BLINK_ALERT = 250;
-        int const BLINK_MOUNT = 1000;
-        int const BLINK_SUSPEND = 2500;
+        int const BLINK_ALERT = engine::BacklightSetting::BLINK_ALERT_TIMEOUT;
+        int const BLINK_MOUNT = engine::BacklightSetting::BLINK_MOUNT_TIMEOUT;
+        int const BLINK_SUSPEND = engine::BacklightSetting::BLINK_SUSPEND_TIMEOUT;
 
         static void perform_step(const int _delay);
         static void program_switch();
@@ -112,55 +112,41 @@ namespace engine
                 program_switch();
                 break;
             case MODE::ALERT:
-                if (backlight.right.curent.rgb.r == 0x0f &&
-                    backlight.right.curent.rgb.g == 0 &&
-                    backlight.right.curent.rgb.b == 0)
+                if (backlight.right.curent == engine::backlight::ALERT_COLOR)
                 {
-                    set_left(0, 0, 0);
-                    set_right(0, 0, 0);
+                    set_left(engine::backlight::BLACK_COLOR);
+                    set_right(engine::backlight::BLACK_COLOR);
                 }
                 else
                 {
-                    set_left(0x0f, 0, 0);
-                    set_right(0x0f, 0, 0);
+                    set_left(engine::backlight::ALERT_COLOR);
+                    set_right(engine::backlight::ALERT_COLOR);
                 }
                 perform_step(BLINK_ALERT);
                 break;
             case MODE::MOUNT:
-            {
-                const uint8_t r1 = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT.rgb.r;
-                const uint8_t g1 = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT.rgb.g;
-                const uint8_t b1 = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT.rgb.b;
-                const uint8_t r2 = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT.rgb.r;
-                const uint8_t g2 = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT.rgb.g;
-                const uint8_t b2 = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT.rgb.b;
-                if (backlight.right.curent.rgb.r == r1 &&
-                    backlight.right.curent.rgb.g == g1 &&
-                    backlight.right.curent.rgb.b == b1)
+                if (backlight.right.curent == engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT)
                 {
-                    set_left(r2, g2, b2);
-                    set_right(r2, g2, b2);
+                    set_left(engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT);
+                    set_right(engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT);
                 }
                 else
                 {
-                    set_left(r1, g1, b1);
-                    set_right(r1, g1, b1);
+                    set_left(engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT);
+                    set_right(engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT);
                 }
                 perform_step(BLINK_MOUNT);
                 break;
-            }
             case MODE::SUSPEND:
-                if (backlight.right.curent.rgb.r == 0x0f &&
-                    backlight.right.curent.rgb.g == 0x0f &&
-                    backlight.right.curent.rgb.b == 0)
+                if (backlight.right.curent == engine::backlight::SUSPEND_COLOR)
                 {
-                    set_left(0, 0, 0);
-                    set_right(0, 0, 0);
+                    set_left(engine::backlight::BLACK_COLOR);
+                    set_right(engine::backlight::BLACK_COLOR);
                 }
                 else
                 {
-                    set_left(0x0f, 0x0f, 0);
-                    set_right(0x0f, 0x0f, 0);
+                    set_left(engine::backlight::SUSPEND_COLOR);
+                    set_right(engine::backlight::SUSPEND_COLOR);
                 }
                 perform_step(BLINK_SUSPEND);
                 break;
@@ -175,8 +161,8 @@ namespace engine
                 if (!(backlight.left.next.value == backlight.left.curent.value &&
                       backlight.right.next.value == backlight.right.curent.value))
                 {
-                    set_left(0, 0, 0);
-                    set_right(0, 0, 0);
+                    set_left(engine::backlight::BLACK_COLOR);
+                    set_right(engine::backlight::BLACK_COLOR);
                     perform_step(500);
                 }
                 break;
@@ -370,8 +356,8 @@ namespace engine
 
             if (backlight.left.next == backlight.left.curent && backlight.right.next == backlight.right.curent)
             {
-                morph_left(program[program_id].left.rgb.r, program[program_id].left.rgb.g, program[program_id].left.rgb.b);
-                morph_right(program[program_id].right.rgb.r, program[program_id].right.rgb.g, program[program_id].right.rgb.b);
+                morph_left(program[program_id].left);
+                morph_right(program[program_id].right);
 
                 program_id = ((program_id + 1) < program_size) ? program_id + 1 : 0;
             }
