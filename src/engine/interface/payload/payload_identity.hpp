@@ -25,100 +25,123 @@ namespace engine
     {
         namespace identity
         {
-            const uint8_t IDENTITY_ID = to_underlying(payload::IDENTIFIER::IDENTITY);
-
-            enum class IDENTIFIER : uint8_t
+            enum class FUNCTION : uint8_t
             {
-                FIRMWARE = IDENTITY_ID + 1,
-                HARDWARE = IDENTITY_ID + 2,
-                PLATFORM = IDENTITY_ID + 4,
-                PRODUCT = IDENTITY_ID + 3,
-                SERIAL = IDENTITY_ID + 5,
-                UNIQUE = IDENTITY_ID + 6,
+                GET = common::function::GET,
+                SET = common::function::SET,
+
+                UNDEFINED = 0xff,
+            };
+
+            enum class PART : uint8_t
+            {
+                FIRMWARE = 0,
+                HARDWARE = 1,
+                PLATFORM = 2,
+                PRODUCT = 3,
+                SERIAL = 4,
+                UNIQUE = 5,
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
             struct __attribute__((packed)) content_t
             {
-                IDENTIFIER identifier;
+                FUNCTION function;
+                PART part;
 
                 const size_t size()
                 {
-                    switch (identifier)
+                    switch (part)
                     {
-                    case IDENTIFIER::FIRMWARE:
-                        return ::identity::firmware::SIZE;
-                    case IDENTIFIER::HARDWARE:
-                        return ::identity::hardware::SIZE;
-                    case IDENTIFIER::PRODUCT:
-                        return strlen(::identity::firmware::PRODUCT);
-                    case IDENTIFIER::PLATFORM:
-                        return strlen(::identity::hardware::PLATFORM);
-                    case IDENTIFIER::SERIAL:
-                        return registry::parameter::serial_number::SIZE;
-                    case IDENTIFIER::UNIQUE:
-                        return sizeof(uint32_t);
+                    case PART::FIRMWARE:
+                        return 2 + ::identity::firmware::SIZE;
+                    case PART::HARDWARE:
+                        return 2 + ::identity::hardware::SIZE;
+                    case PART::PRODUCT:
+                        return 2 + strlen(::identity::firmware::PRODUCT);
+                    case PART::PLATFORM:
+                        return 2 + strlen(::identity::hardware::PLATFORM);
+                    case PART::SERIAL:
+                        return 2 + registry::parameter::serial_number::SIZE;
+                    case PART::UNIQUE:
+                        return 2 + sizeof(uint32_t);
                     default:
                         break;
                     }
-                    return 0;
+                    return 2;
                 }
 
                 void deserialize(uint8_t const *const _space)
                 {
-                    identifier = static_cast<const IDENTIFIER>(_space[0]);
-                    switch (identifier)
+                    function = static_cast<const FUNCTION>(_space[0]);
+                    part = static_cast<const PART>(_space[1]);
+                    switch (part)
                     {
-                    case IDENTIFIER::FIRMWARE:
+                    case PART::FIRMWARE:
                         break;
-                    case IDENTIFIER::HARDWARE:
+                    case PART::HARDWARE:
                         break;
-                    case IDENTIFIER::PRODUCT:
+                    case PART::PRODUCT:
                         break;
-                    case IDENTIFIER::PLATFORM:
+                    case PART::PLATFORM:
                         break;
-                    case IDENTIFIER::SERIAL:
-                        registry::parameter::serial_number::g_register.deserialize(&_space[1]);
+                    case PART::SERIAL:
+                        if (function == FUNCTION::SET)
+                        {
+                            registry::parameter::serial_number::g_register.deserialize(&_space[1]);
+                        }
                         break;
-                    case IDENTIFIER::UNIQUE:
+                    case PART::UNIQUE:
                         break;
                     default:
-                        identifier = IDENTIFIER::UNDEFINED;
+                        part = PART::UNDEFINED;
                     }
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)identifier;
+                    *(*_ptr)++ = (uint8_t)function;
+                    *(*_ptr)++ = (uint8_t)part;
 
-                    switch (identifier)
+                    switch (part)
                     {
-                    case IDENTIFIER::FIRMWARE:
-                        serialize_word(::identity::firmware::IDENTIFIER, &ptr);
-                        serialize_word(::identity::firmware::REVISION, &ptr);
-                        serialize_word(::identity::firmware::PATCH, &ptr);
-                        serialize_word(::identity::firmware::BUILD, &ptr);
-                        serialize_word(::identity::firmware::VENDOR, &ptr);
+                    case PART::FIRMWARE:
+                        serialize_word(::identity::firmware::IDENTIFIER, _ptr);
+                        serialize_word(::identity::firmware::REVISION, _ptr);
+                        serialize_word(::identity::firmware::PATCH, _ptr);
+                        serialize_word(::identity::firmware::BUILD, _ptr);
+                        serialize_word(::identity::firmware::VENDOR, _ptr);
+                        /*
+                        for (size_t i = 0; i < ::identity::firmware::FIRMWARE_HASH_SIZE; ++i)
+                            *(*_ptr)++ = ::identity::firmware::FIRMWARE_HASH[i];
+                        */
                         break;
-                    case IDENTIFIER::HARDWARE:
-                        serialize_word(registry::parameter::maintainer::g_register.word, &ptr);
-                        serialize_word(::identity::hardware::IDENTIFIER, &ptr);
-                        *ptr++ = ::identity::hardware::NUMBER;
-                        *ptr++ = ::identity::hardware::VARIANT;
+                    case PART::HARDWARE:
+                        serialize_word(registry::parameter::maintainer::g_register.word, _ptr);
+                        serialize_word(::identity::hardware::IDENTIFIER, _ptr);
+                        *(*_ptr)++ = ::identity::hardware::NUMBER;
+                        *(*_ptr)++ = ::identity::hardware::VARIANT;
                         break;
-                    case IDENTIFIER::PRODUCT:
-                        memcpy(ptr, ::identity::firmware::PRODUCT, strlen(::identity::firmware::PRODUCT));
+                    case PART::PRODUCT:
+                    {
+                        const size_t string_length = strlen(::identity::firmware::PRODUCT);
+                        memcpy(*_ptr, ::identity::firmware::PRODUCT, string_length);
+                        (*_ptr) += string_length;
                         break;
-                    case IDENTIFIER::PLATFORM:
-                        memcpy(_space, ::identity::hardware::PLATFORM, strlen(::identity::hardware::PLATFORM));
+                    }
+                    case PART::PLATFORM:
+                    {
+                        const size_t string_length = strlen(::identity::hardware::PLATFORM);
+                        memcpy(*_ptr, ::identity::hardware::PLATFORM, string_length);
+                        (*_ptr) += string_length;
                         break;
-                    case IDENTIFIER::SERIAL:
-                        registry::parameter::serial_number::g_register.serialize(ptr);
+                    }
+                    case PART::SERIAL:
+                        registry::parameter::serial_number::g_register.serialize(_ptr);
                         break;
-                    case IDENTIFIER::UNIQUE:
-                        serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);
+                    case PART::UNIQUE:
+                        serialize_long(registry::parameter::serial_number::g_unique_key, _ptr);
                         break;
                     default:
                         break;

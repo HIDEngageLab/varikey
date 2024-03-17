@@ -20,18 +20,18 @@ namespace engine
     {
         namespace gpio
         {
-            const uint8_t GPIO_ID = to_underlying(payload::IDENTIFIER::GPIO);
-
             /** \brief GPIO message function */
             enum class FUNCTION : uint8_t
             {
                 DISABLE = common::function::DISABLE,
                 ENABLE = common::function::ENABLE,
 
-                DIRECTION_GET = common::function::CUSTOM,
-                DIRECTION_SET = common::function::CUSTOM + 1,
-                LEVEL_GET = common::function::CUSTOM + 4,
-                LEVEL_SET = common::function::CUSTOM + 5,
+                DIRECTION = common::function::CUSTOM,
+                IN = common::function::CUSTOM + 1,
+                OUT = common::function::CUSTOM + 2,
+                VALUE = common::function::CUSTOM + 3,
+                HIGH = common::function::CUSTOM + 4,
+                LOW = common::function::CUSTOM + 5,
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
@@ -42,29 +42,27 @@ namespace engine
             using DIRECTION = platform::board::DIRECTION;
 
             /** \brief GPIO message level code */
-            using LEVEL = platform::board::VALUE;
+            using VALUE = platform::board::VALUE;
 
             struct __attribute__((packed)) content_t
             {
                 FUNCTION function;
                 IDENTIFIER identifier;
-                union
-                {
-                    DIRECTION direction;
-                    LEVEL level;
-                };
+                uint32_t diff;
 
-                static const size_t size() { return 3; }
+                static const size_t size() { return 2; }
 
                 void deserialize(uint8_t const *const _space)
                 {
                     function = static_cast<FUNCTION>(_space[0]);
                     if (!(function == FUNCTION::DISABLE ||
                           function == FUNCTION::ENABLE ||
-                          function == FUNCTION::DIRECTION_GET ||
-                          function == FUNCTION::DIRECTION_SET ||
-                          function == FUNCTION::LEVEL_GET ||
-                          function == FUNCTION::LEVEL_SET))
+                          function == FUNCTION::DIRECTION ||
+                          function == FUNCTION::IN ||
+                          function == FUNCTION::OUT ||
+                          function == FUNCTION::VALUE ||
+                          function == FUNCTION::HIGH ||
+                          function == FUNCTION::LOW))
                     {
                         function = FUNCTION::UNDEFINED;
                     }
@@ -77,40 +75,12 @@ namespace engine
                     {
                         identifier = IDENTIFIER::UNDEFINED;
                     }
-
-                    if (function == FUNCTION::DIRECTION_SET)
-                    {
-                        direction = static_cast<DIRECTION>(_space[2]);
-                        if (!(direction == DIRECTION::INPUT ||
-                              direction == DIRECTION::OUTPUT))
-                        {
-                            direction = DIRECTION::UNDEFINED;
-                        }
-                    }
-                    else if (function == FUNCTION::LEVEL_SET)
-                    {
-                        level = static_cast<const LEVEL>(_space[2]);
-                        if (level == LEVEL::LOW ||
-                            level == LEVEL::HIGH)
-                        {
-                            level = LEVEL::UNDEFINED;
-                        }
-                    }
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)identifier;
-                    *ptr++ = (uint8_t)function;
-                    if (function == FUNCTION::DIRECTION_SET)
-                    {
-                        *ptr++ = (uint8_t)direction;
-                    }
-                    else if (function == FUNCTION::LEVEL_SET)
-                    {
-                        *ptr++ = (uint8_t)level;
-                    }
+                    *(*_ptr)++ = (uint8_t)function;
+                    *(*_ptr)++ = (uint8_t)identifier;
                 }
             };
         }

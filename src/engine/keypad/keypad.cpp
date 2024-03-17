@@ -13,10 +13,9 @@
 #include "hid_handler.hpp"
 #include "hid_report.hpp"
 #include "keypad_keycode_type.hpp"
-#include "keypad_modifiers.hpp"
 #include "macros.hpp"
 #include "param_serial_number.hpp"
-#include "payload_keycode.hpp"
+#include "payload_keypad.hpp"
 #include "revision.h"
 #include "usb_descriptors.hpp"
 
@@ -25,8 +24,6 @@ namespace engine
     namespace keypad
     {
         static engine::Keycode keypad_code_table;
-
-        using CONTROL = payload::keycode::CONTROL;
 
         extern void switch_key(const KEY_ID _identifier, const STATE _state)
         {
@@ -64,47 +61,47 @@ namespace engine
                 break;
 
             case KEY_ID::KEY_70:
-                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_71:
-                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_72:
-                engine::handler::push_control_event(CONTROL::WHEEL_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_73:
-                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_74:
-                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_75:
-                engine::handler::push_control_event(CONTROL::WHEEL_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
 
             case KEY_ID::KEY_80:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_81:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_82:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_83:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_1, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_84:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_85:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_86:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
             case KEY_ID::KEY_87:
-                engine::handler::push_control_event(CONTROL::JOYSTICK_2, _identifier, _state);
+                engine::handler::push_key_event(_identifier, _state);
                 break;
 
             default:
@@ -167,15 +164,14 @@ namespace engine
         {
         }
 
-        extern void perform_hid_key(const KEY_ID _identifier, const TABLE _table)
+        extern void perform(const KEY_ID _identifier)
         {
-            keypad_code_table.set_table(_table);
             keypad_code_table.perform(_identifier);
         }
 
-        extern void clean(void)
+        extern void reset(void)
         {
-            keypad_code_table.clean();
+            keypad_code_table.reset();
         }
 
         extern const uint8_t id2int(const KEY_ID _identifier)

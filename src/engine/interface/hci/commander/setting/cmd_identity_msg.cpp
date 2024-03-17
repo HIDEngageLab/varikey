@@ -45,18 +45,28 @@ namespace engine
                     /* handle */
                     _msg->identity.deserialize(_chunk->space);
 
-                    if (_msg->identity.identifier == engine::payload::identity::IDENTIFIER::FIRMWARE ||
-                        _msg->identity.identifier == engine::payload::identity::IDENTIFIER::HARDWARE ||
-                        _msg->identity.identifier == engine::payload::identity::IDENTIFIER::PRODUCT ||
-                        _msg->identity.identifier == engine::payload::identity::IDENTIFIER::SERIAL ||
-                        _msg->identity.identifier == engine::payload::identity::IDENTIFIER::UNIQUE ||
-                        _msg->identity.identifier == engine::payload::identity::IDENTIFIER::PLATFORM)
+                    if (_msg->identity.part == engine::payload::identity::PART::SERIAL)
                     {
                         _msg->result = RESULT::SUCCESS;
                     }
+                    else if (_msg->identity.part == engine::payload::identity::PART::FIRMWARE ||
+                             _msg->identity.part == engine::payload::identity::PART::HARDWARE ||
+                             _msg->identity.part == engine::payload::identity::PART::PRODUCT ||
+                             _msg->identity.part == engine::payload::identity::PART::UNIQUE ||
+                             _msg->identity.part == engine::payload::identity::PART::PLATFORM)
+                    {
+                        if (_msg->identity.function == engine::payload::identity::FUNCTION::GET)
+                        {
+                            _msg->result = RESULT::SUCCESS;
+                        }
+                        else
+                        {
+                            _msg->result = RESULT::UNSUPPORTED;
+                        }
+                    }
                     else
                     {
-                        _msg->result = RESULT::UNSUPPORTED;
+                        _msg->result = RESULT::UNKNOWN;
                     }
 
                     _msg->value.size = 0;
@@ -74,19 +84,20 @@ namespace engine
                 {
                     assert(_msg != NULL); // identity confirmation message null
 
+                    /* attention: too big */
                     static constexpr std::size_t CFM_SIZE = string_length(::identity::firmware::PRODUCT) +
                                                             string_length(::identity::hardware::PLATFORM) + 1;
 
                     /*  space for message chunk */
                     uint8_t space[CFM_SIZE] = {0};
                     _msg->value.space = space;
-                    _msg->value.size = CFM_SIZE;
+                    _msg->value.size = 2; // identifier + result
                     uint8_t *ptr = space;
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::IDENTITY_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->identity.serialize(ptr);
+                    _msg->identity.serialize(&ptr);
                     _msg->value.size += _msg->identity.size();
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);

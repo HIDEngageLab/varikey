@@ -33,7 +33,7 @@ namespace engine
         {
             namespace temperature
             {
-                static const size_t CFM_SIZE = 6;
+                static const size_t CFM_SIZE = 7;
                 static const size_t IND_SIZE = 5;
 
                 /**
@@ -82,7 +82,7 @@ namespace engine
                     *ptr++ = (uint8_t)engine::hci::COMMAND::TEMPERATURE_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
@@ -101,7 +101,7 @@ namespace engine
                     uint8_t *ptr = space;
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::TEMPERATURE_IND;
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

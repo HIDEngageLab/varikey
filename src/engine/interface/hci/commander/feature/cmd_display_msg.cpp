@@ -41,6 +41,7 @@ namespace engine
 
                     /* deserialize */
                     _msg->result = RESULT::SUCCESS;
+                    _chunk->space[_chunk->size] = 0;
                     _msg->content.deserialize(_chunk->space);
 
                     switch (_msg->content.function)
@@ -56,7 +57,7 @@ namespace engine
                         else
                         {
                             engine::display::set_font(engine::display::FONT::SMALL);
-                            _msg->result = RESULT::UNDEFINED_FONT;
+                            _msg->result = RESULT::UNKNOWN;
                         }
                         break;
                     case FUNCTION::ICON:
@@ -67,7 +68,7 @@ namespace engine
                         else
                         {
                             engine::display::draw(engine::display::ICON::VARIKEY_LOGO);
-                            _msg->result = RESULT::UNDEFINED_ICON;
+                            _msg->result = RESULT::UNKNOWN;
                         }
                         break;
                     case FUNCTION::POSITION:
@@ -76,8 +77,10 @@ namespace engine
 
                         break;
                     case FUNCTION::TEXT:
-                        engine::display::print((char *const)(&_chunk->space[1]));
+                    {
+                        engine::display::print(_msg->content.text);
                         break;
+                    }
                     default:
                         _msg->result = RESULT::UNKNOWN;
                         break;
@@ -105,7 +108,7 @@ namespace engine
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::DISPLAY_CFM;
                     *ptr++ = (uint8_t)_msg->result;
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

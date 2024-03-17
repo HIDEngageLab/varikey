@@ -104,7 +104,7 @@ namespace engine
             }
         }
 
-        void KeypadCode::clean(void)
+        void KeypadCode::reset(void)
         {
             auto reset_cursor = [this](engine::keypad::code_table_t &_table)
             {

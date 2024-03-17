@@ -31,7 +31,7 @@ namespace engine
         {
             namespace hash
             {
-                static const size_t CFM_SIZE = 6;
+                static const size_t CFM_SIZE = 4;
 
                 /**
                     \brief Key request message
@@ -67,7 +67,7 @@ namespace engine
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::HASH_CFM;
                     *ptr++ = (uint8_t)_msg->result;
-                    serialize_long(_msg->hash, &ptr);
+                    serialize_word(_msg->hash, &ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

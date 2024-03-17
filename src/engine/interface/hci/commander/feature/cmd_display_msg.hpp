@@ -32,10 +32,7 @@ namespace engine
                     SUCCESS = common::result::SUCCESS,
                     FAILURE = common::result::FAILURE,
                     UNKNOWN = common::result::UNKNOWN,
-
-                    UNDEFINED_FONT = common::result::CUSTOM,
-                    UNDEFINED_ICON = common::result::CUSTOM + 1,
-                    WRONG_POSITION = common::result::CUSTOM + 2,
+                    WRONG_POSITION = common::result::CUSTOM,
                 };
 
                 /**

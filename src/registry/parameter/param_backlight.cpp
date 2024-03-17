@@ -48,16 +48,31 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(byte, _space, sizeof(register_t));
+                const uint8_t *ptr = _space;
+                value.mode = static_cast<engine::backlight::MODE>(*ptr++);
+                value.left.rgb.r = *ptr++;
+                value.left.rgb.g = *ptr++;
+                value.left.rgb.b = *ptr++;
+                value.right.rgb.r = *ptr++;
+                value.right.rgb.g = *ptr++;
+                value.right.rgb.b = *ptr++;
+                value.timeout = deserialize_word(&ptr);
             }
 
             /**
                 \brief Serialize parameter value
             */
-            void register_t::serialize(uint8_t *const _space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, byte, sizeof(register_t));
+                *(*_ptr)++ = (uint8_t)value.mode;
+                *(*_ptr)++ = (uint8_t)value.left.rgb.r;
+                *(*_ptr)++ = (uint8_t)value.left.rgb.g;
+                *(*_ptr)++ = (uint8_t)value.left.rgb.b;
+                *(*_ptr)++ = (uint8_t)value.right.rgb.r;
+                *(*_ptr)++ = (uint8_t)value.right.rgb.g;
+                *(*_ptr)++ = (uint8_t)value.right.rgb.b;
+                serialize_word(value.timeout, _ptr);
             }
         }
     }

@@ -53,11 +53,11 @@ namespace registry
             /**
                 \brief Serialize parameter value
             */
-            void register_t::serialize(uint8_t *const _space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = byte[0];
-                _space[1] = byte[1];
+                *(*_ptr)++ = byte[0];
+                *(*_ptr)++ = byte[1];
             }
         }
     }

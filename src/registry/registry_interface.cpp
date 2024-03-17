@@ -51,7 +51,8 @@ namespace registry
         {
             assert(_chunk.size >= sizeof(parameter::backlight::register_t)); /* node param adc chunk null */
 
-            parameter::backlight::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::backlight::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::backlight::register_t);
 
             return SUCCESS;
@@ -88,7 +89,8 @@ namespace registry
         {
             assert(_chunk.size >= sizeof(parameter::display::register_t)); /* node param display chunk null */
 
-            parameter::display::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::display::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::display::register_t);
 
             return SUCCESS;
@@ -124,7 +126,8 @@ namespace registry
         /* load and serialize parameter value */
         if (parameter::param_features_load() == SUCCESS)
         {
-            parameter::features::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::features::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::features::register_t);
 
             return SUCCESS;
@@ -161,7 +164,8 @@ namespace registry
         {
             assert(_chunk.size >= sizeof(parameter::keypad::register_t)); /* node param key chunk null */
 
-            parameter::keypad::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::keypad::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::keypad::register_t);
 
             return SUCCESS;
@@ -196,7 +200,8 @@ namespace registry
         /* load and serialize parameter value */
         if (parameter::param_maintainer_load() == SUCCESS)
         {
-            parameter::maintainer::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::maintainer::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::maintainer::register_t);
 
             return SUCCESS;
@@ -230,7 +235,8 @@ namespace registry
         /* load and serialize serial number */
         if (parameter::param_mapping_load() == SUCCESS)
         {
-            parameter::mapping::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::mapping::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::mapping::register_t);
 
             return SUCCESS;
@@ -269,7 +275,8 @@ namespace registry
         {
             assert(_chunk.size >= sizeof(parameter::position::register_t)); /* node param position chunk null */
 
-            parameter::position::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::position::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::position::register_t);
 
             return SUCCESS;
@@ -304,7 +311,8 @@ namespace registry
         /* load and serialize serial number */
         if (parameter::param_serial_number_load() == SUCCESS)
         {
-            parameter::serial_number::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::serial_number::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::serial_number::register_t);
 
             return SUCCESS;
@@ -339,7 +347,8 @@ namespace registry
         /* serialize parameter value */
         if (parameter::param_user_load() == SUCCESS)
         {
-            parameter::user::g_register.serialize(_chunk.space);
+            uint8_t *ptr = _chunk.space;
+            parameter::user::g_register.serialize(&ptr);
             _chunk.size = sizeof(parameter::user::register_t);
 
             return SUCCESS;

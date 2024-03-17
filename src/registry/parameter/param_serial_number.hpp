@@ -38,8 +38,8 @@ namespace registry
 
 				void initialize(void);
 
-				void deserialize(uint8_t const *_space);
-				void serialize(uint8_t *_space) const;
+				void deserialize(uint8_t const *const);
+				void serialize(uint8_t **) const;
 			};
 
 			/** \brief Global serial number parameter */

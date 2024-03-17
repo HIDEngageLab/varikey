@@ -14,7 +14,7 @@ namespace engine
     {
         namespace backlight
         {
-            static const size_t CFM_CMD_SIZE = 2;
+            static const size_t CFM_CMD_SIZE = 1;
             static const size_t CFM_CLR_SIZE = CFM_CMD_SIZE + sizeof(uint8_t) * 6;
 
             const size_t content_t::size() const
@@ -26,6 +26,7 @@ namespace engine
                 }
                 return CFM_CMD_SIZE;
             }
+            
             void content_t::deserialize(uint8_t const *const _space)
             {
                 program = static_cast<const PROGRAM>(_space[0]);
@@ -53,22 +54,21 @@ namespace engine
                     color_right.rgb.b = _space[6];
                 }
             }
-            void content_t::serialize(uint8_t *const _space) const
+
+            void content_t::serialize(uint8_t **_ptr) const
             {
-                uint8_t *ptr = _space;
-                *ptr++ = (uint8_t)program;
+                *(*_ptr)++ = (uint8_t)program;
                 if (program == PROGRAM::MORPH ||
                     program == PROGRAM::SET)
                 {
-                    *ptr++ = (uint8_t)color_left.rgb.r;
-                    *ptr++ = (uint8_t)color_left.rgb.g;
-                    *ptr++ = (uint8_t)color_left.rgb.b;
-                    *ptr++ = (uint8_t)color_right.rgb.r;
-                    *ptr++ = (uint8_t)color_right.rgb.g;
-                    *ptr++ = (uint8_t)color_right.rgb.b;
+                    *(*_ptr)++ = (uint8_t)color_left.rgb.r;
+                    *(*_ptr)++ = (uint8_t)color_left.rgb.g;
+                    *(*_ptr)++ = (uint8_t)color_left.rgb.b;
+                    *(*_ptr)++ = (uint8_t)color_right.rgb.r;
+                    *(*_ptr)++ = (uint8_t)color_right.rgb.g;
+                    *(*_ptr)++ = (uint8_t)color_right.rgb.b;
                 }
             }
-
         }
     }
 }

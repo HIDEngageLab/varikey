@@ -32,8 +32,8 @@ namespace engine
                 color_t color_right;
 
                 const size_t size() const;
-                void deserialize(uint8_t const *const _space);
-                void serialize(uint8_t *const _space) const;
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
         }
     }

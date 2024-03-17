@@ -34,12 +34,12 @@ namespace platform
 
         void Assembly::shutdown()
         {
-            soc.shutdown();
             keypad.shutdown();
             uart.shutdown();
             usb.shutdown();
             display.shutdown();
             backlight.shutdown();
+            soc.shutdown();
         }
 
         void Assembly::perform()

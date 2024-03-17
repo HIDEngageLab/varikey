@@ -24,53 +24,56 @@ namespace engine
         {
             using MODE = engine::defines::STATE;
 
-            const uint8_t GADGET_ID = to_underlying(payload::IDENTIFIER::GADGET);
-
             /** \brief Gadget status function value */
-            enum class COMMAND : uint8_t
+            enum class FUNCTION : uint8_t
             {
                 GET = common::function::GET,
 
-                MOUNT = GADGET_ID + 1,
-                RESUME = GADGET_ID + 4,
-                SUSPEND = GADGET_ID + 3,
-                UNMOUNT = GADGET_ID + 2,
+                MOUNT = common::function::CUSTOM,
+                RESUME = common::function::CUSTOM + 1,
+                SUSPEND = common::function::CUSTOM + 2,
+                UNMOUNT = common::function::CUSTOM + 3,
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
             struct __attribute__((packed)) content_t
             {
-                COMMAND command;
+                FUNCTION function;
                 MODE mode;
 
                 static const size_t size() { return 2; }
                 void deserialize(uint8_t const *const _space)
                 {
-                    command = static_cast<const COMMAND>(_space[0]);
-                    if (!(command == COMMAND::MOUNT ||
-                          command == COMMAND::RESUME ||
-                          command == COMMAND::SUSPEND ||
-                          command == COMMAND::UNMOUNT))
+                    function = static_cast<const FUNCTION>(_space[0]);
+                    if (function == FUNCTION::GET ||
+                        function == FUNCTION::MOUNT ||
+                        function == FUNCTION::RESUME ||
+                        function == FUNCTION::SUSPEND ||
+                        function == FUNCTION::UNMOUNT)
                     {
-                        command = COMMAND::UNDEFINED;
+                        /* do nothing */
+                    }
+                    else
+                    {
+                        function = FUNCTION::UNDEFINED;
                     }
                     mode = MODE::UNDEFINED;
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)command;
+                    *(*_ptr)++ = (uint8_t)function;
                     if (mode == MODE::ACTIVE ||
                         mode == MODE::IDLE ||
-                        mode == MODE::PENDING)
+                        mode == MODE::PENDING ||
+                        mode == MODE::SUSPEND)
                     {
-                        *ptr++ = (uint8_t)mode;
+                        *(*_ptr)++ = (uint8_t)mode;
                     }
                     else
                     {
-                        *ptr++ = (uint8_t)MODE::UNDEFINED;
+                        *(*_ptr)++ = (uint8_t)MODE::UNDEFINED;
                     }
                 }
             };

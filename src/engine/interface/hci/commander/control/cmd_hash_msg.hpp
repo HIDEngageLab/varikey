@@ -39,7 +39,7 @@ namespace engine
                 struct message_t
                 {
                     RESULT result;
-                    uint32_t hash;
+                    uint16_t hash;
                     chunk_t value;
                 };
 

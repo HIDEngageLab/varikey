@@ -50,7 +50,21 @@ namespace engine
                 level = VALUE::LOW;
             }
 
-            engine::handler::push_gpio_event(identifier, level);
+            static uint64_t timestamp = platform::board::assembly.soc.get_stopwatch();
+            const uint64_t current = platform::board::assembly.soc.get_stopwatch();
+            uint64_t us_diff = current - timestamp;
+            if (us_diff > registry::parameter::keypad::g_register.value.click_ms / 2 * 1000)
+            {
+                us_diff = 0;
+                timestamp = platform::board::assembly.soc.get_stopwatch();
+            }
+            else
+            {
+                timestamp = current;
+            }
+
+            engine::handler::push_gpio_event(identifier, level,
+                                             static_cast<const uint32_t>(us_diff & 0xffffffff));
         }
 
         extern void set_direction(const IDENTIFIER _identifier, DIRECTION _direction)

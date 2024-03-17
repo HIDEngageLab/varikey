@@ -12,56 +12,45 @@ namespace engine
 {
     namespace keypad
     {
-        enum MODIFIER
-        {
-            KEY_MOD_LCTRL = 0x01,
-            KEY_MOD_LSHIFT = 0x02,
-            KEY_MOD_LALT = 0x04,
-            KEY_MOD_LMETA = 0x08,
-            KEY_MOD_RCTRL = 0x10,
-            KEY_MOD_RSHIFT = 0x20,
-            KEY_MOD_RALT = 0x40,
-            KEY_MOD_RMETA = 0x80,
-        };
-
-        uint8_t modifier;
-
-        static void add_modifier_mask(const MODIFIER _mask) { modifier |= _mask; }
-        static void reset_modifier_mask(const MODIFIER _mask) { modifier &= ~_mask; }
+        MODIFIER modifier;
 
         /**
-         * \brief 
-         * 
-         * \param _enable 
+         * \brief
+         *
+         * \param _enable
          */
         extern void enable_shift(const bool _enable)
         {
             if (_enable)
-                add_modifier_mask(MODIFIER::KEY_MOD_LSHIFT);
+                modifier.left_shift = 1;
             else
-                reset_modifier_mask(MODIFIER::KEY_MOD_LSHIFT);
+                modifier.left_shift = 0;
         }
 
         extern void enable_alt(const bool _enable)
         {
             if (_enable)
-                add_modifier_mask(MODIFIER::KEY_MOD_LALT);
+                modifier.left_alt = 1;
             else
-                reset_modifier_mask(MODIFIER::KEY_MOD_LALT);
+                modifier.left_alt = 0;
         }
 
         extern void enable_ctrl(const bool _enable)
         {
             if (_enable)
-                add_modifier_mask(MODIFIER::KEY_MOD_LCTRL);
+                modifier.left_ctrl = 1;
             else
-                reset_modifier_mask(MODIFIER::KEY_MOD_LCTRL);
+                modifier.left_ctrl = 0;
         }
 
-        extern const uint8_t get_modifier(void)
+        extern void set_modifier(const MODIFIER _modifier)
+        {
+            modifier = _modifier;
+        }
+
+        extern const MODIFIER get_modifier(void)
         {
             return modifier;
         }
-
     }
 }

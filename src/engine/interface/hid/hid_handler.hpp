@@ -15,8 +15,8 @@ namespace engine
 {
     namespace hid
     {
-        extern void set_report_handler(const uint8_t _identifier, const const_chunk_t &);
-        extern void get_report_handler(const uint8_t _identifier, const chunk_t &);
+        extern void set_report_handler(const uint8_t, const const_chunk_t &);
+        extern void get_report_handler(const uint8_t, const chunk_t &);
     }
 }
 

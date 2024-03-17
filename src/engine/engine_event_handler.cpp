@@ -13,7 +13,9 @@
 #include "cmd_setting.hpp"
 #include "display.hpp"
 #include "engine_variant.hpp"
+#include "keypad.hpp"
 #include "keypad_keycode.hpp"
+#include "keypad_modifiers.hpp"
 #include "usb_descriptors.hpp"
 #include "varikey.hpp"
 
@@ -72,45 +74,48 @@ namespace engine
         extern void push_key_event(const engine::keypad::KEY_ID _identifier,
                                    const engine::keypad::STATE _state)
         {
-            payload::keycode::content_t key_event = {
-                .control = payload::keycode::CONTROL::BUTTON,
-                .key_id = _identifier,
-                .state = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
-                .table = engine::keypad::get_mapping(),
+            const engine::keypad::TABLE table = engine::keypad::get_mapping();
+            const engine::keypad::MODIFIER modifier = engine::keypad::get_modifier();
+
+            const uint8_t key_code = engine::keypad::id2int(_identifier);
+
+            payload::keypad::content_t key_event = {
+                .identifier = engine::payload::keypad::IDENTIFIER::KEYCODE,
+                .function = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keypad::FUNCTION>(_state),
+                .value = {
+                    .modifier = modifier.value,
+                    .code = key_code,
+                    .table = table,
+                },
             };
             engine::handler::event_t event = {
-                .identifier = engine::payload::IDENTIFIER::KEYCODE,
-                .keycode = key_event,
+                .identifier = engine::payload::IDENTIFIER::KEYPAD,
+                .keypad = key_event,
             };
+
             handler::event_queue.push(event);
+
+            if (_state == engine::keypad::STATE::PRESS ||
+                _state == engine::keypad::STATE::CLICK ||
+                _state == engine::keypad::STATE::PUSH)
+            {
+                engine::keypad::perform(_identifier);
+            }
         };
 
-        extern void push_control_event(const payload::keycode::CONTROL _control,
-                                       const engine::keypad::KEY_ID _identifier,
-                                       const engine::keypad::STATE _state)
+        extern void push_gpio_event(const platform::board::IDENTIFIER _identifier,
+                                    const platform::board::VALUE _value,
+                                    const uint32_t _diff)
         {
-            const payload::keycode::content_t keycode = {
-                .control = _control,
-                .key_id = _identifier,
-                .state = engine::keypad::transfer_state<engine::keypad::STATE, engine::payload::keycode::STATE>(_state),
-                .table = engine::keypad::get_mapping(),
-            };
-            const engine::handler::event_t event = {
-                .identifier = payload::IDENTIFIER::KEYCODE,
-                .keycode = keycode,
-            };
-            handler::event_queue.push(event);
-        };
-
-        extern void push_gpio_event(const platform::board::IDENTIFIER _identifier, const platform::board::VALUE _value)
-        {
+            static int c = 0;
+            c++;
             const payload::gpio::content_t content = {
-                .function = payload::gpio::FUNCTION::LEVEL_SET,
+                .function = (_value == platform::board::VALUE::HIGH) ? payload::gpio::FUNCTION::HIGH : payload::gpio::FUNCTION::LOW,
                 .identifier = _identifier,
-                .level = _value,
+                .diff = _diff,
             };
             const engine::handler::event_t event = {
-                .identifier = payload::IDENTIFIER::KEYCODE,
+                .identifier = payload::IDENTIFIER::GPIO,
                 .gpio = content,
             };
             handler::event_queue.push(event);
@@ -187,20 +192,20 @@ namespace engine
                 }
                 break;
             case payload::IDENTIFIER::GADGET:
-                switch (_event.gadget.command)
+                switch (_event.gadget.function)
                 {
-                case payload::gadget::COMMAND::MOUNT:
+                case payload::gadget::FUNCTION::MOUNT:
                     backlight::set_mode(backlight::MODE::TURBO, 0);
                     backlight::set_mode(backlight::MODE::MOUNT,
                                         registry::parameter::backlight::g_register.value.timeout);
                     break;
-                case payload::gadget::COMMAND::UNMOUNT:
+                case payload::gadget::FUNCTION::UNMOUNT:
                     backlight::set_mode(backlight::MODE::ALERT, 0);
                     break;
-                case payload::gadget::COMMAND::SUSPEND:
+                case payload::gadget::FUNCTION::SUSPEND:
                     backlight::set_mode(backlight::MODE::SUSPEND, 0);
                     break;
-                case payload::gadget::COMMAND::RESUME:
+                case payload::gadget::FUNCTION::RESUME:
                     backlight::set_mode(backlight::MODE::TURBO, 0);
                     backlight::set_mode(backlight::MODE::MOUNT,
                                         registry::parameter::backlight::g_register.value.timeout);
@@ -213,38 +218,14 @@ namespace engine
             {
                 if (events_over_serial_enabled)
                 {
-                    engine::hci::cmd::feature::gpio_indication(_event.gpio.identifier, _event.gpio.level);
+                    engine::hci::cmd::feature::gpio_indication(_event.gpio.function,
+                                                               _event.gpio.identifier,
+                                                               _event.gpio.diff);
                 }
                 if (events_over_usb_enabled)
                 {
                     /* todo: idea send gpio level changes as a key press/release sequences */
                 }
-                break;
-            }
-            case payload::IDENTIFIER::KEYCODE:
-            {
-                if (_event.keycode.state == payload::keycode::STATE::PRESS)
-                    engine::keypad::perform_hid_key(_event.keycode.key_id, _event.keycode.table);
-
-                if (events_over_serial_enabled)
-                {
-                    hci::cmd::feature::key_indication(_event.keycode);
-                }
-
-                if (events_over_usb_enabled)
-                {
-                    if (_event.keycode.state == payload::keycode::STATE::PRESS)
-                    {
-                        const uint8_t code = engine::keypad::id2int(_event.keycode.key_id);
-                        const uint8_t mode = engine::keypad::get_modifier();
-                        platform::usb::sent_keycode(mode, code);
-                    }
-                    else
-                    {
-                        platform::usb::sent_keycode();
-                    }
-                }
-
                 break;
             }
             case payload::IDENTIFIER::KEYPAD:
@@ -263,7 +244,24 @@ namespace engine
                         set_hid_enabled(false);
                     break;
                 case payload::keypad::IDENTIFIER::KEYCODE:
-                    /* do nothing */
+                    if (events_over_serial_enabled)
+                    {
+                        hci::cmd::feature::key_indication(_event.keypad);
+                    }
+
+                    if (events_over_usb_enabled)
+                    {
+                        if (_event.keypad.function == payload::keypad::FUNCTION::PRESS)
+                        {
+                            const uint8_t code = _event.keypad.value.code;
+                            const uint8_t mode = _event.keypad.value.modifier;
+                            platform::usb::sent_keycode(mode, code);
+                        }
+                        else
+                        {
+                            platform::usb::sent_keycode();
+                        }
+                    }
                     break;
                 case payload::keypad::IDENTIFIER::MAPPING:
                     if (_event.keypad.function == payload::keypad::FUNCTION::SET &&

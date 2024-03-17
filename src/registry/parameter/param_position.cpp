@@ -51,10 +51,11 @@ namespace registry
             /**
                 \brief Serialize position parameter value
             */
-            void register_t::serialize(uint8_t *const _space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, byte, sizeof(register_t));
+                memcpy(*_ptr, byte, sizeof(register_t));
+                (*_ptr) += sizeof(register_t);
             }
         }
     }

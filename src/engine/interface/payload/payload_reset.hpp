@@ -45,17 +45,16 @@ namespace engine
                         function = FUNCTION::UNDEFINED;
                     }
                 }
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
                     if ((function == FUNCTION::SHUTDOWN ||
                          function == FUNCTION::FORMAT))
                     {
-                        *ptr++ = (uint8_t)function;
+                        *(*_ptr)++ = (uint8_t)function;
                     }
                     else
                     {
-                        *ptr++ = (uint8_t)FUNCTION::UNDEFINED;
+                        *(*_ptr)++ = (uint8_t)FUNCTION::UNDEFINED;
                     }
                 }
             };

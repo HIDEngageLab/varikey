@@ -14,6 +14,7 @@
 
 #include "chunk.h"
 #include "engine_event.hpp"
+#include "payload_identifier.hpp"
 #include "usb_descriptors.hpp"
 
 namespace engine
@@ -28,6 +29,7 @@ namespace engine
             DISPLAY = (int)payload::IDENTIFIER::DISPLAY,
             GADGET = (int)payload::IDENTIFIER::GADGET,
             GPIO = (int)payload::IDENTIFIER::GPIO,
+            IDENTITY = (int)payload::IDENTIFIER::IDENTITY,
             KEYPAD = (int)payload::IDENTIFIER::KEYPAD,
             PARAMETER = (int)payload::IDENTIFIER::PARAMETER,
             RESET = (int)payload::IDENTIFIER::RESET,
@@ -46,7 +48,7 @@ namespace engine
                 payload::display::content_t display;
                 payload::gadget::content_t gadget;
                 payload::gpio::content_t gpio;
-                payload::keycode::content_t keycode;
+                payload::identity::content_t identity;
                 payload::keypad::content_t keypad;
                 payload::parameter::content_t parameter;
                 payload::reset::content_t reset;
@@ -58,14 +60,11 @@ namespace engine
 
         enum class GET_REPORT : uint8_t
         {
-            FIRMWARE = (int)payload::identity::IDENTIFIER::FIRMWARE,
             GPIO = (int)payload::IDENTIFIER::GPIO,
-            HARDWARE = (int)payload::identity::IDENTIFIER::HARDWARE,
-            MAPPING = (int)payload::keypad::IDENTIFIER::MAPPING,
+            IDENTITY = (int)payload::IDENTIFIER::IDENTITY,
+            KEYPAD = (int)payload::IDENTIFIER::KEYPAD,
             PARAMETER = (int)payload::IDENTIFIER::PARAMETER,
-            SERIAL = (int)payload::identity::IDENTIFIER::SERIAL,
             TEMPERATURE = (int)payload::IDENTIFIER::TEMPERATURE,
-            UNIQUE = (int)payload::identity::IDENTIFIER::UNIQUE,
 
             UNDEFINED = (int)payload::IDENTIFIER::UNDEFINED,
         };

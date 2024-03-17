@@ -16,6 +16,7 @@
 #include "display_image.hpp"
 #include "display_position.hpp"
 #include "display_type.hpp"
+#include "macros.hpp"
 #include "payload_identifier.hpp"
 
 namespace engine
@@ -24,15 +25,13 @@ namespace engine
     {
         namespace display
         {
-            const uint8_t DISPLAY_ID = to_underlying(payload::IDENTIFIER::DISPLAY);
-
             enum class FUNCTION : uint8_t
             {
-                CLEAN = DISPLAY_ID + 5,    /* clean up display */
-                FONT = DISPLAY_ID + 1,     /* font art/size */
-                ICON = DISPLAY_ID + 2,     /* icon identifier */
-                POSITION = DISPLAY_ID + 3, /* cursor position */
-                TEXT = DISPLAY_ID + 4,     /* text message */
+                CLEAN = common::function::CUSTOM,        /* clean up display */
+                FONT = common::function::CUSTOM + 1,     /* font art/size */
+                ICON = common::function::CUSTOM + 2,     /* icon identifier */
+                POSITION = common::function::CUSTOM + 3, /* cursor position */
+                TEXT = common::function::CUSTOM + 4,     /* text message */
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
@@ -41,7 +40,6 @@ namespace engine
 
             struct __attribute__((packed)) content_t
             {
-
                 FUNCTION function;
                 union
                 {
@@ -69,6 +67,7 @@ namespace engine
                     function = static_cast<const FUNCTION>(_space[0]);
                     if (!(function == FUNCTION::FONT ||
                           function == FUNCTION::ICON ||
+                          function == FUNCTION::CLEAN ||
                           function == FUNCTION::POSITION ||
                           function == FUNCTION::TEXT))
                     {
@@ -101,27 +100,26 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)function;
+                    *(*_ptr)++ = (uint8_t)function;
 
                     if (function == FUNCTION::POSITION)
                     {
-                        *ptr++ = (uint8_t)position.line;
-                        *ptr++ = (uint8_t)position.column;
+                        *(*_ptr)++ = (uint8_t)position.line;
+                        *(*_ptr)++ = (uint8_t)position.column;
                     }
                     else if (function == FUNCTION::FONT)
                     {
-                        *ptr++ = (uint8_t)font;
+                        *(*_ptr)++ = (uint8_t)font;
                     }
                     else if (function == FUNCTION::ICON)
                     {
-                        *ptr++ = (uint8_t)icon;
+                        *(*_ptr)++ = (uint8_t)icon;
                     }
                     else if (function == FUNCTION::TEXT)
                     {
-                        *ptr++ = (uint8_t)strlen(text);
+                        *(*_ptr)++ = (uint8_t)strlen(text);
                     }
                 }
             };

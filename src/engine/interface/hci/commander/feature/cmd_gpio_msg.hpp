@@ -38,8 +38,8 @@ namespace engine
                     UNKNOWN = common::result::UNKNOWN,
                     UNSUPPORTED = common::result::UNSUPPORTED,
 
-                    WRONG_IDENTIFIER = common::result::CUSTOM + 0,
-                    WRONG_DIRECTION = common::result::CUSTOM + 1,
+                    WRONG_DIRECTION = common::result::CUSTOM + 0,
+                    WRONG_IDENTIFIER = common::result::CUSTOM + 1,
                 };
 
                 /** \brief GPIO message */

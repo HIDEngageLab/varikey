@@ -43,7 +43,7 @@ namespace registry
             /**
                 \brief Deserialize parameter value from chunk
             */
-            void register_t::deserialize(uint8_t const *_space)
+            void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
                 memcpy(value, _space, SIZE);
@@ -52,10 +52,11 @@ namespace registry
             /**
                 \brief Serialize parameter value to chunk
             */
-            void register_t::serialize(uint8_t *_space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(_space, value, SIZE);
+                memcpy(*_ptr, value, SIZE);
+                (*_ptr) += SIZE;
             }
         }
     }

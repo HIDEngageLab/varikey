@@ -53,6 +53,7 @@ namespace engine
                 };
 
                 extern void request(chunk_t const *const _chunk, message_t *const _msg);
+                extern void confirmation(message_t *const _msg);
                 extern void indication(message_t *const _msg);
             }
         }

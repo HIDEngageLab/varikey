@@ -33,8 +33,8 @@ namespace registry
 
 				void initialize(void);
 
-				void deserialize(uint8_t const *const _chunk);
-				void serialize(uint8_t *const _space) const;
+				void deserialize(uint8_t const *const);
+				void serialize(uint8_t **) const;
 			};
 
 			/** \brief Global user register parameter */

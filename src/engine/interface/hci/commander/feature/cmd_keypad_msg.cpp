@@ -21,6 +21,7 @@
 #include "engine_event_handler.hpp"
 #include "hid_handler.hpp"
 #include "keypad.hpp"
+#include "keypad_modifiers.hpp"
 #include "macros.hpp"
 #include "payload_identifier.hpp"
 #include "revision.h"
@@ -94,11 +95,25 @@ namespace engine
                             break;
                         case IDENTIFIER::KEYCODE:
                         {
-                            const engine::keypad::KEY_ID key_code_id = engine::keypad::int2id(_msg->keypad.code);
+                            const engine::keypad::KEY_ID key_code_id = _msg->keypad.key.code;
                             if (key_code_id != engine::keypad::KEY_ID::UNDEFINED)
                             {
-                                engine::keypad::press_key(key_code_id);
-                                engine::keypad::release_ley(key_code_id);
+                                if (_msg->keypad.function == engine::payload::keypad::FUNCTION::CLICK ||
+                                    _msg->keypad.function == engine::payload::keypad::FUNCTION::PUSH)
+                                {
+                                    engine::keypad::set_modifier(_msg->keypad.key.modifier);
+                                    engine::keypad::press_key(key_code_id);
+                                    engine::keypad::release_ley(key_code_id);
+                                }
+                                else if (_msg->keypad.function == engine::payload::keypad::FUNCTION::PRESS)
+                                {
+                                    engine::keypad::set_modifier(_msg->keypad.key.modifier);
+                                    engine::keypad::press_key(key_code_id);
+                                }
+                                else if (_msg->keypad.function == engine::payload::keypad::FUNCTION::RELEASE)
+                                {
+                                    engine::keypad::release_ley(key_code_id);
+                                }
                             }
                             break;
                         }
@@ -144,7 +159,7 @@ namespace engine
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::KEYPAD_CFM;
                     *ptr++ = (uint8_t)_msg->result;
-                    _msg->keypad.serialize(ptr);
+                    _msg->keypad.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
@@ -163,8 +178,8 @@ namespace engine
                     uint8_t *ptr = space;
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::KEYPAD_IND;
-                    _msg->keycode.serialize(ptr);
-                    _msg->value.size += _msg->keycode.size();
+                    _msg->keypad.serialize(&ptr);
+                    _msg->value.size += _msg->keypad.size();
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

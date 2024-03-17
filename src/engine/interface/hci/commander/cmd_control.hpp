@@ -27,12 +27,12 @@ namespace engine
         {
             namespace control
             {
-                extern void gadget_request(chunk_t const *const _chunk);
-                extern void hash_request(chunk_t const *const _chunk);
-                extern void protocol_indication(engine::defines::STATE const _mode);
-                extern void reset_indication(hci::cmd::reset::RESULT const _result);
-                extern void reset_request(chunk_t const *const _chunk);
-                extern void temperature_request(chunk_t const *const _chunk);
+                extern void gadget_indication(engine::defines::STATE const);
+                extern void gadget_request(chunk_t const *const);
+                extern void hash_request(chunk_t const *const);
+                extern void reset_indication(hci::cmd::reset::RESULT const);
+                extern void reset_request(chunk_t const *const);
+                extern void temperature_request(chunk_t const *const);
             }
         }
     }

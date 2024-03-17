@@ -26,8 +26,8 @@ namespace engine
             static constexpr const char *INTRO = "VARIKEY";
             static const display::ICON LOGO = display::ICON::VARIKEY_LOGO;
             static const display::FONT FONT_SIZE = display::FONT::NORMAL;
-             static const int8_t INTRO_ROW = 2;
-             static const int8_t INTRO_COL = 30;
+            static const int8_t INTRO_ROW = 2;
+            static const int8_t INTRO_COL = 30;
         };
     }
 }
