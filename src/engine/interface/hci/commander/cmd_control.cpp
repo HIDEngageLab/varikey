@@ -40,32 +40,12 @@ namespace engine
             namespace control
             {
                 /**
-                    \brief Handle status request
-                */
-                extern void gadget_request(chunk_t const *const _chunk)
-                {
-                    gadget::message_t msg;
-                    gadget::request(_chunk, &msg);
-                    gadget::confirmation(&msg);
-                }
-
-                /**
-                    \brief Handle key request
-                */
-                extern void hash_request(chunk_t const *const _chunk)
-                {
-                    hash::message_t msg;
-                    hash::request(_chunk, &msg);
-                    hash::confirmation(&msg);
-                }
-
-                /**
                     \brief Send a state switch indication message
                 */
-                extern void protocol_indication(defines::STATE const _mode)
+                extern void gadget_indication(defines::STATE const _mode)
                 {
                     gadget::message_t msg;
-                    msg.gadget.command = payload::gadget::COMMAND::GET;
+                    msg.gadget.function = payload::gadget::FUNCTION::GET;
 
                     switch (_mode)
                     {
@@ -87,12 +67,33 @@ namespace engine
                 }
 
                 /**
+                    \brief Handle status request
+                */
+                extern void gadget_request(chunk_t const *const _chunk)
+                {
+                    gadget::message_t msg;
+                    gadget::request(_chunk, &msg);
+                    gadget::confirmation(&msg);
+                }
+
+                /**
+                    \brief Handle key request
+                */
+                extern void hash_request(chunk_t const *const _chunk)
+                {
+                    hash::message_t msg;
+                    hash::request(_chunk, &msg);
+                    hash::confirmation(&msg);
+                }
+
+                /**
                     \brief Handle reset request
                 */
                 extern void reset_request(chunk_t const *const _chunk)
                 {
                     reset::message_t msg;
                     reset::request(_chunk, &msg);
+                    reset::confirmation(&msg);
 
                     const handler::event_t event = {
                         .identifier = payload::IDENTIFIER::RESET,
@@ -123,7 +124,6 @@ namespace engine
                     temperature::request(_chunk, &msg);
                     temperature::confirmation(&msg);
                 }
-
             }
         }
     }

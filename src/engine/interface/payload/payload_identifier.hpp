@@ -16,18 +16,25 @@ namespace engine
 {
     namespace payload
     {
+        /*
+            Attention Please read the documentation for payload identifier values
+            Identifier in enum below should be between 0x00 and 0x1f
+            HCI multiplies the identifier by 4, HID multiplies some identifier by 8.
+        */
         enum class IDENTIFIER : uint8_t
         {
-            BACKLIGHT = 0x10,
-            DISPLAY = 0x30,
-            GADGET = 0x40,
-            GPIO = 0x50,
-            IDENTITY = 0xA0,
-            KEYCODE = 0x65,
-            KEYPAD = 0x70,
-            PARAMETER = 0xB0,
-            RESET = 0xEE,
-            TEMPERATURE = 0xC0,
+            BACKLIGHT = 0x01,
+            DISPLAY = 0x02,
+            GADGET = 0x03,
+            GPIO = 0x04,
+            HASH = 0x05,
+            IDENTITY = 0x06,
+            KEYPAD = 0x07,
+            PARAMETER = 0x08,
+            PROTOCOL = 0x09,
+            RESET = 0x0A,
+            TEMPERATURE = 0x0B,
+
             UNDEFINED = 0xFF,
         };
 

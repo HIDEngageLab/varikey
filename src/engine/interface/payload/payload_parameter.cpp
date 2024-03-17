@@ -67,37 +67,40 @@ namespace engine
                 identifier = registry::parameter::to_identifier(_space[0]);
                 function = static_cast<FUNCTION>(_space[1]);
 
-                switch (identifier)
+                if (function == FUNCTION::SET)
                 {
-                case IDENTIFIER::BACKLIGHT:
-                    parameter.backlight.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::DISPLAY:
-                    parameter.display.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::FEATURES:
-                    parameter.features.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::KEYPAD:
-                    parameter.keypad.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::MAINTAINER:
-                    parameter.maintainer.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::MAPPING:
-                    parameter.mapping.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::POSITION:
-                    parameter.position.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::SERIAL_NUMBER:
-                    parameter.serial_number.deserialize(&_space[2]);
-                    break;
-                case IDENTIFIER::USER:
-                    parameter.user.deserialize(&_space[2]);
-                    break;
-                default:
-                    break;
+                    switch (identifier)
+                    {
+                    case IDENTIFIER::BACKLIGHT:
+                        parameter.backlight.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::DISPLAY:
+                        parameter.display.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::FEATURES:
+                        parameter.features.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::KEYPAD:
+                        parameter.keypad.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::MAINTAINER:
+                        parameter.maintainer.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::MAPPING:
+                        parameter.mapping.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::POSITION:
+                        parameter.position.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::SERIAL_NUMBER:
+                        parameter.serial_number.deserialize(&_space[2]);
+                        break;
+                    case IDENTIFIER::USER:
+                        parameter.user.deserialize(&_space[2]);
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
 
@@ -106,40 +109,39 @@ namespace engine
              *
              * \param _space
              */
-            void content_t::serialize(uint8_t *const _space) const
+            void content_t::serialize(uint8_t **_ptr) const
             {
-                uint8_t *ptr = _space;
-                *ptr++ = (uint8_t)identifier;
-                *ptr++ = (uint8_t)function;
+                *(*_ptr)++ = (uint8_t)identifier;
+                *(*_ptr)++ = (uint8_t)function;
 
                 switch (identifier)
                 {
                 case IDENTIFIER::BACKLIGHT:
-                    parameter.backlight.serialize(ptr);
+                    parameter.backlight.serialize(_ptr);
                     break;
                 case IDENTIFIER::DISPLAY:
-                    parameter.display.serialize(ptr);
+                    parameter.display.serialize(_ptr);
                     break;
                 case IDENTIFIER::FEATURES:
-                    parameter.features.serialize(ptr);
+                    parameter.features.serialize(_ptr);
                     break;
                 case IDENTIFIER::KEYPAD:
-                    parameter.keypad.serialize(ptr);
+                    parameter.keypad.serialize(_ptr);
                     break;
                 case IDENTIFIER::MAINTAINER:
-                    parameter.maintainer.serialize(ptr);
+                    parameter.maintainer.serialize(_ptr);
                     break;
                 case IDENTIFIER::MAPPING:
-                    parameter.mapping.serialize(ptr);
+                    parameter.mapping.serialize(_ptr);
                     break;
                 case IDENTIFIER::POSITION:
-                    parameter.position.serialize(ptr);
+                    parameter.position.serialize(_ptr);
                     break;
                 case IDENTIFIER::SERIAL_NUMBER:
-                    parameter.serial_number.serialize(ptr);
+                    parameter.serial_number.serialize(_ptr);
                     break;
                 case IDENTIFIER::USER:
-                    parameter.user.serialize(ptr);
+                    parameter.user.serialize(_ptr);
                     break;
                 default:
                     break;

@@ -39,7 +39,7 @@ namespace engine
             {
 
                 static const size_t CFM_SIZE = 8;
-                static const size_t IND_SIZE = 3;
+                static const size_t IND_SIZE = 7;
 
                 /**
                     \brief Status request message
@@ -55,39 +55,39 @@ namespace engine
 
                     _msg->gadget.deserialize(_chunk->space);
 
+                    const defines::STATE mode = get_mode();
+                    switch (mode)
+                    {
+                    case defines::STATE::IDLE:
+                        _msg->gadget.mode = payload::gadget::MODE::IDLE;
+                        break;
+
+                    case defines::STATE::ACTIVE:
+                        _msg->gadget.mode = payload::gadget::MODE::ACTIVE;
+                        break;
+
+                    case defines::STATE::PENDING:
+                        _msg->gadget.mode = payload::gadget::MODE::PENDING;
+                        break;
+
+                    default:
+                        _msg->gadget.mode = payload::gadget::MODE::UNDEFINED;
+                        break;
+                    }
+
                     _msg->value.size = _chunk->size - 1;
                     _msg->value.space = &_chunk->space[1];
 
                     /* trigger status/operation event */
-                    if (_msg->gadget.command == payload::gadget::COMMAND::GET)
+                    if (_msg->gadget.function == payload::gadget::FUNCTION::GET)
                     {
                         _msg->result = RESULT::SUCCESS;
                     }
                     else
                     {
-                        const defines::STATE mode = get_mode();
-                        switch (mode)
+                        switch (_msg->gadget.function)
                         {
-                        case defines::STATE::IDLE:
-                            _msg->gadget.mode = payload::gadget::MODE::IDLE;
-                            break;
-
-                        case defines::STATE::ACTIVE:
-                            _msg->gadget.mode = payload::gadget::MODE::ACTIVE;
-                            break;
-
-                        case defines::STATE::PENDING:
-                            _msg->gadget.mode = payload::gadget::MODE::PENDING;
-                            break;
-
-                        default:
-                            _msg->gadget.mode = payload::gadget::MODE::UNDEFINED;
-                            break;
-                        }
-
-                        switch (_msg->gadget.command)
-                        {
-                        case payload::gadget::COMMAND::MOUNT:
+                        case payload::gadget::FUNCTION::MOUNT:
                             if (mode == defines::STATE::IDLE)
                             {
                                 engine::mount();
@@ -98,7 +98,7 @@ namespace engine
                                 _msg->result = RESULT::WRONG_STATE;
                             }
                             break;
-                        case payload::gadget::COMMAND::UNMOUNT:
+                        case payload::gadget::FUNCTION::UNMOUNT:
                             if (mode == defines::STATE::ACTIVE ||
                                 mode == defines::STATE::PENDING)
                             {
@@ -110,7 +110,7 @@ namespace engine
                                 _msg->result = RESULT::WRONG_STATE;
                             }
                             break;
-                        case payload::gadget::COMMAND::SUSPEND:
+                        case payload::gadget::FUNCTION::SUSPEND:
                             if (mode == defines::STATE::ACTIVE ||
                                 mode == defines::STATE::IDLE)
                             {
@@ -122,7 +122,7 @@ namespace engine
                                 _msg->result = RESULT::WRONG_STATE;
                             }
                             break;
-                        case payload::gadget::COMMAND::RESUME:
+                        case payload::gadget::FUNCTION::RESUME:
                             if (mode == defines::STATE::SUSPEND)
                             {
                                 engine::resume();
@@ -156,7 +156,7 @@ namespace engine
                     *ptr++ = (uint8_t)engine::hci::COMMAND::GADGET_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->gadget.serialize(ptr);
+                    _msg->gadget.serialize(&ptr);
 
                     serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);
 
@@ -178,7 +178,9 @@ namespace engine
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::GADGET_IND;
 
-                    _msg->gadget.serialize(ptr);
+                    _msg->gadget.serialize(&ptr);
+
+                    serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

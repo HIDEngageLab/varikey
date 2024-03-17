@@ -29,6 +29,9 @@ extern void varikey_shutdown(void)
     running = false;
 
     engine::stop();
+    while (engine::get_mode() != engine::defines::STATE::IDLE)
+        ;
+
     engine::shutdown();
     platform::board::assembly.shutdown();
 }

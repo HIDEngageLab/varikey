@@ -72,64 +72,40 @@ namespace engine
                     gpio::message_t msg;
                     gpio::request(_chunk, &msg);
 
-                    msg.result = gpio::RESULT::FAILURE;
-
-                    platform::board::IDENTIFIER identifier;
-                    switch (msg.content.identifier)
+                    msg.result = gpio::RESULT::SUCCESS;
+                    if (msg.content.identifier == platform::board::IDENTIFIER::UNDEFINED)
                     {
-                    case payload::gpio::IDENTIFIER::GPIO0:
-                        identifier = platform::board::IDENTIFIER::GPIO0;
-                        break;
-                    case payload::gpio::IDENTIFIER::GPIO1:
-                        identifier = platform::board::IDENTIFIER::GPIO1;
-                        break;
-                    case payload::gpio::IDENTIFIER::GPIO2:
-                        identifier = platform::board::IDENTIFIER::GPIO2;
-                        break;
-                    case payload::gpio::IDENTIFIER::GPIO3:
-                        identifier = platform::board::IDENTIFIER::GPIO3;
-                        break;
-                    default:
                         msg.result = gpio::RESULT::WRONG_IDENTIFIER;
-                        break;
                     }
-
-                    if (msg.result != gpio::RESULT::WRONG_IDENTIFIER)
+                    else
                     {
                         switch (msg.content.function)
                         {
-                        case payload::gpio::FUNCTION::DIRECTION_GET:
+                        case payload::gpio::FUNCTION::DIRECTION:
                         {
-                            platform::board::DIRECTION direction = engine::gpio::get_direction(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
+                            const platform::board::DIRECTION direction = engine::gpio::get_direction(msg.content.identifier);
                             switch (direction)
                             {
                             case platform::board::DIRECTION::INPUT:
-                                msg.content.direction = payload::gpio::DIRECTION::INPUT;
+                                msg.content.function = payload::gpio::FUNCTION::IN;
                                 break;
                             case platform::board::DIRECTION::OUTPUT:
-                                msg.content.direction = payload::gpio::DIRECTION::OUTPUT;
+                                msg.content.function = payload::gpio::FUNCTION::OUT;
                                 break;
                             default:
-                                msg.content.direction = payload::gpio::DIRECTION::UNDEFINED;
+                                msg.content.function = payload::gpio::FUNCTION::UNDEFINED;
                                 msg.result = gpio::RESULT::WRONG_DIRECTION;
                                 break;
                             }
                         }
-                        case payload::gpio::FUNCTION::DIRECTION_SET:
+                        case payload::gpio::FUNCTION::IN:
                             msg.result = gpio::RESULT::SUCCESS;
-                            switch (msg.content.direction)
-                            {
-                            case payload::gpio::DIRECTION::INPUT:
-                                engine::gpio::set_direction(identifier, platform::board::DIRECTION::INPUT);
-                                break;
-                            case payload::gpio::DIRECTION::OUTPUT:
-                                engine::gpio::set_direction(identifier, platform::board::DIRECTION::OUTPUT);
-                                break;
-                            default:
-                                msg.result = gpio::RESULT::WRONG_DIRECTION;
-                                break;
-                            }
+                            engine::gpio::set_direction(msg.content.identifier, engine::gpio::DIRECTION::INPUT);
+                            break;
+                        case payload::gpio::FUNCTION::OUT:
+                            msg.result = gpio::RESULT::SUCCESS;
+                            engine::gpio::set_direction(msg.content.identifier, engine::gpio::DIRECTION::OUTPUT);
                             break;
                         case payload::gpio::FUNCTION::ENABLE:
                             msg.result = gpio::RESULT::SUCCESS;
@@ -139,46 +115,46 @@ namespace engine
                             msg.result = gpio::RESULT::SUCCESS;
                             engine::gpio::enable_event(false);
                             break;
-                        case payload::gpio::FUNCTION::LEVEL_GET:
+                        case payload::gpio::FUNCTION::VALUE:
                         {
-                            platform::board::VALUE value = engine::gpio::get_value(identifier);
                             msg.result = gpio::RESULT::SUCCESS;
+                            const platform::board::VALUE value = engine::gpio::get_value(msg.content.identifier);
                             switch (value)
                             {
                             case platform::board::VALUE::LOW:
-                                msg.content.level = payload::gpio::LEVEL::LOW;
+                                msg.content.function = payload::gpio::FUNCTION::LOW;
                                 break;
                             case platform::board::VALUE::HIGH:
-                                msg.content.level = payload::gpio::LEVEL::HIGH;
+                                msg.content.function = payload::gpio::FUNCTION::HIGH;
                                 break;
                             default:
                                 msg.result = gpio::RESULT::UNKNOWN;
-                                msg.content.level = payload::gpio::LEVEL::UNDEFINED;
+                                msg.content.function = payload::gpio::FUNCTION::UNDEFINED;
                                 break;
                             }
                             break;
                         }
-                        case payload::gpio::FUNCTION::LEVEL_SET:
+                        case payload::gpio::FUNCTION::HIGH:
                         {
-                            platform::board::DIRECTION direction = engine::gpio::get_direction(identifier);
-
+                            msg.result = gpio::RESULT::SUCCESS;
+                            const platform::board::DIRECTION direction = engine::gpio::get_direction(msg.content.identifier);
                             if (direction == platform::board::DIRECTION::OUTPUT)
                             {
-                                msg.result = gpio::RESULT::SUCCESS;
-                                switch (msg.content.level)
-                                {
-                                case payload::gpio::LEVEL::LOW:
-                                    engine::gpio::set_value(identifier, false);
-                                    msg.result = gpio::RESULT::SUCCESS;
-                                    break;
-                                case payload::gpio::LEVEL::HIGH:
-                                    engine::gpio::set_value(identifier, true);
-                                    msg.result = gpio::RESULT::SUCCESS;
-                                    break;
-                                default:
-                                    msg.result = gpio::RESULT::UNKNOWN;
-                                    break;
-                                }
+                                engine::gpio::set_value(msg.content.identifier, true);
+                            }
+                            else
+                            {
+                                msg.result = gpio::RESULT::WRONG_DIRECTION;
+                            }
+                            break;
+                        }
+                        case payload::gpio::FUNCTION::LOW:
+                        {
+                            msg.result = gpio::RESULT::SUCCESS;
+                            const platform::board::DIRECTION direction = engine::gpio::get_direction(msg.content.identifier);
+                            if (direction == platform::board::DIRECTION::OUTPUT)
+                            {
+                                engine::gpio::set_value(msg.content.identifier, false);
                             }
                             else
                             {
@@ -200,12 +176,13 @@ namespace engine
                  * \param _identifier
                  * \param _level
                  */
-                extern void gpio_indication(const IDENTIFIER _identifier, const LEVEL _level)
+                extern void gpio_indication(const FUNCTION _function, const IDENTIFIER _identifier, const uint32_t _timestamp)
                 {
                     gpio::message_t msg;
 
+                    msg.content.function = _function;
                     msg.content.identifier = _identifier;
-                    msg.content.level = _level;
+                    msg.content.diff = _timestamp;
                     gpio::indication(&msg);
                 }
 
@@ -226,15 +203,16 @@ namespace engine
                  *
                  * \param _event key event data
                  */
-                extern void key_indication(const payload::keycode::content_t &_event)
+                extern void key_indication(const payload::keypad::content_t &_event)
                 {
                     keypad::message_t msg;
                     msg.result = engine::hci::cmd::keypad::RESULT::SUCCESS;
 
-                    msg.keycode.control = _event.control;
-                    msg.keycode.key_id = _event.key_id;
-                    msg.keycode.state = _event.state;
-                    msg.keycode.table = _event.table;
+                    msg.keypad.identifier = _event.identifier;
+                    msg.keypad.function = _event.function;
+                    msg.keypad.key.code = _event.key.code;
+                    msg.keypad.key.modifier = _event.key.modifier;
+                    msg.keypad.table = _event.table;
 
                     keypad::indication(&msg);
                 }

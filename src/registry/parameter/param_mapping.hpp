@@ -33,12 +33,13 @@ namespace registry
 			*/
 			struct register_t
 			{
+				uint8_t modifier[SIZE];
 				uint8_t value[SIZE];
 
 				void initialize(void);
 
-				void deserialize(uint8_t const *_space);
-				void serialize(uint8_t *_space) const;
+				void deserialize(uint8_t const *const);
+				void serialize(uint8_t **) const;
 			};
 
 			/** \brief Global serial number parameter */

@@ -35,6 +35,8 @@ namespace platform
 
         void gpio_callback(uint _gpio, uint32_t _events)
         {
+            static bool pin_state[4] = {false, false, false};
+
             if (gpio_handler == nullptr)
                 return;
 
@@ -56,25 +58,38 @@ namespace platform
                 identifier = static_cast<uint8_t>(IDENTIFIER::GPIO3);
             }
 
+            bool state_changed = false;
             if (_events & 0x01)
             {
                 /* low level */
-                gpio_handler(identifier, false);
             }
             else if (_events & 0x02)
             {
                 /* high level */
-                gpio_handler(identifier, true);
             }
             else if (_events & 0x04)
             {
                 /* fall edge */
-                gpio_handler(identifier, false);
+                if (pin_state[identifier] == true)
+                {
+                    state_changed = true;
+                    pin_state[identifier] = false;
+                }
             }
             else if (_events & 0x08)
             {
                 /* rise edge */
-                gpio_handler(identifier, true);
+                if (pin_state[identifier] == false)
+                {
+                    state_changed = true;
+                    pin_state[identifier] = true;
+                }
+            }
+
+            if (state_changed)
+            {
+                state_changed = false;
+                gpio_handler(identifier, pin_state[identifier]);
             }
         }
 
@@ -221,16 +236,16 @@ namespace platform
             switch (_identifier)
             {
             case IDENTIFIER::GPIO0:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_1, _value == VALUE::LOW ? true : false);
+                gpio_put(platform::driver::SoC::DEBUG_PIN_1, _value == VALUE::HIGH ? true : false);
                 break;
             case IDENTIFIER::GPIO1:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_2, _value == VALUE::LOW ? true : false);
+                gpio_put(platform::driver::SoC::DEBUG_PIN_2, _value == VALUE::HIGH ? true : false);
                 break;
             case IDENTIFIER::GPIO2:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_3, _value == VALUE::LOW ? true : false);
+                gpio_put(platform::driver::SoC::DEBUG_PIN_3, _value == VALUE::HIGH ? true : false);
                 break;
             case IDENTIFIER::GPIO3:
-                gpio_put(platform::driver::SoC::DEBUG_PIN_4, _value == VALUE::LOW ? true : false);
+                gpio_put(platform::driver::SoC::DEBUG_PIN_4, _value == VALUE::HIGH ? true : false);
                 break;
             default:
                 break;

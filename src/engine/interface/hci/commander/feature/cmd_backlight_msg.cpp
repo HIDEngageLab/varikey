@@ -106,7 +106,7 @@ namespace engine
                     *ptr++ = (uint8_t)engine::hci::COMMAND::BACKLIGHT_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

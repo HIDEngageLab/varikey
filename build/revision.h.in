@@ -15,6 +15,7 @@
 #define __REVISION_H__
 
 #include <cstdint>
+#include <cstdlib>
 
 #include "build_number.h"
 
@@ -41,6 +42,7 @@ namespace identity
         static const uint16_t PATCH{((@PROJECT_VERSION_PATCH@+0) << 8) + (@PROJECT_VERSION_TWEAK@+0)};
         static const uint16_t BUILD{(BUILD_NUMBER)};
         static const uint16_t VENDOR{(@FIRMWARE_VENDOR@)};
+        static const size_t FIRMWARE_HASH_SIZE=@GIT_HASH_SIZE@;
         static constexpr char FIRMWARE_HASH[]="@GIT_HASH@";
         /* @} */
     }

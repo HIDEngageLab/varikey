@@ -120,8 +120,7 @@ namespace platform
 
         const VALUE RP2040::get_value(const IDENTIFIER _identifier)
         {
-
-            auto set_direction = [&](const IDENTIFIER _identifier) -> VALUE
+            auto get_value = [&](const IDENTIFIER _identifier) -> VALUE
             {
                 VALUE value = VALUE::UNDEFINED;
                 DIRECTION direction = gpio.get_direction(_identifier);
@@ -136,12 +135,16 @@ namespace platform
             switch (_identifier)
             {
             case IDENTIFIER::GPIO0:
+                return get_value(IDENTIFIER::GPIO0);
                 break;
             case IDENTIFIER::GPIO1:
+                return get_value(IDENTIFIER::GPIO1);
                 break;
             case IDENTIFIER::GPIO2:
+                return get_value(IDENTIFIER::GPIO2);
                 break;
             case IDENTIFIER::GPIO3:
+                return get_value(IDENTIFIER::GPIO3);
                 break;
             default:
                 break;
@@ -151,19 +154,19 @@ namespace platform
 
         void RP2040::set_value(const IDENTIFIER _identifier, const bool _value)
         {
-            switch (_identifier)
+            auto set_value = [&](const IDENTIFIER _identifier) -> void
             {
-            case IDENTIFIER::GPIO0:
-                break;
-            case IDENTIFIER::GPIO1:
-                break;
-            case IDENTIFIER::GPIO2:
-                break;
-            case IDENTIFIER::GPIO3:
-                break;
-            default:
-                break;
-            }
+                DIRECTION direction = gpio.get_direction(_identifier);
+                if (direction == DIRECTION::OUTPUT)
+                {
+                    if (_value)
+                        gpio.set_value(_identifier, platform::soc::VALUE::HIGH);
+                    else
+                        gpio.set_value(_identifier, platform::soc::VALUE::LOW);
+                }
+            };
+
+            set_value(_identifier);
         }
 
         void RP2040::perform()

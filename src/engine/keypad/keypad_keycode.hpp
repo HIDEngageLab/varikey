@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <vector>
 
+#include "keypad_modifiers.hpp"
+
 namespace engine
 {
     namespace keypad
@@ -51,8 +53,10 @@ namespace engine
 
         enum class STATE : uint8_t
         {
-            PRESS = 0x00,
-            RELEASE = 0x01,
+            CLICK = 0x00,
+            PRESS = 0x01,
+            PUSH = 0x02,
+            RELEASE = 0x03,
 
             UNDEFINED = 0xff,
         };
@@ -78,6 +82,7 @@ namespace engine
                 SINGLE,
             } mode;
             size_t cursor;
+            MODIFIER modifier;
             std::vector<int> value;
         };
 
@@ -93,7 +98,7 @@ namespace engine
             const uint8_t get_code(const KEY_ID) const;
 
             void perform(const KEY_ID);
-            void clean(void);
+            void reset(void);
 
         private:
             TABLE table{DEFAULT_MAPPING_TABLE};
@@ -106,6 +111,10 @@ namespace engine
         {
             switch (_state)
             {
+            case T::CLICK:
+                return U::CLICK;
+            case T::PUSH:
+                return U::PUSH;
             case T::PRESS:
                 return U::PRESS;
             case T::RELEASE:

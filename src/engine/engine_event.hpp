@@ -18,7 +18,6 @@
 #include "payload_gpio.hpp"
 #include "payload_identifier.hpp"
 #include "payload_identity.hpp"
-#include "payload_keycode.hpp"
 #include "payload_keypad.hpp"
 #include "payload_parameter.hpp"
 #include "payload_reset.hpp"
@@ -38,7 +37,6 @@ namespace engine
                 payload::gadget::content_t gadget;
                 payload::gpio::content_t gpio;
                 payload::identity::content_t identity;
-                payload::keycode::content_t keycode;
                 payload::keypad::content_t keypad;
                 payload::parameter::content_t parameter;
                 payload::reset::content_t reset;

@@ -10,6 +10,7 @@
 
 #include "backlight3.hpp"
 #include "board_assembly.hpp"
+#include "cmd_control.hpp"
 #include "display.hpp"
 #include "display_font.hpp"
 #include "engine.hpp"
@@ -31,7 +32,7 @@ namespace engine
     static void tick(void);
     static void start_device_application();
     static void stop_device_application();
-    static void push_gadget_event(const payload::gadget::COMMAND);
+    static void push_gadget_event(const payload::gadget::FUNCTION);
 
     extern void initialize(void)
     {
@@ -39,10 +40,10 @@ namespace engine
         mode = defines::STATE::IDLE;
 
         random_init();
+        serial_init();
+
         registry::initialize();
         backlight::initialize();
-
-        serial_init();
     }
 
     extern void start(void)
@@ -91,23 +92,23 @@ namespace engine
 
     extern void unmount()
     {
-        push_gadget_event(payload::gadget::COMMAND::UNMOUNT);
+        push_gadget_event(payload::gadget::FUNCTION::UNMOUNT);
     }
 
     extern void mount()
     {
-        push_gadget_event(payload::gadget::COMMAND::MOUNT);
+        push_gadget_event(payload::gadget::FUNCTION::MOUNT);
     }
 
     extern void suspend(const bool wakeup_enabled)
     {
         wakeup_enabled_flag = wakeup_enabled;
-        push_gadget_event(payload::gadget::COMMAND::SUSPEND);
+        push_gadget_event(payload::gadget::FUNCTION::SUSPEND);
     }
 
     extern void resume()
     {
-        push_gadget_event(payload::gadget::COMMAND::RESUME);
+        push_gadget_event(payload::gadget::FUNCTION::RESUME);
     }
 
     extern void shutdown(void)
@@ -127,6 +128,8 @@ namespace engine
 
                 /* show state */
                 start_device_application();
+
+                engine::hci::cmd::control::gadget_indication(mode);
             }
             break;
         case defines::STATE::ACTIVE:
@@ -153,6 +156,8 @@ namespace engine
 
                 /* show state */
                 stop_device_application();
+
+                engine::hci::cmd::control::gadget_indication(mode);
             }
             break;
         default:
@@ -189,12 +194,12 @@ namespace engine
         display::clean();
     }
 
-    static void push_gadget_event(const payload::gadget::COMMAND _identifier)
+    static void push_gadget_event(const payload::gadget::FUNCTION _identifier)
     {
         const engine::handler::event_t event = {
             .identifier = payload::IDENTIFIER::GADGET,
             .gadget = {
-                .command = _identifier,
+                .function = _identifier,
             }};
         engine::handler::event_queue.push(event);
     }

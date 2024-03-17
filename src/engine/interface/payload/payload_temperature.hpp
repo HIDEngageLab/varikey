@@ -54,14 +54,13 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
                     if (function == FUNCTION::GET ||
                         function == FUNCTION::ALARM)
                     {
-                        *ptr++ = (uint8_t)function;
-                        serialize_float(value, &ptr);
+                        *(*_ptr)++ = (uint8_t)function;
+                        serialize_float(value, _ptr);
                     }
                 }
             };

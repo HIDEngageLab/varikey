@@ -27,25 +27,24 @@ namespace registry
 			static const size_t SIZE = sizeof(uint16_t) * 1;
 
 			/** \brief Maintainer parameter structure */
-			union register_t
+			union __attribute__((packed)) register_t
 			{
 				uint8_t byte[2];
 				uint16_t word;
-				struct __attribute__((packed)) maintainer_t
+				struct maintainer_t
 				{
 					uint16_t protocol : 2;
 					uint16_t hardware : 4;
-					uint16_t identifier : 12;
+					uint16_t identifier : 10;
 				} value;
 
 				void initialize(void);
 
-				void deserialize(uint8_t const *const _space);
-				void serialize(uint8_t *const _space) const;
+				void deserialize(uint8_t const *const);
+				void serialize(uint8_t **) const;
 			};
 
 			extern register_t g_register;
-
 		}
 	}
 }

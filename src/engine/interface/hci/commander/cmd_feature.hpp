@@ -18,7 +18,6 @@
 #include "chunk.h"
 #include "cmd_gpio_msg.hpp"
 #include "payload_gpio.hpp"
-#include "payload_keycode.hpp"
 #include "payload_keypad.hpp"
 
 namespace engine
@@ -30,17 +29,17 @@ namespace engine
             namespace feature
             {
                 using IDENTIFIER = payload::gpio::IDENTIFIER;
-                using LEVEL = payload::gpio::LEVEL;
+                using FUNCTION = payload::gpio::FUNCTION;
 
-                extern void backlight_request(chunk_t const *const _chunk);
+                extern void backlight_request(chunk_t const *const);
 
-                extern void display_request(chunk_t const *const _chunk);
+                extern void display_request(chunk_t const *const);
 
-                extern void gpio_request(chunk_t const *const _chunk);
-                extern void gpio_indication(const IDENTIFIER _identifier, const LEVEL _level);
+                extern void gpio_request(chunk_t const *const);
+                extern void gpio_indication(const FUNCTION, const IDENTIFIER, const uint32_t);
 
-                extern void keypad_request(chunk_t const *_chunk);
-                extern void key_indication(const payload::keycode::content_t &);
+                extern void keypad_request(chunk_t const *);
+                extern void key_indication(const payload::keypad::content_t &);
             }
         }
     }

@@ -18,7 +18,6 @@
 #include "chunk.h"
 #include "macros.hpp"
 
-#include "payload_keycode.hpp"
 #include "payload_keypad.hpp"
 
 namespace engine
@@ -53,11 +52,7 @@ namespace engine
                 struct message_t
                 {
                     RESULT result;
-                    union
-                    {
-                        payload::keycode::content_t keycode;
-                        payload::keypad::content_t keypad;
-                    };
+                    payload::keypad::content_t keypad;
                     chunk_t value;
                 };
 

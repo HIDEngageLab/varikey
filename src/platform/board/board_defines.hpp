@@ -19,10 +19,10 @@ namespace platform
 
         enum class IDENTIFIER : uint8_t
         {
-            GPIO0 = 0x5a,
-            GPIO1 = 0x5b,
-            GPIO2 = 0x5c,
-            GPIO3 = 0x5d,
+            GPIO0 = 0,
+            GPIO1 = 1,
+            GPIO2 = 2,
+            GPIO3 = 3,
 
             UNDEFINED = 0xff,
         };

@@ -31,6 +31,7 @@ namespace engine
             IDLE = 0x00,
             PENDING = 0x03,
             SUSPEND = 0x02,
+            
             UNDEFINED = 0xff,
         };
     }

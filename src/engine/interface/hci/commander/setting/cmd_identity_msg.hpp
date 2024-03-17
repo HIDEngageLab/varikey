@@ -27,18 +27,21 @@ namespace engine
         {
             namespace identity
             {
+                using content_t = engine::payload::identity::content_t;
+
                 /** \brief Identity request result */
                 enum class RESULT : uint8_t
                 {
                     FAILURE = common::result::FAILURE,
                     SUCCESS = common::result::SUCCESS,
+                    UNKNOWN = common::result::UNKNOWN,
                     UNSUPPORTED = common::result::UNSUPPORTED,
                 };
 
                 /** \brief Identity parameter */
                 struct message_t
                 {
-                    engine::payload::identity::content_t identity;
+                    content_t identity;
                     RESULT result;
 
                     chunk_t value;

@@ -42,12 +42,13 @@ namespace common
 		/** \brief Anonymous result data type */
 		enum VALUE
 		{
-			CUSTOM = 0x80,
 			ERROR = 0x04,
 			FAILURE = 0x01,
 			SUCCESS = 0x00,
 			UNKNOWN = 0x02,
 			UNSUPPORTED = 0x03,
+
+			CUSTOM = 0x80,
 
 			UNDEFINED = 0xFF,
 		};

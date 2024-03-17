@@ -19,6 +19,7 @@
 
 #include "chunk.h"
 #include "cmd_protocol_msg.hpp"
+#include "payload_identifier.hpp"
 
 namespace engine
 {
@@ -78,17 +79,17 @@ namespace engine
                 0x13 REQ:0x4C CFM:0x4D IND:0x4E RES:0x4F
             */
 
-            static const uint8_t BACKLIGHT = 0x0e;
-            static const uint8_t DISPLAY = 0x08;
-            static const uint8_t GADGET = 0x02;
-            static const uint8_t GPIO = 0x11;
-            static const uint8_t HASH = 0x07;
-            static const uint8_t IDENTITY = 0x05;
-            static const uint8_t KEYPAD = 0x0c;
-            static const uint8_t PARAMETER = 0x06;
-            static const uint8_t PROTOCOL = 0x00;
-            static const uint8_t RESET = 0x01;
-            static const uint8_t TEMPERATURE = 0x0d;
+            static const uint8_t BACKLIGHT = (uint8_t)payload::IDENTIFIER::BACKLIGHT;
+            static const uint8_t DISPLAY = (uint8_t)payload::IDENTIFIER::DISPLAY;
+            static const uint8_t GADGET = (uint8_t)payload::IDENTIFIER::GADGET;
+            static const uint8_t GPIO = (uint8_t)payload::IDENTIFIER::GPIO;
+            static const uint8_t HASH = (uint8_t)payload::IDENTIFIER::HASH;
+            static const uint8_t IDENTITY = (uint8_t)payload::IDENTIFIER::IDENTITY;
+            static const uint8_t KEYPAD = (uint8_t)payload::IDENTIFIER::KEYPAD;
+            static const uint8_t PARAMETER = (uint8_t)payload::IDENTIFIER::PARAMETER;
+            static const uint8_t PROTOCOL = (uint8_t)payload::IDENTIFIER::PROTOCOL;
+            static const uint8_t RESET = (uint8_t)payload::IDENTIFIER::RESET;
+            static const uint8_t TEMPERATURE = (uint8_t)payload::IDENTIFIER::TEMPERATURE;
 
             static const uint8_t OFFSET = 2;
 
@@ -112,6 +113,7 @@ namespace engine
             static const uint8_t PARAM_CFM_VALUE = ((PARAMETER << OFFSET) + (int)SUFFIX::CFM);
             static const uint8_t PARAM_REQ_VALUE = ((PARAMETER << OFFSET) + (int)SUFFIX::REQ);
             static const uint8_t PROTOCOL_IND_VALUE = ((PROTOCOL << OFFSET) + (int)SUFFIX::IND);
+            static const uint8_t RESET_CFM_VALUE = ((RESET << OFFSET) + (int)SUFFIX::CFM);
             static const uint8_t RESET_IND_VALUE = ((RESET << OFFSET) + (int)SUFFIX::IND);
             static const uint8_t RESET_REQ_VALUE = ((RESET << OFFSET) + (int)SUFFIX::REQ);
             static const uint8_t TEMPERATURE_CFM_VALUE = ((TEMPERATURE << OFFSET) + (int)SUFFIX::CFM);
@@ -128,7 +130,7 @@ namespace engine
          * GPIO             target control
          * HASH             calculate hash value for a data chunk
          * IDENTITY         check module identifier
-         * KEYPAD           event trigger
+         * KEYPAD           keypad mode control
          * PARAMETER        handle parameter request
          * RESET            module restart
          * TEMPERATURE      check temperature
@@ -155,6 +157,7 @@ namespace engine
             PARAM_CFM = hc::PARAM_CFM_VALUE,
             PARAM_REQ = hc::PARAM_REQ_VALUE,
             PROTOCOL_IND = hc::PROTOCOL_IND_VALUE,
+            RESET_CFM = hc::RESET_CFM_VALUE,
             RESET_IND = hc::RESET_IND_VALUE,
             RESET_REQ = hc::RESET_REQ_VALUE,
             TEMPERATURE_CFM = hc::TEMPERATURE_CFM_VALUE,

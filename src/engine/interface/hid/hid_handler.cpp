@@ -13,6 +13,7 @@
 #include "engine_event_handler.hpp"
 #include "engine_gpio.hpp"
 #include "hid_report.hpp"
+#include "keypad.hpp"
 #include "registry_defines.hpp"
 #include "usb_descriptors.hpp"
 
@@ -22,6 +23,8 @@ namespace engine
     {
         payload::gpio::content_t pin_request;
         payload::parameter::content_t parameter_request;
+        payload::keypad::content_t keypad_request;
+        payload::identity::content_t identity_request;
 
         extern void set_report_handler(const uint8_t _identifier, const const_chunk_t &_buffer)
         {
@@ -158,44 +161,44 @@ namespace engine
                     }
                     break;
                 case SET_REPORT::GADGET:
-                    switch (set_report.gadget.command)
+                    switch (set_report.gadget.function)
                     {
-                    case payload::gadget::COMMAND::MOUNT:
+                    case payload::gadget::FUNCTION::MOUNT:
                     {
                         const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
-                                .command = payload::gadget::COMMAND::MOUNT,
+                                .function = payload::gadget::FUNCTION::MOUNT,
                             }};
                         handler::event_queue.push(event);
                         break;
                     }
-                    case payload::gadget::COMMAND::RESUME:
+                    case payload::gadget::FUNCTION::RESUME:
                     {
                         const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
-                                .command = payload::gadget::COMMAND::RESUME,
+                                .function = payload::gadget::FUNCTION::RESUME,
                             }};
                         handler::event_queue.push(event);
                         break;
                     }
-                    case payload::gadget::COMMAND::SUSPEND:
+                    case payload::gadget::FUNCTION::SUSPEND:
                     {
                         const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
-                                .command = payload::gadget::COMMAND::SUSPEND,
+                                .function = payload::gadget::FUNCTION::SUSPEND,
                             }};
                         handler::event_queue.push(event);
                         break;
                     }
-                    case payload::gadget::COMMAND::UNMOUNT:
+                    case payload::gadget::FUNCTION::UNMOUNT:
                     {
                         const handler::event_t event = {
                             .identifier = payload::IDENTIFIER::GADGET,
                             .gadget = {
-                                .command = payload::gadget::COMMAND::UNMOUNT,
+                                .function = payload::gadget::FUNCTION::UNMOUNT,
                             }};
                         handler::event_queue.push(event);
                         break;
@@ -213,24 +216,33 @@ namespace engine
                     case engine::payload::gpio::FUNCTION::ENABLE:
                         engine::gpio::enable_event(true);
                         break;
-                    case engine::payload::gpio::FUNCTION::DIRECTION_GET:
+                    case engine::payload::gpio::FUNCTION::DIRECTION:
                         pin_request.function = set_report.gpio.function;
                         pin_request.identifier = set_report.gpio.identifier;
                         break;
-                    case engine::payload::gpio::FUNCTION::DIRECTION_SET:
-                        engine::gpio::set_direction(set_report.gpio.identifier, set_report.gpio.direction);
+                    case engine::payload::gpio::FUNCTION::IN:
+                        engine::gpio::set_direction(set_report.gpio.identifier, engine::gpio::DIRECTION::INPUT);
                         break;
-                    case engine::payload::gpio::FUNCTION::LEVEL_GET:
+                    case engine::payload::gpio::FUNCTION::OUT:
+                        engine::gpio::set_direction(set_report.gpio.identifier, engine::gpio::DIRECTION::OUTPUT);
+                        break;
+                    case engine::payload::gpio::FUNCTION::VALUE:
                         pin_request.function = set_report.gpio.function;
                         pin_request.identifier = set_report.gpio.identifier;
                         break;
-                    case engine::payload::gpio::FUNCTION::LEVEL_SET:
-                        engine::gpio::set_value(set_report.gpio.identifier, set_report.gpio.level == platform::board::VALUE::HIGH);
+                    case engine::payload::gpio::FUNCTION::HIGH:
+                        engine::gpio::set_value(set_report.gpio.identifier, true);
+                        break;
+                    case engine::payload::gpio::FUNCTION::LOW:
+                        engine::gpio::set_value(set_report.gpio.identifier, false);
                         break;
 
                     default:
                         break;
                     }
+                    break;
+                case SET_REPORT::IDENTITY:
+                    identity_request.part = set_report.identity.part;
                     break;
                 case SET_REPORT::KEYPAD:
                     switch (set_report.keypad.identifier)
@@ -264,11 +276,26 @@ namespace engine
                     case payload::keypad::IDENTIFIER::KEYCODE:
                     {
                         /* todo: function click or push... */
-                        const engine::keypad::KEY_ID key_code_id = engine::keypad::int2id(set_report.keypad.code);
+                        const engine::keypad::KEY_ID key_code_id = set_report.keypad.key.code;
                         if (key_code_id != engine::keypad::KEY_ID::UNDEFINED)
                         {
-                            engine::keypad::press_key(key_code_id);
-                            engine::keypad::release_ley(key_code_id);
+
+                            if (set_report.keypad.function == engine::payload::keypad::FUNCTION::CLICK ||
+                                set_report.keypad.function == engine::payload::keypad::FUNCTION::PUSH)
+                            {
+                                engine::keypad::set_modifier(set_report.keypad.key.modifier);
+                                engine::keypad::press_key(key_code_id);
+                                engine::keypad::release_ley(key_code_id);
+                            }
+                            else if (set_report.keypad.function == engine::payload::keypad::FUNCTION::PRESS)
+                            {
+                                engine::keypad::set_modifier(set_report.keypad.key.modifier);
+                                engine::keypad::press_key(key_code_id);
+                            }
+                            else if (set_report.keypad.function == engine::payload::keypad::FUNCTION::RELEASE)
+                            {
+                                engine::keypad::release_ley(key_code_id);
+                            }
                         }
                         break;
                     }
@@ -282,10 +309,19 @@ namespace engine
                             }
                             break;
                         case payload::keypad::FUNCTION::GET:
-                            /* get mapping implemented with a get report */
+                            if (set_report.keypad.identifier == engine::payload::keypad::IDENTIFIER::MAPPING &&
+                                set_report.keypad.function == engine::payload::keypad::FUNCTION::GET)
+                            {
+                                keypad_request.identifier = set_report.keypad.identifier;
+                                keypad_request.function = set_report.keypad.function;
+                            }
+                            else
+                            {
+                                keypad_request.identifier = engine::payload::keypad::IDENTIFIER::UNDEFINED;
+                            }
                             break;
-                        case payload::keypad::FUNCTION::CLEAN:
-                            engine::keypad::clean();
+                        case payload::keypad::FUNCTION::RESET:
+                            engine::keypad::reset();
                             break;
                         default:
                             break;
@@ -342,43 +378,79 @@ namespace engine
 
             switch (report.report)
             {
-            case GET_REPORT::FIRMWARE:
-            {
-                const engine::payload::identity::content_t identity{
-                    .identifier = engine::payload::identity::IDENTIFIER::FIRMWARE,
-                };
-                identity.serialize(ptr);
-                break;
-            }
             case GET_REPORT::GPIO:
             {
-                if (pin_request.function == engine::payload::gpio::FUNCTION::DIRECTION_GET)
+                if (pin_request.function == engine::payload::gpio::FUNCTION::DIRECTION)
                 {
                     const engine::gpio::DIRECTION direction = engine::gpio::get_direction(pin_request.identifier);
-                    if (direction == engine::gpio::DIRECTION::UNDEFINED)
+                    switch (direction)
+                    {
+                    case engine::gpio::DIRECTION::INPUT:
+                    {
+
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::IN,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
+                    }
+                    case engine::gpio::DIRECTION::OUTPUT:
+                    {
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::OUT,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
+                    }
+                    default:
                     {
                         report.result = engine::hid::RESULT::FAILURE;
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::UNDEFINED,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
                     }
-                    const engine::payload::gpio::content_t gpio{
-                        .function = engine::payload::gpio::FUNCTION::DIRECTION_GET,
-                        .identifier = pin_request.identifier,
-                        .direction = direction,
-                    };
-                    gpio.serialize(ptr);
+                    }
                 }
-                else if (pin_request.function == engine::payload::gpio::FUNCTION::LEVEL_GET)
+                else if (pin_request.function == engine::payload::gpio::FUNCTION::VALUE)
                 {
                     const engine::gpio::VALUE value = engine::gpio::get_value(pin_request.identifier);
-                    if (value == engine::gpio::VALUE::UNDEFINED)
+                    switch (value)
+                    {
+                    case engine::gpio::VALUE::HIGH:
+                    {
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::HIGH,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
+                    }
+                    case engine::gpio::VALUE::LOW:
+                    {
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::LOW,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
+                    }
+
+                    default:
                     {
                         report.result = engine::hid::RESULT::FAILURE;
+                        const engine::payload::gpio::content_t gpio{
+                            .function = engine::payload::gpio::FUNCTION::UNDEFINED,
+                            .identifier = pin_request.identifier,
+                        };
+                        gpio.serialize(&ptr);
+                        break;
                     }
-                    const engine::payload::gpio::content_t gpio{
-                        .function = engine::payload::gpio::FUNCTION::LEVEL_GET,
-                        .identifier = pin_request.identifier,
-                        .level = value,
-                    };
-                    gpio.serialize(ptr);
+                    }
                 }
                 else
                 {
@@ -386,51 +458,70 @@ namespace engine
                 }
                 break;
             }
-            case GET_REPORT::HARDWARE:
-            {
-                const engine::payload::identity::content_t identity{
-                    .identifier = engine::payload::identity::IDENTIFIER::HARDWARE,
-                };
-                identity.serialize(ptr);
+
+            case GET_REPORT::IDENTITY:
+                switch (identity_request.part)
+                {
+                case engine::payload::identity::PART::FIRMWARE:
+                {
+                    const engine::payload::identity::content_t identity{
+                        .part = engine::payload::identity::PART::FIRMWARE,
+                    };
+                    identity.serialize(&ptr);
+                    break;
+                }
+                case engine::payload::identity::PART::HARDWARE:
+                {
+                    const engine::payload::identity::content_t identity{
+                        .part = engine::payload::identity::PART::HARDWARE,
+                    };
+                    identity.serialize(&ptr);
+                    break;
+                }
+                case engine::payload::identity::PART::SERIAL:
+                {
+                    const engine::payload::identity::content_t identity{
+                        .part = engine::payload::identity::PART::SERIAL,
+                    };
+                    identity.serialize(&ptr);
+                    break;
+                }
+                case engine::payload::identity::PART::UNIQUE:
+                {
+                    const engine::payload::identity::content_t identity{
+                        .part = engine::payload::identity::PART::UNIQUE,
+                    };
+                    identity.serialize(&ptr);
+                    break;
+                }
+
+                default:
+                    break;
+                }
                 break;
-            }
-            case GET_REPORT::MAPPING:
-            {
-                const engine::payload::keypad::content_t keypad{
-                    .identifier = engine::payload::keypad::IDENTIFIER::MAPPING,
-                    .function = engine::payload::keypad::FUNCTION::GET,
-                    .table = engine::keypad::get_mapping(),
-                };
-                keypad.serialize(ptr);
+            case GET_REPORT::KEYPAD:
+                if (keypad_request.identifier == engine::payload::keypad::IDENTIFIER::MAPPING &&
+                    keypad_request.function == engine::payload::keypad::FUNCTION::GET)
+                {
+                    const engine::payload::keypad::content_t keypad{
+                        .identifier = engine::payload::keypad::IDENTIFIER::MAPPING,
+                        .function = engine::payload::keypad::FUNCTION::GET,
+                        .table = engine::keypad::get_mapping(),
+                    };
+                    keypad.serialize(&ptr);
+                }
                 break;
-            }
             case GET_REPORT::PARAMETER:
                 engine::payload::parameter::get_parameter(parameter_request);
-                parameter_request.serialize(ptr);
+                parameter_request.serialize(&ptr);
                 break;
-            case GET_REPORT::SERIAL:
-            {
-                const engine::payload::identity::content_t identity{
-                    .identifier = engine::payload::identity::IDENTIFIER::SERIAL,
-                };
-                identity.serialize(ptr);
-                break;
-            }
             case GET_REPORT::TEMPERATURE:
             {
                 const engine::payload::temperature::content_t temperature{
                     .function = engine::payload::temperature::FUNCTION::GET,
                     .value = platform::board::assembly.soc.get_temperature(),
                 };
-                temperature.serialize(ptr);
-                break;
-            }
-            case GET_REPORT::UNIQUE:
-            {
-                const engine::payload::identity::content_t identity{
-                    .identifier = engine::payload::identity::IDENTIFIER::UNIQUE,
-                };
-                identity.serialize(ptr);
+                temperature.serialize(&ptr);
                 break;
             }
 

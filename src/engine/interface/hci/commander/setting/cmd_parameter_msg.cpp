@@ -105,13 +105,13 @@ namespace engine
                     const uint8_t MESSAGE_LENGTH = CFM_SIZE + _msg->value.size;
                     uint8_t space[MESSAGE_LENGTH];
                     _msg->value.space = space;
-                    _msg->value.size = CFM_SIZE;
+                    _msg->value.size = 2;
                     uint8_t *ptr = space;
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::PARAM_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
                     _msg->value.size += _msg->content.size();
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);

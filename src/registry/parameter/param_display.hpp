@@ -44,8 +44,8 @@ namespace registry
 
                 void initialize(void);
 
-                void deserialize(uint8_t const *const _space);
-                void serialize(uint8_t *const _space) const;
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
 
             extern register_t g_register;

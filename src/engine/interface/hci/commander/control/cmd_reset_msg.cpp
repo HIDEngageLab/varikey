@@ -30,7 +30,8 @@ namespace engine
         {
             namespace reset
             {
-                static const size_t IND_SIZE = 2;
+                static const size_t CFM_SIZE = 2 + sizeof(content_t);
+                static const size_t IND_SIZE = 2 + sizeof(content_t);
 
                 /**
                     \brief Reset request message
@@ -52,6 +53,30 @@ namespace engine
                 }
 
                 /**
+                 * \brief Reset request confirmation
+                 *
+                 * \param _msg
+                 */
+                extern void confirmation(message_t *const _msg)
+                {
+                    /* checks */
+                    assert(_msg != NULL); /* key confirmation message null */
+
+                    /* handle */
+                    uint8_t space[CFM_SIZE] = {0};
+                    _msg->value.size = CFM_SIZE;
+                    _msg->value.space = space;
+                    uint8_t *ptr = space;
+
+                    *ptr++ = (uint8_t)engine::hci::COMMAND::RESET_CFM;
+                    *ptr++ = (uint8_t)_msg->result;
+
+                    _msg->content.serialize(&ptr);
+
+                    serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
+                }
+
+                /**
                     \brief Reset indication message
                 */
                 extern void indication(message_t *const _msg)
@@ -66,6 +91,8 @@ namespace engine
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::RESET_IND;
                     *ptr++ = (uint8_t)_msg->result;
+
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

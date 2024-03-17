@@ -42,20 +42,19 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                value.click_ms = SETWORD(_space[0], _space[1]);
-                value.push_ms = SETWORD(_space[2], _space[3]);
+                const uint8_t *ptr = _space;
+                value.click_ms = deserialize_word(&ptr);
+                value.push_ms = deserialize_word(&ptr); 
             }
 
             /**
                 \brief Serialize parameter value
             */
-            void register_t::serialize(uint8_t *const _space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = HIBYTE(value.click_ms);
-                _space[1] = LOBYTE(value.click_ms);
-                _space[2] = HIBYTE(value.push_ms);
-                _space[3] = LOBYTE(value.push_ms);
+                serialize_word(value.click_ms, _ptr);
+                serialize_word(value.push_ms, _ptr);
             }
         }
     }

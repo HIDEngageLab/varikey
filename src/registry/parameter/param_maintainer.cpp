@@ -45,17 +45,17 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                word = SETWORD(_space[0], _space[1]);
+                const uint8_t *ptr = _space;
+                word = deserialize_word(&ptr);
             }
 
             /**
                 \brief Serialize  parameter value
             */
-            void register_t::serialize(uint8_t *const _space) const
+            void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                _space[0] = HIBYTE(word);
-                _space[1] = LOBYTE(word);
+                serialize_word(static_cast<const uint16_t>(word), _ptr);
             }
         }
     }

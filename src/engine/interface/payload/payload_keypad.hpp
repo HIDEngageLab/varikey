@@ -14,6 +14,7 @@
 #include "macros.hpp"
 
 #include "keypad_keycode.hpp"
+#include "keypad_modifiers.hpp"
 #include "payload_identifier.hpp"
 
 namespace engine
@@ -23,15 +24,15 @@ namespace engine
         namespace keypad
         {
             using TABLE = engine::keypad::TABLE;
-
-            const uint8_t KEYPAD_ID = to_underlying(payload::IDENTIFIER::KEYPAD);
+            using KEY_ID = engine::keypad::KEY_ID;
+            using MODIFIER = engine::keypad::MODIFIER;
 
             enum class IDENTIFIER : uint8_t
             {
-                HCI = KEYPAD_ID + 2,
-                HID = KEYPAD_ID + 3,
-                KEYCODE = KEYPAD_ID + 4,
-                MAPPING = KEYPAD_ID + 1,
+                HCI = 0x00,
+                HID = 0x01,
+                KEYCODE = 0x02,
+                MAPPING = 0x03,
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
@@ -42,10 +43,12 @@ namespace engine
                 ENABLE = common::function::ENABLE,
                 GET = common::function::GET,
                 SET = common::function::SET,
-                CLEAN = common::function::CLEAN,
 
                 CLICK = common::function::CUSTOM,
-                PUSH = common::function::CUSTOM + 1,
+                PRESS = common::function::CUSTOM + 1,
+                PUSH = common::function::CUSTOM + 2,
+                RELEASE = common::function::CUSTOM + 3,
+                RESET = common::function::CUSTOM + 4,
 
                 UNDEFINED = to_underlying(common::function::UNDEFINED),
             };
@@ -57,12 +60,35 @@ namespace engine
                 union
                 {
                     TABLE table;
-                    uint8_t code;
+                    struct
+                    {
+                        MODIFIER modifier;
+                        KEY_ID code;
+                    } key;
+                    struct
+                    {
+                        uint8_t modifier;
+                        uint8_t code;
+                        TABLE table;
+                    } value;
                 };
 
                 const size_t size() const
                 {
-                    return 2 + (identifier == IDENTIFIER::MAPPING) ? 1 : 0;
+                    switch (identifier)
+                    {
+                    case IDENTIFIER::HCI:
+                        return 2;
+                    case IDENTIFIER::HID:
+                        return 2;
+                    case IDENTIFIER::KEYCODE:
+                        return 4;
+                    case IDENTIFIER::MAPPING:
+                        return 3;
+                    default:
+                        break;
+                    }
+                    return 2;
                 }
 
                 void deserialize(uint8_t const *const _space)
@@ -103,10 +129,6 @@ namespace engine
                                 table = TABLE::UNDEFINED;
                             }
                         }
-                        else if (function == FUNCTION::CLEAN)
-                        {
-                            table = TABLE::UNDEFINED;
-                        }
                         else
                         {
                             function = FUNCTION::UNDEFINED;
@@ -115,7 +137,8 @@ namespace engine
                     else if (identifier == IDENTIFIER::KEYCODE)
                     {
                         function = static_cast<const FUNCTION>(_space[1]);
-                        code = static_cast<uint8_t>(_space[2]);
+                        key.modifier.value = static_cast<uint8_t>(_space[2]);
+                        key.code = static_cast<KEY_ID>(_space[3]);
                     }
                     else
                     {
@@ -123,28 +146,36 @@ namespace engine
                     }
                 }
 
-                void serialize(uint8_t *const _space) const
+                void serialize(uint8_t **_ptr) const
                 {
-                    uint8_t *ptr = _space;
-                    *ptr++ = (uint8_t)identifier;
+                    *(*_ptr)++ = (uint8_t)identifier;
                     if (identifier == IDENTIFIER::HCI ||
                         identifier == IDENTIFIER::HID)
                     {
-                        *ptr++ = (uint8_t)function;
+                        *(*_ptr)++ = (uint8_t)function;
                     }
                     else if (identifier == IDENTIFIER::MAPPING)
                     {
-                        *ptr++ = (uint8_t)function;
+                        *(*_ptr)++ = (uint8_t)function;
                         if (function == FUNCTION::SET ||
                             function == FUNCTION::GET)
                         {
-                            *ptr++ = (uint8_t)table;
+                            *(*_ptr)++ = (uint8_t)table;
+                        }
+                        else
+                        {
+                            *(*_ptr)++ = (uint8_t)TABLE::UNDEFINED;
                         }
                     }
                     else if (identifier == IDENTIFIER::KEYCODE)
                     {
-                        *ptr++ = (uint8_t)function;
-                        *ptr++ = (uint8_t)code;
+                        *(*_ptr)++ = (uint8_t)function;
+                        *(*_ptr)++ = (uint8_t)key.modifier.value;
+                        *(*_ptr)++ = (uint8_t)key.code;
+                    }
+                    else
+                    {
+                        *(*_ptr)++ = (uint8_t)TABLE::UNDEFINED;
                     }
                 }
             };

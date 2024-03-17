@@ -10,6 +10,7 @@
 #define __ENGINE_KEYPAD_HPP__
 
 #include "keypad_keycode.hpp"
+#include "keypad_modifiers.hpp"
 
 namespace engine
 {
@@ -26,10 +27,8 @@ namespace engine
         extern void enable_cups(const bool);
         extern void enable_scroll(const bool);
 
-        extern void perform_hid_key(const KEY_ID, const TABLE);
-        extern void clean(void);
-
-        extern const uint8_t get_modifier(void);
+        extern void perform(const KEY_ID);
+        extern void reset(void);
 
         extern const uint8_t id2int(const KEY_ID);
         extern const KEY_ID int2id(const uint8_t);

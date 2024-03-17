@@ -32,7 +32,7 @@ namespace engine
             namespace gpio
             {
                 static const size_t CFM_SIZE = 6;
-                static const size_t IND_SIZE = 5;
+                static const size_t IND_SIZE = 7;
 
                 /**
                     \brief Status request message
@@ -66,7 +66,7 @@ namespace engine
                     *ptr++ = (uint8_t)engine::hci::COMMAND::GPIO_CFM;
                     *ptr++ = (uint8_t)_msg->result;
 
-                    _msg->content.serialize(ptr);
+                    _msg->content.serialize(&ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
@@ -85,8 +85,10 @@ namespace engine
                     uint8_t *ptr = space;
 
                     *ptr++ = (uint8_t)engine::hci::COMMAND::GPIO_IND;
-                    *ptr++ = (uint8_t)_msg->content.identifier;
-                    *ptr++ = (uint8_t)_msg->content.level;
+                    
+                    _msg->content.serialize(&ptr);
+
+                    serialize_long(_msg->content.diff, &ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
