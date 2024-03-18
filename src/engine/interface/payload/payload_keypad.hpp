@@ -154,6 +154,12 @@ namespace engine
                     {
                         *(*_ptr)++ = (uint8_t)function;
                     }
+                    else if (identifier == IDENTIFIER::KEYCODE)
+                    {
+                        *(*_ptr)++ = (uint8_t)function;
+                        *(*_ptr)++ = (uint8_t)key.modifier.value;
+                        *(*_ptr)++ = (uint8_t)key.code;
+                    }
                     else if (identifier == IDENTIFIER::MAPPING)
                     {
                         *(*_ptr)++ = (uint8_t)function;
@@ -166,12 +172,6 @@ namespace engine
                         {
                             *(*_ptr)++ = (uint8_t)TABLE::UNDEFINED;
                         }
-                    }
-                    else if (identifier == IDENTIFIER::KEYCODE)
-                    {
-                        *(*_ptr)++ = (uint8_t)function;
-                        *(*_ptr)++ = (uint8_t)key.modifier.value;
-                        *(*_ptr)++ = (uint8_t)key.code;
                     }
                     else
                     {

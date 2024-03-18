@@ -36,7 +36,7 @@ namespace engine
             namespace keypad
             {
                 static const size_t BUFFER_SIZE = 20;
-                static const size_t CFM_SIZE = 4;
+                static const size_t CFM_SIZE = 2;
                 static const size_t IND_SIZE = 1;
 
                 /**
@@ -160,6 +160,7 @@ namespace engine
                     *ptr++ = (uint8_t)engine::hci::COMMAND::KEYPAD_CFM;
                     *ptr++ = (uint8_t)_msg->result;
                     _msg->keypad.serialize(&ptr);
+                    _msg->value.size += _msg->keypad.size();
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
