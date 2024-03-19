@@ -24,7 +24,14 @@ namespace registry
     {
         namespace keypad
         {
-            static const size_t SIZE = sizeof(uint16_t) * 2;
+            /** \brief Node keypad details */
+            struct keypad_t
+            {
+                uint16_t click_ms;
+                uint16_t push_ms;
+            } __attribute__((packed));
+
+            static const size_t SIZE = sizeof(keypad_t);
             /**
                 \brief Keypad parameter
 
@@ -33,21 +40,15 @@ namespace registry
             union register_t
             {
                 uint8_t byte[SIZE];
-                /** \brief Node keypad details */
-                struct __attribute__((packed)) keypad_t
-                {
-                    uint16_t click_ms;
-                    uint16_t push_ms;
-                } value;
+                keypad_t value;
 
                 void initialize(void);
 
                 void deserialize(uint8_t const *const);
                 void serialize(uint8_t **) const;
-            };
+            } __attribute__((packed));
 
             extern register_t g_register;
-
         }
     }
 }

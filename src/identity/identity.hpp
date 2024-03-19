@@ -21,7 +21,7 @@ namespace identity
         union content_t
         {
             uint8_t byte[SIZE];
-            struct __attribute__((__packed__))
+            struct
             {
                 uint16_t identifier;
                 uint16_t revision;
@@ -29,7 +29,7 @@ namespace identity
                 uint16_t build;
                 uint16_t vendor;
             };
-        };
+        } __attribute__((packed));
     }
 
     namespace hardware
@@ -39,14 +39,14 @@ namespace identity
         union content_t
         {
             uint8_t byte[SIZE];
-            struct __attribute__((__packed__))
+            struct
             {
                 uint16_t maintainer;
                 uint16_t identifier;
                 uint8_t number;
                 uint8_t variant;
             };
-        };
+        } __attribute__((packed));
     }
 }
 

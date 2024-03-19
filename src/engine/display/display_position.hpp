@@ -15,7 +15,7 @@ namespace engine
 {
     namespace display
     {
-        struct position_t
+        struct Position
         {
             uint8_t line;
             uint8_t column;

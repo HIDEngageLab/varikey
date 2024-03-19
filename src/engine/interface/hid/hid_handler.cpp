@@ -69,16 +69,16 @@ namespace engine
                             .identifier = payload::IDENTIFIER::BACKLIGHT,
                             .backlight = {
                                 .program = set_report.backlight.program,
-                                .color_left = {.rgb = {
-                                                   .r = set_report.backlight.color_left.rgb.r,
-                                                   .g = set_report.backlight.color_left.rgb.g,
-                                                   .b = set_report.backlight.color_left.rgb.b,
-                                               }},
-                                .color_right = {.rgb = {
-                                                    .r = set_report.backlight.color_right.rgb.r,
-                                                    .g = set_report.backlight.color_right.rgb.g,
-                                                    .b = set_report.backlight.color_right.rgb.b,
-                                                }},
+                                .left = {.rgb = {
+                                             .r = set_report.backlight.left.rgb.r,
+                                             .g = set_report.backlight.left.rgb.g,
+                                             .b = set_report.backlight.left.rgb.b,
+                                         }},
+                                .right = {.rgb = {
+                                              .r = set_report.backlight.right.rgb.r,
+                                              .g = set_report.backlight.right.rgb.g,
+                                              .b = set_report.backlight.right.rgb.b,
+                                          }},
                             }};
                         handler::event_queue.push(event);
                     }
@@ -88,8 +88,8 @@ namespace engine
                             .identifier = payload::IDENTIFIER::BACKLIGHT,
                             .backlight = {
                                 .program = set_report.backlight.program,
-                                .color_left = {0},
-                                .color_right = {0},
+                                .left = {0},
+                                .right = {0},
                             }};
                         handler::event_queue.push(event);
                     }

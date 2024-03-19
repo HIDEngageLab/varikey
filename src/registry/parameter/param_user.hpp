@@ -35,11 +35,10 @@ namespace registry
 
 				void deserialize(uint8_t const *const);
 				void serialize(uint8_t **) const;
-			};
+			} __attribute__((packed));
 
 			/** \brief Global user register parameter */
 			extern register_t g_register;
-
 		}
 	}
 }

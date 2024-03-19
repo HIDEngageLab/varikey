@@ -23,6 +23,7 @@ add_compile_options(-Wall
 -Wno-unused-function # we have some for the docs that aren't called
 -Wno-maybe-uninitialized
 -Waddress
+#-fpack-struct
 -g
 -O0
 )
@@ -143,7 +144,14 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hid/hid_handler.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/hid/hid_report.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_backlight.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_display.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_gadget.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_gpio.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_identity.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_keypad.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_parameter.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_reset.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/engine/interface/payload/payload_temperature.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_10bwdb.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode_varikey.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/engine/keypad/keypad_keycode.cpp

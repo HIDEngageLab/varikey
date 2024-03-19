@@ -26,10 +26,10 @@ namespace registry
     {
         namespace backlight
         {
-            register_t g_register = {{0xff,
-                                      0xff, 0xff, 0xff,
-                                      0xff, 0xff, 0xff,
-                                      0xff, 0xff}};
+            register_t g_register = {.byte = {0xff,
+                                              0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff,
+                                              0xff, 0xff}};
 
             /**
                 \brief initialize field with default values

@@ -28,7 +28,7 @@ namespace registry
         {
 
             /** \brief Global user register parameter */
-            register_t g_register = {{0xff, 0xff}};
+            register_t g_register = {.value = {0xff, 0xff}};
 
             /**
                 \brief Initialize with default values

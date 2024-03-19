@@ -31,32 +31,13 @@ namespace engine
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            struct __attribute__((packed)) content_t
+            struct content_t 
             {
                 FUNCTION function;
 
-                static const size_t size() { return 2; }
-                void deserialize(uint8_t const *const _space)
-                {
-                    function = static_cast<const FUNCTION>(_space[0]);
-                    if (!(function == FUNCTION::SHUTDOWN ||
-                          function == FUNCTION::FORMAT))
-                    {
-                        function = FUNCTION::UNDEFINED;
-                    }
-                }
-                void serialize(uint8_t **_ptr) const
-                {
-                    if ((function == FUNCTION::SHUTDOWN ||
-                         function == FUNCTION::FORMAT))
-                    {
-                        *(*_ptr)++ = (uint8_t)function;
-                    }
-                    else
-                    {
-                        *(*_ptr)++ = (uint8_t)FUNCTION::UNDEFINED;
-                    }
-                }
+                const size_t size100() const { return 2; }
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
         }
     }

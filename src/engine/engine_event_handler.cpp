@@ -140,8 +140,8 @@ namespace engine
                     break;
                 case PROGRAM::MORPH:
                     backlight::set_mode(backlight::MODE::CONST, 0);
-                    backlight::morph_left(_event.backlight.color_left);
-                    backlight::morph_right(_event.backlight.color_right);
+                    backlight::morph_left(_event.backlight.left);
+                    backlight::morph_right(_event.backlight.right);
                     break;
                 case PROGRAM::MOUNT:
                     backlight::set_mode(backlight::MODE::MOUNT, 0);
@@ -151,8 +151,8 @@ namespace engine
                     break;
                 case PROGRAM::SET:
                     backlight::set_mode(backlight::MODE::CONST, 0);
-                    backlight::set_left(_event.backlight.color_left);
-                    backlight::set_right(_event.backlight.color_right);
+                    backlight::set_left(_event.backlight.left);
+                    backlight::set_right(_event.backlight.right);
                     break;
                 case PROGRAM::SLOW:
                     backlight::set_mode(backlight::MODE::SLOW, 0);

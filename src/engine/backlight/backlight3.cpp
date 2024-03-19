@@ -32,9 +32,9 @@ namespace engine
 
         typedef struct
         {
-            color_t curent;
+            Color curent;
             color_change_t value;
-            color_t next;
+            Color next;
         } led_t;
 
         typedef struct
@@ -49,8 +49,8 @@ namespace engine
 
         typedef struct
         {
-            color_t left;
-            color_t right;
+            Color left;
+            Color right;
         } program_t;
 
         backlight_t backlight = {0};
