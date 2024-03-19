@@ -22,7 +22,7 @@ namespace engine
     {
         namespace gadget
         {
-            using MODE = engine::defines::STATE;
+            using STATE = engine::defines::STATE;
 
             /** \brief Gadget status function value */
             enum class FUNCTION : uint8_t
@@ -37,45 +37,14 @@ namespace engine
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            struct __attribute__((packed)) content_t
+            struct content_t
             {
                 FUNCTION function;
-                MODE mode;
+                STATE state;
 
-                static const size_t size() { return 2; }
-                void deserialize(uint8_t const *const _space)
-                {
-                    function = static_cast<const FUNCTION>(_space[0]);
-                    if (function == FUNCTION::GET ||
-                        function == FUNCTION::MOUNT ||
-                        function == FUNCTION::RESUME ||
-                        function == FUNCTION::SUSPEND ||
-                        function == FUNCTION::UNMOUNT)
-                    {
-                        /* do nothing */
-                    }
-                    else
-                    {
-                        function = FUNCTION::UNDEFINED;
-                    }
-                    mode = MODE::UNDEFINED;
-                }
-
-                void serialize(uint8_t **_ptr) const
-                {
-                    *(*_ptr)++ = (uint8_t)function;
-                    if (mode == MODE::ACTIVE ||
-                        mode == MODE::IDLE ||
-                        mode == MODE::PENDING ||
-                        mode == MODE::SUSPEND)
-                    {
-                        *(*_ptr)++ = (uint8_t)mode;
-                    }
-                    else
-                    {
-                        *(*_ptr)++ = (uint8_t)MODE::UNDEFINED;
-                    }
-                }
+                const size_t size() const { return 2; }
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
         }
     }

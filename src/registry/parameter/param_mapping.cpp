@@ -27,18 +27,12 @@ namespace registry
     {
         namespace mapping
         {
-            register_t g_register = {.modifier = {0xff, 0xff, 0xff, 0xff, 0xff,
-                                                  0xff, 0xff, 0xff, 0xff, 0xff,
-                                                  0xff, 0xff, 0xff,
-                                                  0xff, 0xff, 0xff,
-                                                  0xff, 0xff, 0xff, 0xff,
-                                                  0xff, 0xff, 0xff, 0xff},
-                                     .value = {0xff, 0xff, 0xff, 0xff, 0xff,
-                                               0xff, 0xff, 0xff, 0xff, 0xff,
-                                               0xff, 0xff, 0xff,
-                                               0xff, 0xff, 0xff,
-                                               0xff, 0xff, 0xff, 0xff,
-                                               0xff, 0xff, 0xff, 0xff}};
+            register_t g_register = {.byte = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
 
             /**
                 \brief Initialize with default values
@@ -51,7 +45,7 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(value, _space, SIZE);
+                memcpy(byte, _space, sizeof(keycode_t) * SIZE);
             }
 
             /**
@@ -60,8 +54,8 @@ namespace registry
             void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                memcpy(*_ptr, value, SIZE);
-                (*_ptr) += SIZE;
+                memcpy(*_ptr, byte, sizeof(keycode_t) * SIZE);
+                (*_ptr) += sizeof(keycode_t) * SIZE;
             }
         }
     }

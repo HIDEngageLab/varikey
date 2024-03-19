@@ -575,7 +575,8 @@ namespace registry
 
             for (uint8_t i = 0; i < mapping::SIZE; ++i)
             {
-                _param[2 + i] = mapping::g_register.value[i];
+                _param[2 + i * sizeof(mapping::keycode_t) + 0] = mapping::g_register.value[i].modifier;
+                _param[2 + i * sizeof(mapping::keycode_t) + 1] = mapping::g_register.value[i].code;
             }
 
             return SUCCESS;
@@ -776,7 +777,8 @@ namespace registry
             /* load parameter value */
             for (uint8_t i = 0; i < mapping::SIZE; ++i)
             {
-                mapping::g_register.value[i] = _source[2 + i];
+                mapping::g_register.value[i].modifier = _source[2 + i * sizeof(mapping::keycode_t) + 0];
+                mapping::g_register.value[i].code = _source[2 + i * sizeof(mapping::keycode_t) + 1];
             }
 
             return SUCCESS;

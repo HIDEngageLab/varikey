@@ -28,10 +28,16 @@ namespace registry
         {
             using namespace engine::backlight;
 
-            static const size_t SIZE = sizeof(MODE) +
-                                       sizeof(color_t) +
-                                       sizeof(color_t) +
-                                       sizeof(uint16_t);
+            /** \brief Node backlight details */
+            struct backlight_t
+            {
+                MODE mode;
+                Color left;
+                Color right;
+                uint16_t timeout;
+            } __attribute__((packed));
+
+            static const size_t SIZE = sizeof(backlight_t);
 
             /**
                 \brief Vref parameter
@@ -41,20 +47,13 @@ namespace registry
             union register_t
             {
                 uint8_t byte[SIZE];
-                /** \brief Node backlight details */
-                struct __attribute__((packed)) backlight_t
-                {
-                    MODE mode;
-                    color_t left;
-                    color_t right;
-                    uint16_t timeout;
-                } value;
+                backlight_t value;
 
                 void initialize(void);
 
                 void deserialize(uint8_t const *const);
                 void serialize(uint8_t **) const;
-            };
+            } __attribute__((packed));
 
             extern register_t g_register;
         }

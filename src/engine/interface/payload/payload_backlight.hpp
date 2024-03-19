@@ -22,14 +22,14 @@ namespace engine
     {
         namespace backlight
         {
-            struct __attribute__((packed)) content_t
+            struct content_t
             {
                 using PROGRAM = engine::backlight::MODE;
-                using color_t = engine::backlight::color_t;
+                using Color = engine::backlight::Color;
 
                 PROGRAM program;
-                color_t color_left;
-                color_t color_right;
+                Color left;
+                Color right;
 
                 const size_t size() const;
                 void deserialize(uint8_t const *const);

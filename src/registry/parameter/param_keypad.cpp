@@ -25,7 +25,7 @@ namespace registry
     {
         namespace keypad
         {
-            register_t g_register = {{0xff, 0xff, 0xff, 0xff}};
+            register_t g_register = {.byte = {0xff, 0xff, 0xff, 0xff}};
 
             /**
                 \brief Initialize field with default values
@@ -44,7 +44,7 @@ namespace registry
                 /* ATTENTION: NO CHECKS */
                 const uint8_t *ptr = _space;
                 value.click_ms = deserialize_word(&ptr);
-                value.push_ms = deserialize_word(&ptr); 
+                value.push_ms = deserialize_word(&ptr);
             }
 
             /**

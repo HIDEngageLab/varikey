@@ -40,14 +40,13 @@ namespace registry
 
 				void deserialize(uint8_t const *const);
 				void serialize(uint8_t **) const;
-			};
+			} __attribute__((packed));
 
 			/** \brief Global serial number parameter */
 			extern register_t g_register;
 
 			/** \brief Global unique key parameter */
 			extern uint32_t g_unique_key;
-
 		}
 	}
 }

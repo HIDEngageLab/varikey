@@ -55,9 +55,8 @@ namespace engine
                 UNDEFINED = common::function::UNDEFINED,
             };
 
-            struct __attribute__((packed)) content_t
+            struct content_t
             {
-
                 IDENTIFIER identifier;
                 FUNCTION function;
                 union
@@ -76,7 +75,7 @@ namespace engine
                 const size_t size() const;
 
                 void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const; 
+                void serialize(uint8_t **) const;
             };
 
             extern registry::result_t set_parameter(const engine::payload::parameter::content_t &);

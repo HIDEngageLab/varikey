@@ -191,5 +191,6 @@
             "outputView.background": "#0e0e0f"
         }
     },
-    "r.lsp.promptToInstall": false
+    "r.lsp.promptToInstall": false,
+    "C_Cpp.errorSquiggles": "enabled"
 }

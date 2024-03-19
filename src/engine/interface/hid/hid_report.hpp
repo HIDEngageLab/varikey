@@ -37,13 +37,13 @@ namespace engine
             UNDEFINED = (int)payload::IDENTIFIER::UNDEFINED,
         };
 
-        struct __attribute__((__packed__)) set_report_t
+        struct set_report_t
         {
             platform::usb::COMMAND command;
             SET_REPORT report;
             union
             {
-                u_int8_t buffer[MAX_REPORT_SIZE];
+                uint8_t buffer[MAX_REPORT_SIZE];
                 payload::backlight::content_t backlight;
                 payload::display::content_t display;
                 payload::gadget::content_t gadget;
@@ -81,7 +81,7 @@ namespace engine
             UNDEFINED = (int)common::result::UNDEFINED,
         };
 
-        struct __attribute__((__packed__)) get_report_t
+        struct get_report_t
         {
             GET_REPORT report;
             RESULT result;

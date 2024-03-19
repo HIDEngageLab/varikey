@@ -26,7 +26,7 @@ namespace registry
         namespace display
         {
 
-            register_t g_register = {0xff};
+            register_t g_register = {.byte = {0xff}};
 
             /**
                 \brief Initialize field with default values

@@ -27,7 +27,7 @@ namespace registry
     {
         namespace maintainer
         {
-            register_t g_register = {0};
+            register_t g_register = {.byte = {0x00, 0x00}};
 
             /**
                 \brief Initialize field with default values

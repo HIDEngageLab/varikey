@@ -27,7 +27,7 @@ namespace registry
         namespace features
         {
 
-            register_t g_register = {0xff, 0xff};
+            register_t g_register = {.byte = {0xff, 0xff}};
 
             /**
                 \brief Initialize features field with default values

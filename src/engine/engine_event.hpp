@@ -27,7 +27,7 @@ namespace engine
 {
     namespace handler
     {
-        struct __attribute__((__packed__)) event_t
+        struct event_t
         {
             payload::IDENTIFIER identifier;
             union

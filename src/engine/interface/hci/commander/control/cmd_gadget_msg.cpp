@@ -59,19 +59,19 @@ namespace engine
                     switch (mode)
                     {
                     case defines::STATE::IDLE:
-                        _msg->gadget.mode = payload::gadget::MODE::IDLE;
+                        _msg->gadget.state = payload::gadget::STATE::IDLE;
                         break;
 
                     case defines::STATE::ACTIVE:
-                        _msg->gadget.mode = payload::gadget::MODE::ACTIVE;
+                        _msg->gadget.state = payload::gadget::STATE::ACTIVE;
                         break;
 
                     case defines::STATE::PENDING:
-                        _msg->gadget.mode = payload::gadget::MODE::PENDING;
+                        _msg->gadget.state = payload::gadget::STATE::PENDING;
                         break;
 
                     default:
-                        _msg->gadget.mode = payload::gadget::MODE::UNDEFINED;
+                        _msg->gadget.state = payload::gadget::STATE::UNDEFINED;
                         break;
                     }
 

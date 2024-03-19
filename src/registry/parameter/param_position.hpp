@@ -24,7 +24,15 @@ namespace registry
     {
         namespace position
         {
-            static const size_t SIZE = sizeof(float) * 2;
+            /** \brief Node position details */
+            struct coordinates_t
+            {
+                float latitude;
+                float longitude;
+            } __attribute__((packed));
+
+            static const size_t SIZE = sizeof(coordinates_t);
+
             /**
                 \brief Position parameter
 
@@ -33,21 +41,15 @@ namespace registry
             union register_t
             {
                 uint8_t byte[SIZE];
-                /** \brief Node position details */
-                struct __attribute__((packed)) coordinates_t
-                {
-                    float latitude;
-                    float longitude;
-                } value;
+                coordinates_t value;
 
                 void initialize(void);
 
                 void deserialize(uint8_t const *const);
                 void serialize(uint8_t **) const;
-            };
+            } __attribute__((packed));
 
             extern register_t g_register;
-
         }
     }
 }

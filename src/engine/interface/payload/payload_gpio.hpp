@@ -9,9 +9,11 @@
 #ifndef __PAYLOAD_GPIO_HPP__
 #define __PAYLOAD_GPIO_HPP__
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstdlib>
 
 #include "board_defines.hpp"
+#include "macros.hpp"
 #include "payload_identifier.hpp"
 
 namespace engine
@@ -20,6 +22,14 @@ namespace engine
     {
         namespace gpio
         {
+            using IDENTIFIER = platform::board::IDENTIFIER;
+
+            /** \brief GPIO message direction code */
+            using DIRECTION = platform::board::DIRECTION;
+
+            /** \brief GPIO message level code */
+            using VALUE = platform::board::VALUE;
+
             /** \brief GPIO message function */
             enum class FUNCTION : uint8_t
             {
@@ -36,52 +46,15 @@ namespace engine
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            using IDENTIFIER = platform::board::IDENTIFIER;
-
-            /** \brief GPIO message direction code */
-            using DIRECTION = platform::board::DIRECTION;
-
-            /** \brief GPIO message level code */
-            using VALUE = platform::board::VALUE;
-
-            struct __attribute__((packed)) content_t
+            struct content_t
             {
                 FUNCTION function;
                 IDENTIFIER identifier;
                 uint32_t diff;
 
                 static const size_t size() { return 2; }
-
-                void deserialize(uint8_t const *const _space)
-                {
-                    function = static_cast<FUNCTION>(_space[0]);
-                    if (!(function == FUNCTION::DISABLE ||
-                          function == FUNCTION::ENABLE ||
-                          function == FUNCTION::DIRECTION ||
-                          function == FUNCTION::IN ||
-                          function == FUNCTION::OUT ||
-                          function == FUNCTION::VALUE ||
-                          function == FUNCTION::HIGH ||
-                          function == FUNCTION::LOW))
-                    {
-                        function = FUNCTION::UNDEFINED;
-                    }
-
-                    identifier = static_cast<const IDENTIFIER>(_space[1]);
-                    if (!(identifier == IDENTIFIER::GPIO0 ||
-                          identifier == IDENTIFIER::GPIO1 ||
-                          identifier == IDENTIFIER::GPIO2 ||
-                          identifier == IDENTIFIER::GPIO3))
-                    {
-                        identifier = IDENTIFIER::UNDEFINED;
-                    }
-                }
-
-                void serialize(uint8_t **_ptr) const
-                {
-                    *(*_ptr)++ = (uint8_t)function;
-                    *(*_ptr)++ = (uint8_t)identifier;
-                }
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
         }
     }

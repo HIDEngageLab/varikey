@@ -24,6 +24,12 @@ namespace registry
 	{
 		namespace mapping
 		{
+			struct keycode_t
+			{
+				uint8_t modifier;
+				uint8_t code;
+			} __attribute__((packed));
+
 			static const size_t SIZE = 24;
 
 			/**
@@ -33,14 +39,17 @@ namespace registry
 			*/
 			struct register_t
 			{
-				uint8_t modifier[SIZE];
-				uint8_t value[SIZE];
+				union
+				{
+					uint8_t byte[sizeof(keycode_t) * SIZE];
+					keycode_t value[SIZE];
+				};
 
 				void initialize(void);
 
 				void deserialize(uint8_t const *const);
 				void serialize(uint8_t **) const;
-			};
+			} __attribute__((packed));
 
 			/** \brief Global serial number parameter */
 			extern register_t g_register;

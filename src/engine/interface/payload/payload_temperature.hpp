@@ -32,37 +32,14 @@ namespace engine
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            struct __attribute__((packed)) content_t
+            struct content_t
             {
-                static const size_t size() { return 2; }
-
                 FUNCTION function;
                 float value;
 
-                void deserialize(uint8_t const *const _space)
-                {
-                    uint8_t const *ptr = _space;
-                    function = static_cast<const FUNCTION>(*ptr++);
-                    if (!(function == FUNCTION::GET ||
-                          function == FUNCTION::ALARM))
-                    {
-                        function = FUNCTION::UNDEFINED;
-                    }
-                    if (function == FUNCTION::ALARM)
-                    {
-                        value = deserialize_float(&ptr);
-                    }
-                }
-
-                void serialize(uint8_t **_ptr) const
-                {
-                    if (function == FUNCTION::GET ||
-                        function == FUNCTION::ALARM)
-                    {
-                        *(*_ptr)++ = (uint8_t)function;
-                        serialize_float(value, _ptr);
-                    }
-                }
+                const size_t size() const { return 2; }
+                void deserialize(uint8_t const *const);
+                void serialize(uint8_t **) const;
             };
         }
     }
