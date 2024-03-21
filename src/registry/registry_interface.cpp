@@ -261,6 +261,57 @@ namespace registry
         return FAILURE;
     }
 
+    extern result_t mapping_get(const uint8_t _index, chunk_t &_chunk)
+    {
+        assert(is_ready() == SUCCESS); /* state should be initialized */
+        using namespace registry::parameter;
+
+        /* load parameter ... */
+        if (parameter::param_mapping_load() == SUCCESS)
+        {
+            if (_index < mapping::SIZE)
+            {
+                /* ... and "serialize" */
+                const mapping::item_t item = {
+                    .item = {
+                        .index = _index,
+                        .value = {
+                            .modifier = mapping::g_register.value[_index].modifier,
+                            .code = mapping::g_register.value[_index].code,
+                        },
+                    },
+                };
+                item.serialize(&_chunk.space);
+                _chunk.size = sizeof(mapping::item_t);
+                return SUCCESS;
+            }
+        }
+        return FAILURE;
+    }
+
+    extern result_t mapping_set(const uint8_t _index, const const_chunk_t &_chunk)
+    {
+        assert(is_ready() == SUCCESS); /* state should be initialized */
+        using namespace registry::parameter;
+
+        if (_index < mapping::SIZE)
+        {
+            /* set ...*/
+            mapping::item_t mapping;
+            mapping.deserialize(_chunk.space);
+
+            mapping::g_register.value[_index].modifier = mapping.item.value.modifier;
+            mapping::g_register.value[_index].code = mapping.item.value.code;
+
+            /* ...and save */
+            if (parameter::param_mapping_store() == SUCCESS)
+            {
+                return SUCCESS;
+            }
+        }
+        return FAILURE;
+    }
+
     /**
         \brief Get node position
 

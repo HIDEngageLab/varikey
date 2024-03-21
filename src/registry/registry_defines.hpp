@@ -9,10 +9,14 @@
 #ifndef __REGISTRY_DEFINES_HPP__
 #define __REGISTRY_DEFINES_HPP__
 
+#include <cstdint>
+
 #include "macros.hpp"
 
 namespace registry
 {
+    static const size_t PARAMETER_BUFFER_SIZE{128};
+
     enum result_t
     {
         SUCCESS = common::result::SUCCESS,

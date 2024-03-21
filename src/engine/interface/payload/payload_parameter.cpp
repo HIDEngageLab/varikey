@@ -36,7 +36,7 @@ const size_t content_t::size() const
         payload_size += registry::parameter::maintainer::SIZE;
         break;
     case IDENTIFIER::MAPPING:
-        payload_size += registry::parameter::mapping::SIZE * sizeof(registry::parameter::mapping::keycode_t);
+        payload_size += sizeof(registry::parameter::mapping::item_t);
         break;
     case IDENTIFIER::POSITION:
         payload_size += registry::parameter::position::SIZE;
@@ -63,40 +63,68 @@ void content_t::deserialize(uint8_t const *const _space)
     identifier = registry::parameter::to_identifier(_space[0]);
     function = static_cast<FUNCTION>(_space[1]);
 
-    if (function == FUNCTION::SET)
+    switch (identifier)
     {
-        switch (identifier)
+    case IDENTIFIER::BACKLIGHT:
+        if (function == FUNCTION::SET)
         {
-        case IDENTIFIER::BACKLIGHT:
             parameter.backlight.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::DISPLAY:
-            parameter.display.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::FEATURES:
-            parameter.features.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::KEYPAD:
-            parameter.keypad.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::MAINTAINER:
-            parameter.maintainer.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::MAPPING:
-            parameter.mapping.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::POSITION:
-            parameter.position.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::SERIAL_NUMBER:
-            parameter.serial_number.deserialize(&_space[2]);
-            break;
-        case IDENTIFIER::USER:
-            parameter.user.deserialize(&_space[2]);
-            break;
-        default:
-            break;
         }
+        break;
+    case IDENTIFIER::DISPLAY:
+        if (function == FUNCTION::SET)
+        {
+            parameter.display.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::FEATURES:
+        if (function == FUNCTION::SET)
+        {
+            parameter.features.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::KEYPAD:
+        if (function == FUNCTION::SET)
+        {
+            parameter.keypad.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::MAINTAINER:
+        if (function == FUNCTION::SET)
+        {
+            parameter.maintainer.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::MAPPING:
+        if (function == FUNCTION::SET)
+        {
+            parameter.mapping.deserialize(&_space[2]);
+        }
+        else if (function == FUNCTION::GET)
+        {
+            parameter.mapping.item.index = _space[2];
+        }
+        break;
+    case IDENTIFIER::POSITION:
+        if (function == FUNCTION::SET)
+        {
+            parameter.position.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::SERIAL_NUMBER:
+        if (function == FUNCTION::SET)
+        {
+            parameter.serial_number.deserialize(&_space[2]);
+        }
+        break;
+    case IDENTIFIER::USER:
+        if (function == FUNCTION::SET)
+        {
+            parameter.user.deserialize(&_space[2]);
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -194,9 +222,10 @@ extern registry::result_t engine::payload::parameter::set_parameter(const engine
     }
     case IDENTIFIER::MAPPING:
     {
+        using namespace registry::parameter;
         const const_chunk_t parameter_space{.space = _content.parameter.mapping.byte,
-                                            .size = registry::parameter::mapping::SIZE * sizeof(registry::parameter::mapping::keycode_t)};
-        result = registry::mapping_set(parameter_space);
+                                            .size = sizeof(mapping::item_t)};
+        result = registry::mapping_set(_content.parameter.mapping.item.index, parameter_space);
         break;
     }
     case IDENTIFIER::POSITION:
@@ -277,9 +306,10 @@ extern registry::result_t engine::payload::parameter::get_parameter(engine::payl
     }
     case IDENTIFIER::MAPPING:
     {
+        using namespace registry::parameter;
         chunk_t parameter_space{.space = _content.parameter.mapping.byte,
-                                .size = registry::parameter::mapping::SIZE * sizeof(registry::parameter::mapping::keycode_t)};
-        result = registry::mapping_get(parameter_space);
+                                .size = sizeof(mapping::item_t)};
+        result = registry::mapping_get(_content.parameter.mapping.item.index, parameter_space);
         break;
     }
     case IDENTIFIER::POSITION:

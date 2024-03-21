@@ -28,7 +28,7 @@ namespace platform
         struct UartDevice : public pulp::ComponentInterface
         {
             /* Attention: Buffer size should be a power of 2 value (l.u. byte ring implementation) */
-            static const unsigned int USART_SPACE_SIZE = (1 << 10);
+            static const unsigned int USART_SPACE_SIZE = (1 << 8);
 
             static const int BAUD_RATE = 115200;
             static const int DATA_BITS = 8;

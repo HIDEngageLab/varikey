@@ -133,37 +133,5 @@ namespace engine
             {key_code_t::SINGLE, 0, 0, {HID_KEY_ARROW_RIGHT}},
             {key_code_t::SINGLE, 0, 0, {HID_KEY_ARROW_UP}},
         };
-
-        code_table_t KeypadVarikey::custom_value = {
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-            {key_code_t::SINGLE, 0, 0, {0xff}},
-        };
     }
 }

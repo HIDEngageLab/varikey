@@ -66,7 +66,7 @@ namespace engine
                     registry::parameter::features::register_t features;
                     registry::parameter::keypad::register_t keypad;
                     registry::parameter::maintainer::register_t maintainer;
-                    registry::parameter::mapping::register_t mapping;
+                    registry::parameter::mapping::item_t mapping;
                     registry::parameter::position::register_t position;
                     registry::parameter::serial_number::register_t serial_number;
                     registry::parameter::user::register_t user;

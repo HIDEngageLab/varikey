@@ -129,6 +129,12 @@ namespace registry
             return;
         }
 
+        /* load custom mapping table */
+        if (parameter::param_mapping_load() == FAILURE)
+        {
+            return;
+        }
+
         /* load position */
         if (parameter::param_position_load() == FAILURE)
         {
