@@ -34,6 +34,17 @@ namespace registry
                                               0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
                                               0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
 
+            void item_t::deserialize(uint8_t const *const _space)
+            {
+                memcpy(byte, _space, sizeof(item_t));
+            }
+
+            void item_t::serialize(uint8_t **_ptr) const
+            {
+                memcpy(*_ptr, byte, sizeof(item_t));
+                (*_ptr) += sizeof(item_t);
+            }
+
             /**
                 \brief Initialize with default values
             */

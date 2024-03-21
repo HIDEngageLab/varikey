@@ -30,6 +30,19 @@ namespace registry
 				uint8_t code;
 			} __attribute__((packed));
 
+			union item_t
+			{
+				uint8_t byte[1 + sizeof(keycode_t)];
+				struct
+				{
+					uint8_t index;
+					keycode_t value;
+				} item;
+
+				void deserialize(uint8_t const *const);
+				void serialize(uint8_t **) const;
+			} __attribute__((packed));
+
 			static const size_t SIZE = 24;
 
 			/**

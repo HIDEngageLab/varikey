@@ -52,8 +52,7 @@ void content_t::deserialize(uint8_t const *const _space)
     else if (identifier == IDENTIFIER::MAPPING)
     {
         function = static_cast<const FUNCTION>(_space[1]);
-        if (function == FUNCTION::SET ||
-            function == FUNCTION::GET)
+        if (function == FUNCTION::SET)
         {
             table = static_cast<const TABLE>(_space[2]);
             if (!(table == TABLE::CUSTOM ||
@@ -65,6 +64,9 @@ void content_t::deserialize(uint8_t const *const _space)
             {
                 table = TABLE::UNDEFINED;
             }
+        }
+        else if (function == FUNCTION::GET)
+        {
         }
         else
         {

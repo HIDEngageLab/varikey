@@ -10,14 +10,62 @@
 
 #include "keypad_keycode.hpp"
 #include "keypad_keycode_type.hpp"
+#include "keypad_modifiers.hpp"
+#include "param_mapping.hpp"
 
 namespace engine
 {
     namespace keypad
     {
+        code_table_t KeypadCode::custom_value = {
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+            {key_code_t::SINGLE, 0, 0, {0xff}},
+        };
+
         void KeypadCode::set_table(const TABLE _table)
         {
             table = _table;
+            if (table == TABLE::CUSTOM)
+            {
+                size_t parameter_index = 0;
+                for (auto& i : Keycode::custom_value)
+                {
+                    i.modifier.value = registry::parameter::mapping::g_register.value[parameter_index].modifier;
+                    i.value[0] = registry::parameter::mapping::g_register.value[parameter_index].code;
+
+                    if (parameter_index < registry::parameter::mapping::SIZE)
+                        parameter_index++;
+                    else
+                        break;
+                }
+            }
         }
 
         keypad::code_table_t &KeypadCode::get_table_content() const

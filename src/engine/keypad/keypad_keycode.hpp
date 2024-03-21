@@ -63,12 +63,13 @@ namespace engine
 
         enum class TABLE : uint8_t
         {
-            CUSTOM = 0x05,
             FUNCTIONAL = 0x01,
             MULTIMEDIA = 0x04,
             NAVIGATION = 0x02,
             NUMBER = 0x00,
             TELEFON = 0x03,
+
+            CUSTOM = 0x05,
 
             UNDEFINED = 0xff,
         };
@@ -91,6 +92,8 @@ namespace engine
         struct KeypadCode
         {
             static const TABLE DEFAULT_MAPPING_TABLE = TABLE::NUMBER;
+            
+            static code_table_t custom_value;
 
             void set_table(const TABLE _table);
             const TABLE get_table() const { return table; }

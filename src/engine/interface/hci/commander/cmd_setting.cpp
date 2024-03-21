@@ -35,7 +35,7 @@ namespace engine
         {
             namespace setting
             {
-                static const size_t PARAMETER_BUFFER_SIZE{100};
+                static const size_t PARAMETER_BUFFER_SIZE{registry::PARAMETER_BUFFER_SIZE};
 
                 /**
                     \brief Module Identifier Request

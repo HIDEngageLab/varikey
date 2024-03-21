@@ -37,6 +37,8 @@ namespace registry
     extern result_t maintainer_set(const const_chunk_t &_chunk);
     extern result_t mapping_get(chunk_t &_chunk);
     extern result_t mapping_set(const const_chunk_t &_chunk);
+    extern result_t mapping_get(const uint8_t, chunk_t &_chunk);
+    extern result_t mapping_set(const uint8_t, const const_chunk_t &_chunk);
     extern result_t position_get(chunk_t &_chunk);
     extern result_t position_set(const const_chunk_t &_chunk);
     extern result_t serial_number_get(chunk_t &_chunk);
