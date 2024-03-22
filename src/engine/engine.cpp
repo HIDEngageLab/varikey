@@ -129,7 +129,7 @@ namespace engine
         backlight::perform();
         handler::perform();
         serial::perform();
-        
+
         switch (state)
         {
         case defines::STATE::IDLE:
@@ -137,6 +137,9 @@ namespace engine
             {
                 state = next_state;
                 next_state = defines::STATE::UNDEFINED;
+
+                handler::set_hci_enabled(true);
+                handler::set_hid_enabled(true);
 
                 /* show state */
                 start_device_application();
@@ -154,6 +157,9 @@ namespace engine
             {
                 state = next_state;
                 next_state = defines::STATE::UNDEFINED;
+
+                handler::set_hci_enabled(false);
+                handler::set_hid_enabled(false);
 
                 engine::hci::cmd::control::gadget_indication(state);
             }
@@ -175,6 +181,9 @@ namespace engine
                     next_state = defines::STATE::UNDEFINED;
                 }
 
+                handler::set_hci_enabled(false);
+                handler::set_hid_enabled(false);
+
                 /* show state */
                 stop_device_application();
 
@@ -191,6 +200,9 @@ namespace engine
             {
                 state = next_state;
                 next_state = defines::STATE::UNDEFINED;
+
+                handler::set_hci_enabled(true);
+                handler::set_hid_enabled(true);
 
                 engine::hci::cmd::control::gadget_indication(state);
             }
