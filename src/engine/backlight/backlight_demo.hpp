@@ -18,7 +18,7 @@ namespace engine
     {
         struct BacklightDemo
         {
-            static const MODE DEFAULT_MODE = MODE::TURBO;
+            static const PROGRAM DEFAULT_MODE = PROGRAM::TURBO;
             static const uint16_t DEFAULT_MOUNT_TIMEOUT = 15000;
             static constexpr backlight::Color MOUNTED_BACKLIGHT_LEFT = {.rgb = {.r = 0x00, .g = 0x0f, .b = 0x0f}};
             static constexpr backlight::Color MOUNTED_BACKLIGHT_RIGHT = {.rgb = {.r = 0x00, .g = 0x0e, .b = 0x1f}};

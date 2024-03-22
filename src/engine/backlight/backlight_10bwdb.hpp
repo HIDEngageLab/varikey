@@ -18,7 +18,7 @@ namespace engine
     {
         struct Backlight10BWDB
         {
-            static const MODE DEFAULT_MODE = MODE::TURBO;
+            static const PROGRAM DEFAULT_MODE = PROGRAM::TURBO;
             static const uint64_t DEFAULT_MOUNT_TIMEOUT = 15000;
             static constexpr backlight::Color MOUNTED_BACKLIGHT_LEFT = {.rgb = {.r = 0x00, .g = 0x0f, .b = 0x00}};
             static constexpr backlight::Color MOUNTED_BACKLIGHT_RIGHT = {.rgb = {.r = 0x00, .g = 0x0e, .b = 0x00}};

@@ -61,7 +61,7 @@ namespace engine
                 switch (set_report.report)
                 {
                 case SET_REPORT::BACKLIGHT:
-                    using PROGRAM = engine::backlight::MODE;
+                    using PROGRAM = engine::backlight::PROGRAM;
                     if (set_report.backlight.program == PROGRAM::SET ||
                         set_report.backlight.program == PROGRAM::MORPH)
                     {

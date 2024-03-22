@@ -31,7 +31,7 @@ namespace registry
             /** \brief Node backlight details */
             struct backlight_t
             {
-                MODE mode;
+                PROGRAM program;
                 Color left;
                 Color right;
                 uint16_t timeout;

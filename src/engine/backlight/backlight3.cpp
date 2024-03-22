@@ -42,8 +42,8 @@ namespace engine
             led_t left;
             led_t right;
             status_t status;
-            MODE mode;
-            MODE next_mode;
+            PROGRAM program;
+            PROGRAM next_program;
             uint64_t next_delay_ms;
         } backlight_t;
 
@@ -76,10 +76,10 @@ namespace engine
             backlight.status = INITIALIZED;
         }
 
-        extern void set_mode(const MODE _mode, const uint64_t _delay_ms)
+        extern void set_program(const PROGRAM _mode, const uint64_t _delay_ms)
         {
             assert(backlight.status == INITIALIZED);
-            backlight.next_mode = _mode;
+            backlight.next_program = _mode;
             backlight.next_delay_ms = _delay_ms;
         }
 
@@ -87,31 +87,31 @@ namespace engine
         {
             assert(backlight.status == INITIALIZED);
 
-            if (backlight.mode != backlight.next_mode)
+            if (backlight.program != backlight.next_program)
             {
                 static uint64_t timestamp = platform::board::assembly.soc.get_stopwatch();
                 const uint64_t us_diff = platform::board::assembly.soc.get_stopwatch() - timestamp;
                 if (us_diff > backlight.next_delay_ms * 1000)
                 {
-                    backlight.mode = backlight.next_mode;
+                    backlight.program = backlight.next_program;
                 }
             }
 
-            switch (backlight.mode)
+            switch (backlight.program)
             {
-            case MODE::MEDIUM:
+            case PROGRAM::MEDIUM:
                 perform_step(100);
                 program_switch();
                 break;
-            case MODE::SLOW:
+            case PROGRAM::SLOW:
                 perform_step(500);
                 program_switch();
                 break;
-            case MODE::TURBO:
+            case PROGRAM::TURBO:
                 perform_step(10);
                 program_switch();
                 break;
-            case MODE::ALERT:
+            case PROGRAM::ALERT:
                 if (backlight.right.curent == engine::backlight::ALERT_COLOR)
                 {
                     set_left(engine::backlight::BLACK_COLOR);
@@ -124,7 +124,7 @@ namespace engine
                 }
                 perform_step(BLINK_ALERT);
                 break;
-            case MODE::MOUNT:
+            case PROGRAM::MOUNT:
                 if (backlight.right.curent == engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT)
                 {
                     set_left(engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT);
@@ -137,7 +137,7 @@ namespace engine
                 }
                 perform_step(BLINK_MOUNT);
                 break;
-            case MODE::SUSPEND:
+            case PROGRAM::SUSPEND:
                 if (backlight.right.curent == engine::backlight::SUSPEND_COLOR)
                 {
                     set_left(engine::backlight::BLACK_COLOR);
@@ -150,14 +150,14 @@ namespace engine
                 }
                 perform_step(BLINK_SUSPEND);
                 break;
-            case MODE::CONST:
+            case PROGRAM::CONST:
                 if (!(backlight.left.next.value == backlight.left.curent.value &&
                       backlight.right.next.value == backlight.right.curent.value))
                 {
                     perform_step(10);
                 }
                 break;
-            case MODE::OFF:
+            case PROGRAM::OFF:
                 if (!(backlight.left.next.value == backlight.left.curent.value &&
                       backlight.right.next.value == backlight.right.curent.value))
                 {

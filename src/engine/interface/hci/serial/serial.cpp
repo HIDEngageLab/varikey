@@ -17,22 +17,24 @@
 #include "serial_frame.hpp"
 #include "usart.hpp"
 
+using namespace engine::serial;
+
 /**
     \brief  Initialize serial engine
 */
-extern void serial_init(void)
+extern void engine::serial::init(void)
 {
     /* set external dependency between core USART module and the serial engine */
-    g_usart_rx_tx_handler = engine::serial::frame::usart_data_handler;
+    g_usart_rx_tx_handler = frame::usart_data_handler;
 
     /* initialize serial engine */
-    engine::serial::frame::init();
+    frame::init();
     /* register interpreter with address by serial frame handler */
-    engine::serial::frame::register_handler(engine::hci::INTERPRETER_ADDRESS,
-                                            engine::hci::interpreter);
+    frame::register_handler(engine::hci::INTERPRETER_ADDRESS,
+                            engine::hci::interpreter);
 }
 
-extern void serial_perform(void)
+extern void engine::serial::perform(void)
 {
-    engine::serial::frame::perform();
+    frame::perform();
 }

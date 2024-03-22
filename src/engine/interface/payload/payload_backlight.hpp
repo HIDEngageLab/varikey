@@ -24,7 +24,7 @@ namespace engine
         {
             struct content_t
             {
-                using PROGRAM = engine::backlight::MODE;
+                using PROGRAM = engine::backlight::PROGRAM;
                 using Color = engine::backlight::Color;
 
                 PROGRAM program;

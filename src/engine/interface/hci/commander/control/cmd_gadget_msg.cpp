@@ -24,6 +24,7 @@
 #include "component_state.hpp"
 #include "engine.hpp"
 #include "engine_defines.hpp"
+#include "engine_event_handler.hpp"
 #include "macros.hpp"
 #include "param_features.hpp"
 #include "param_serial_number.hpp"
@@ -55,19 +56,23 @@ namespace engine
 
                     _msg->gadget.deserialize(_chunk->space);
 
-                    const defines::STATE mode = get_mode();
-                    switch (mode)
+                    const defines::STATE state = get_state();
+                    switch (state)
                     {
-                    case defines::STATE::IDLE:
-                        _msg->gadget.state = payload::gadget::STATE::IDLE;
-                        break;
-
                     case defines::STATE::ACTIVE:
                         _msg->gadget.state = payload::gadget::STATE::ACTIVE;
                         break;
 
+                    case defines::STATE::IDLE:
+                        _msg->gadget.state = payload::gadget::STATE::IDLE;
+                        break;
+
                     case defines::STATE::PENDING:
                         _msg->gadget.state = payload::gadget::STATE::PENDING;
+                        break;
+
+                    case defines::STATE::SUSPEND:
+                        _msg->gadget.state = payload::gadget::STATE::SUSPEND;
                         break;
 
                     default:
@@ -88,9 +93,9 @@ namespace engine
                         switch (_msg->gadget.function)
                         {
                         case payload::gadget::FUNCTION::MOUNT:
-                            if (mode == defines::STATE::IDLE)
+                            if (state == defines::STATE::IDLE)
                             {
-                                engine::mount();
+                                handler::push_gadget_event(payload::gadget::FUNCTION::MOUNT);
                                 _msg->result = RESULT::SUCCESS;
                             }
                             else
@@ -99,10 +104,9 @@ namespace engine
                             }
                             break;
                         case payload::gadget::FUNCTION::UNMOUNT:
-                            if (mode == defines::STATE::ACTIVE ||
-                                mode == defines::STATE::PENDING)
+                            if (state == defines::STATE::ACTIVE)
                             {
-                                engine::unmount();
+                                handler::push_gadget_event(payload::gadget::FUNCTION::UNMOUNT);
                                 _msg->result = RESULT::SUCCESS;
                             }
                             else
@@ -111,10 +115,9 @@ namespace engine
                             }
                             break;
                         case payload::gadget::FUNCTION::SUSPEND:
-                            if (mode == defines::STATE::ACTIVE ||
-                                mode == defines::STATE::IDLE)
+                            if (state == defines::STATE::ACTIVE)
                             {
-                                engine::suspend(registry::parameter::features::g_register.value.wakeup);
+                                handler::push_gadget_event(payload::gadget::FUNCTION::SUSPEND);
                                 _msg->result = RESULT::SUCCESS;
                             }
                             else
@@ -123,9 +126,9 @@ namespace engine
                             }
                             break;
                         case payload::gadget::FUNCTION::RESUME:
-                            if (mode == defines::STATE::SUSPEND)
+                            if (state == defines::STATE::SUSPEND)
                             {
-                                engine::resume();
+                                handler::push_gadget_event(payload::gadget::FUNCTION::RESUME);
                                 _msg->result = RESULT::SUCCESS;
                             }
                             else
