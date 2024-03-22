@@ -15,7 +15,13 @@
 #ifndef __SERIAL_HPP__
 #define __SERIAL_HPP__
 
-extern void serial_init(void);
-extern void serial_perform(void);
+namespace engine
+{
+    namespace serial
+    {
+        extern void init(void);
+        extern void perform(void);
+    }
+}
 
 #endif /* __SERIAL_HPP__ */

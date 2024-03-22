@@ -44,42 +44,42 @@ namespace engine
 
                     switch (_msg->content.program)
                     {
-                    case engine::backlight::MODE::ALERT:
-                        engine::backlight::set_mode(engine::backlight::MODE::ALERT, 0);
+                    case engine::backlight::PROGRAM::ALERT:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::ALERT, 0);
                         break;
-                    case engine::backlight::MODE::CONST:
-                        engine::backlight::set_mode(engine::backlight::MODE::CONST, 0);
+                    case engine::backlight::PROGRAM::CONST:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
                         break;
-                    case engine::backlight::MODE::MEDIUM:
-                        engine::backlight::set_mode(engine::backlight::MODE::MEDIUM, 0);
+                    case engine::backlight::PROGRAM::MEDIUM:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::MEDIUM, 0);
                         break;
-                    case engine::backlight::MODE::MORPH:
-                        engine::backlight::set_mode(engine::backlight::MODE::CONST, 0);
+                    case engine::backlight::PROGRAM::MORPH:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
                         engine::backlight::morph_left(_msg->content.left);
                         engine::backlight::morph_right(_msg->content.right);
                         break;
-                    case engine::backlight::MODE::MOUNT:
-                        engine::backlight::set_mode(engine::backlight::MODE::MOUNT, 0);
+                    case engine::backlight::PROGRAM::MOUNT:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::MOUNT, 0);
                         break;
-                    case engine::backlight::MODE::OFF:
-                        engine::backlight::set_mode(engine::backlight::MODE::OFF, 0);
+                    case engine::backlight::PROGRAM::OFF:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::OFF, 0);
                         break;
-                    case engine::backlight::MODE::SET:
-                        engine::backlight::set_mode(engine::backlight::MODE::CONST, 0);
+                    case engine::backlight::PROGRAM::SET:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
                         engine::backlight::set_left(_msg->content.left);
                         engine::backlight::set_right(_msg->content.right);
                         break;
-                    case engine::backlight::MODE::SLOW:
-                        engine::backlight::set_mode(engine::backlight::MODE::SLOW, 0);
+                    case engine::backlight::PROGRAM::SLOW:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::SLOW, 0);
                         break;
-                    case engine::backlight::MODE::SUSPEND:
-                        engine::backlight::set_mode(engine::backlight::MODE::SUSPEND, 0);
+                    case engine::backlight::PROGRAM::SUSPEND:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::SUSPEND, 0);
                         break;
-                    case engine::backlight::MODE::TURBO:
-                        engine::backlight::set_mode(engine::backlight::MODE::TURBO, 0);
+                    case engine::backlight::PROGRAM::TURBO:
+                        engine::backlight::set_program(engine::backlight::PROGRAM::TURBO, 0);
                         break;
                     default:
-                        engine::backlight::set_mode(engine::backlight::MODE::MEDIUM, 0);
+                        engine::backlight::set_program(engine::backlight::PROGRAM::MEDIUM, 0);
                         _msg->result = RESULT::WRONG_MODE;
                         break;
                     }

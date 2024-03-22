@@ -21,7 +21,7 @@ namespace engine
         extern void initialize(void);
         extern void perform(void);
 
-        extern void set_mode(const MODE, const uint64_t _delay_ms);
+        extern void set_program(const PROGRAM, const uint64_t _delay_ms);
 
         extern void set_left(const uint8_t r, const uint8_t g, const uint8_t b);
         extern void set_right(const uint8_t r, const uint8_t g, const uint8_t b);

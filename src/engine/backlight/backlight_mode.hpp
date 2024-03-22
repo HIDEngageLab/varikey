@@ -15,7 +15,7 @@ namespace engine
 {
     namespace backlight
     {
-        enum class MODE : uint8_t
+        enum class PROGRAM : uint8_t
         {
             ALERT = 0x00,
             CONST = 0x01,

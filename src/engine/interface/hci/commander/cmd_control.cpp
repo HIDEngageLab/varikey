@@ -58,7 +58,9 @@ namespace engine
                     case defines::STATE::PENDING:
                         msg.gadget.state = payload::gadget::STATE::PENDING;
                         break;
-                    case defines::STATE::UNDEFINED:
+                    case defines::STATE::SUSPEND:
+                        msg.gadget.state = payload::gadget::STATE::SUSPEND;
+                        break;
                     default:
                         msg.gadget.state = payload::gadget::STATE::UNDEFINED;
                         break;

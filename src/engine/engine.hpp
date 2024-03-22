@@ -22,12 +22,12 @@ namespace engine
     extern void start(void);
     extern void stop(void);
 
-    extern void unmount();
     extern void mount();
+    extern void unmount();
     extern void suspend(const bool wakeup_enabled);
     extern void resume();
 
-    extern defines::STATE get_mode(void);
+    extern defines::STATE get_state(void);
 }
 
 #endif /* __ENGINE_HPP__ */

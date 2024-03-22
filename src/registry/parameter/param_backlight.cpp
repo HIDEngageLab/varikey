@@ -36,7 +36,7 @@ namespace registry
             */
             void register_t::initialize(void)
             {
-                value.mode = engine::BacklightSetting::DEFAULT_MODE;
+                value.program = engine::BacklightSetting::DEFAULT_MODE;
                 value.left = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT;
                 value.right = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT;
                 value.timeout = engine::BacklightSetting::DEFAULT_MOUNT_TIMEOUT;
@@ -49,7 +49,7 @@ namespace registry
             {
                 /* ATTENTION: NO CHECKS */
                 const uint8_t *ptr = _space;
-                value.mode = static_cast<engine::backlight::MODE>(*ptr++);
+                value.program = static_cast<engine::backlight::PROGRAM>(*ptr++);
                 value.left.rgb.r = *ptr++;
                 value.left.rgb.g = *ptr++;
                 value.left.rgb.b = *ptr++;
@@ -65,7 +65,7 @@ namespace registry
             void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                *(*_ptr)++ = (uint8_t)value.mode;
+                *(*_ptr)++ = (uint8_t)value.program;
                 *(*_ptr)++ = (uint8_t)value.left.rgb.r;
                 *(*_ptr)++ = (uint8_t)value.left.rgb.g;
                 *(*_ptr)++ = (uint8_t)value.left.rgb.b;

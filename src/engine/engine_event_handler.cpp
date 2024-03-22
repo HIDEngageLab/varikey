@@ -12,6 +12,7 @@
 #include "cmd_feature.hpp"
 #include "cmd_setting.hpp"
 #include "display.hpp"
+#include "engine.hpp"
 #include "engine_variant.hpp"
 #include "keypad.hpp"
 #include "keypad_keycode.hpp"
@@ -121,50 +122,60 @@ namespace engine
             handler::event_queue.push(event);
         }
 
+        extern void push_gadget_event(const payload::gadget::FUNCTION _identifier)
+        {
+            const engine::handler::event_t event = {
+                .identifier = payload::IDENTIFIER::GADGET,
+                .gadget = {
+                    .function = _identifier,
+                }};
+            engine::handler::event_queue.push(event);
+        }
+
         static void keypad_handle_event(event_t const _event)
         {
-            using PROGRAM = engine::backlight::MODE;
+            using PROGRAM = engine::backlight::PROGRAM;
             switch (_event.identifier)
             {
             case payload::IDENTIFIER::BACKLIGHT:
                 switch (_event.backlight.program)
                 {
                 case PROGRAM::ALERT:
-                    backlight::set_mode(backlight::MODE::ALERT, 0);
+                    backlight::set_program(backlight::PROGRAM::ALERT, 0);
                     break;
                 case PROGRAM::CONST:
-                    backlight::set_mode(backlight::MODE::CONST, 0);
+                    backlight::set_program(backlight::PROGRAM::CONST, 0);
                     break;
                 case PROGRAM::MEDIUM:
-                    backlight::set_mode(backlight::MODE::MEDIUM, 0);
+                    backlight::set_program(backlight::PROGRAM::MEDIUM, 0);
                     break;
                 case PROGRAM::MORPH:
-                    backlight::set_mode(backlight::MODE::CONST, 0);
+                    backlight::set_program(backlight::PROGRAM::CONST, 0);
                     backlight::morph_left(_event.backlight.left);
                     backlight::morph_right(_event.backlight.right);
                     break;
                 case PROGRAM::MOUNT:
-                    backlight::set_mode(backlight::MODE::MOUNT, 0);
+                    backlight::set_program(backlight::PROGRAM::MOUNT, 0);
                     break;
                 case PROGRAM::OFF:
-                    backlight::set_mode(backlight::MODE::OFF, 0);
+                    backlight::set_program(backlight::PROGRAM::OFF, 0);
                     break;
                 case PROGRAM::SET:
-                    backlight::set_mode(backlight::MODE::CONST, 0);
+                    backlight::set_program(backlight::PROGRAM::CONST, 0);
                     backlight::set_left(_event.backlight.left);
                     backlight::set_right(_event.backlight.right);
                     break;
                 case PROGRAM::SLOW:
-                    backlight::set_mode(backlight::MODE::SLOW, 0);
+                    backlight::set_program(backlight::PROGRAM::SLOW, 0);
                     break;
                 case PROGRAM::SUSPEND:
-                    backlight::set_mode(backlight::MODE::SUSPEND, 0);
+                    backlight::set_program(backlight::PROGRAM::SUSPEND, 0);
                     break;
                 case PROGRAM::TURBO:
-                    backlight::set_mode(backlight::MODE::TURBO, 0);
+                    backlight::set_program(backlight::PROGRAM::TURBO, 0);
                     break;
                 default:
-                    backlight::set_mode(backlight::MODE::MEDIUM, 0);
+                    backlight::set_program(backlight::PROGRAM::MEDIUM, 0);
                     break;
                 }
                 break;
@@ -195,20 +206,28 @@ namespace engine
                 switch (_event.gadget.function)
                 {
                 case payload::gadget::FUNCTION::MOUNT:
-                    backlight::set_mode(backlight::MODE::TURBO, 0);
-                    backlight::set_mode(backlight::MODE::MOUNT,
-                                        registry::parameter::backlight::g_register.value.timeout);
+                    engine::mount();
+
+                    backlight::set_program(backlight::PROGRAM::TURBO, 0);
+                    backlight::set_program(backlight::PROGRAM::MOUNT,
+                                           registry::parameter::backlight::g_register.value.timeout);
                     break;
                 case payload::gadget::FUNCTION::UNMOUNT:
-                    backlight::set_mode(backlight::MODE::ALERT, 0);
+                    engine::unmount();
+
+                    backlight::set_program(backlight::PROGRAM::ALERT, 0);
                     break;
                 case payload::gadget::FUNCTION::SUSPEND:
-                    backlight::set_mode(backlight::MODE::SUSPEND, 0);
+                    engine::suspend(registry::parameter::features::g_register.value.wakeup);
+
+                    backlight::set_program(backlight::PROGRAM::SUSPEND, 0);
                     break;
                 case payload::gadget::FUNCTION::RESUME:
-                    backlight::set_mode(backlight::MODE::TURBO, 0);
-                    backlight::set_mode(backlight::MODE::MOUNT,
-                                        registry::parameter::backlight::g_register.value.timeout);
+                    engine::resume();
+
+                    backlight::set_program(backlight::PROGRAM::TURBO, 0);
+                    backlight::set_program(backlight::PROGRAM::MOUNT,
+                                           registry::parameter::backlight::g_register.value.timeout);
                     break;
                 default:
                     break;
