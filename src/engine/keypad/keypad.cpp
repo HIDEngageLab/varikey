@@ -107,6 +107,11 @@ namespace engine
             default:
                 break;
             }
+
+            if (_state == STATE::RELEASE)
+            {
+                engine::keypad::perform(_identifier);
+            }
         }
 
         extern void press_key(const KEY_ID _identifier)

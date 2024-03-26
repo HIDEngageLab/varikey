@@ -95,13 +95,6 @@ namespace engine
             };
 
             handler::event_queue.push(event);
-
-            if (_state == engine::keypad::STATE::PRESS ||
-                _state == engine::keypad::STATE::CLICK ||
-                _state == engine::keypad::STATE::PUSH)
-            {
-                engine::keypad::perform(_identifier);
-            }
         };
 
         extern void push_gpio_event(const platform::board::IDENTIFIER _identifier,
