@@ -60,6 +60,7 @@ namespace platform
         namespace ssd1306
         {
             uint8_t DATA_COMMAND_PIN = 0xff;
+            uint8_t SPI_CSN_PIN = PICO_DEFAULT_SPI_CSN_PIN;
 
             static void select_command_mode()
             {
@@ -73,14 +74,14 @@ namespace platform
             static inline void chip_select()
             {
                 asm volatile("nop \n nop \n nop");
-                gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 0); // Active low
+                gpio_put(SPI_CSN_PIN, 0); // Active low
                 asm volatile("nop \n nop \n nop");
             }
 
             static inline void chip_deselect()
             {
                 asm volatile("nop \n nop \n nop");
-                gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 1);
+                gpio_put(SPI_CSN_PIN, 1);
                 asm volatile("nop \n nop \n nop");
             }
 
@@ -101,9 +102,10 @@ namespace platform
                 spi_write_blocking(spi_default, buf, 3);
             }
 
-            extern void initialize(uint8_t _data_command_pin)
+            extern void initialize(const uint8_t _data_command_pin, const uint8_t _spi_csn_pin)
             {
                 DATA_COMMAND_PIN = _data_command_pin;
+                SPI_CSN_PIN = _spi_csn_pin;
 
                 select_command_mode();
 
