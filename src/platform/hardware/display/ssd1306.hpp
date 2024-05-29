@@ -17,7 +17,8 @@ namespace platform
     {
         namespace ssd1306
         {
-            extern void initialize(uint8_t data_command_select_pin);
+            extern void initialize(const uint8_t DATA_COMMAND_SELECT_PIN,
+                                   const uint8_t SPI_CSN_PIN);
             extern void clean(void);
             extern void mask(uint8_t const *const image);
             extern void symbol(uint8_t const page_start, uint8_t const page_end,

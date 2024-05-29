@@ -29,18 +29,10 @@ namespace platform
             gpio_set_function(platform::hardware::Display::PICO_SPI_SCK, GPIO_FUNC_SPI);
             gpio_set_function(platform::hardware::Display::PICO_SPI_TX, GPIO_FUNC_SPI);
 
-            // Make the SPI pins available to picotool
-            bi_decl(bi_2pins_with_func(platform::hardware::Display::PICO_SPI_TX,
-                                       platform::hardware::Display::PICO_SPI_SCK,
-                                       GPIO_FUNC_SPI));
-
             // Chip select is active-low, so we'll initialise it to a driven-high state
             gpio_init(platform::hardware::Display::PICO_SPI_CS);
             gpio_set_dir(platform::hardware::Display::PICO_SPI_CS, GPIO_OUT);
             gpio_put(platform::hardware::Display::PICO_SPI_CS, 1);
-
-            // Make the CS pin available to picotool
-            bi_decl(bi_1pin_with_name(platform::hardware::Display::PICO_SPI_CS, "SPI CS"));
 
             gpio_init(platform::hardware::Display::DISPLAY_RESET);
             gpio_set_dir(platform::hardware::Display::DISPLAY_RESET, GPIO_OUT);
@@ -50,7 +42,8 @@ namespace platform
             gpio_set_dir(platform::hardware::Display::DISPLAY_CMD_SEL, GPIO_OUT);
             gpio_put(platform::hardware::Display::DISPLAY_CMD_SEL, 0);
 
-            ssd1306::initialize(platform::hardware::Display::DISPLAY_CMD_SEL);
+            ssd1306::initialize(platform::hardware::Display::DISPLAY_CMD_SEL,
+                                platform::hardware::Display::PICO_SPI_CS);
             ssd1306::clean();
         }
 
