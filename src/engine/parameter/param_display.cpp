@@ -1,5 +1,5 @@
 /**
- * \file param_maintainer.cpp
+ * \file param_display.cpp
  * \author Koch, Roman (koch.roman@googlemail.com)
  *
  * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
@@ -7,36 +7,35 @@
  */
 
 /**
-    \brief Parameter "maintainer"
+    \brief Parameter "wheel"
 
     \internal
     \author Roman Koch, koch.roman@gmail.com
 */
 
-#include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "identity_settings.hpp"
 #include "macros.hpp"
-#include "param_maintainer.hpp"
-#include "parameter.hpp"
+#include "param_display.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
-        namespace maintainer
+        namespace display
         {
-            register_t g_register = {.byte = {0x00, 0x00}};
+
+            register_t g_register = {.byte = {0xff}};
 
             /**
                 \brief Initialize field with default values
             */
             void register_t::initialize(void)
             {
-                value.identifier = identity::Settings::IDENTIFIER_DEFAULT;
-                value.hardware = identity::Settings::HW_REVISION_DEFAULT;
-                value.protocol = identity::Settings::FW_REVISION_DEFAULT;
+                value.inverse = DISABLE;
+                value.rotate = DISABLE;
+                value.slides = ENABLE;
             }
 
             /**
@@ -45,17 +44,16 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                const uint8_t *ptr = _space;
-                word = deserialize_word(&ptr);
+                byte[0] = _space[0];
             }
 
             /**
-                \brief Serialize  parameter value
+                \brief Serialize parameter value
             */
             void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                serialize_word(static_cast<const uint16_t>(word), _ptr);
+                *(*_ptr)++ = byte[0];
             }
         }
     }

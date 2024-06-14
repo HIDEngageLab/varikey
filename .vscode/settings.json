@@ -17,6 +17,7 @@
         "FIRMWARE_PRODUCT":"KEYPAD_DEMO"
     },
     "cSpell.words": [
+        "backlighting",
         "bitloop",
         "blub",
         "bwdb",
@@ -24,7 +25,9 @@
         "bytering",
         "Capslock",
         "clkdiv",
+        "cstdint",
         "ctlr",
+        "DOXYGEN",
         "EPNUM",
         "fifo",
         "fifos",
@@ -40,6 +43,7 @@
         "HIBYTE",
         "highspeed",
         "HINIBLE",
+        "ifndef",
         "inited",
         "INTA",
         "INTB",
@@ -88,6 +92,7 @@
         "Thach",
         "tinyusb",
         "tusb",
+        "typedef",
         "uart",
         "usart",
         "uvalue",
@@ -192,5 +197,6 @@
         }
     },
     "r.lsp.promptToInstall": false,
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.options.statusBarVisibility": "visible"
 }

@@ -8,7 +8,7 @@
 
 #include "parameter_identifier.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
@@ -36,6 +36,5 @@ namespace registry
 
             return IDENTIFIER::UNDEFINED;
         }
-
     }
 }

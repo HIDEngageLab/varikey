@@ -7,6 +7,9 @@
  */
 
 #include "payload_identity.hpp"
+#include "macros.hpp"
+#include "param_maintainer.hpp"
+#include "param_serial_number.hpp"
 
 using namespace engine::payload::identity;
 
@@ -23,7 +26,7 @@ const size_t content_t::size(void) const
     case PART::PLATFORM:
         return 2 + strlen(::identity::hardware::PLATFORM);
     case PART::SERIAL:
-        return 2 + registry::parameter::serial_number::SIZE;
+        return 2 + engine::parameter::serial_number::SIZE;
     case PART::UNIQUE:
         return 2 + sizeof(uint32_t);
     default:
@@ -49,7 +52,7 @@ void content_t::deserialize(uint8_t const *const _space)
     case PART::SERIAL:
         if (function == FUNCTION::SET)
         {
-            registry::parameter::serial_number::g_register.deserialize(&_space[1]);
+            engine::parameter::serial_number::g_register.deserialize(&_space[1]);
         }
         break;
     case PART::UNIQUE:
@@ -78,7 +81,7 @@ void content_t::serialize(uint8_t **_ptr) const
         */
         break;
     case PART::HARDWARE:
-        serialize_word(registry::parameter::maintainer::g_register.word, _ptr);
+        serialize_word(engine::parameter::maintainer::g_register.word, _ptr);
         serialize_word(::identity::hardware::IDENTIFIER, _ptr);
         *(*_ptr)++ = ::identity::hardware::NUMBER;
         *(*_ptr)++ = ::identity::hardware::VARIANT;
@@ -98,10 +101,10 @@ void content_t::serialize(uint8_t **_ptr) const
         break;
     }
     case PART::SERIAL:
-        registry::parameter::serial_number::g_register.serialize(_ptr);
+        engine::parameter::serial_number::g_register.serialize(_ptr);
         break;
     case PART::UNIQUE:
-        serialize_long(registry::parameter::serial_number::g_unique_key, _ptr);
+        serialize_long(engine::parameter::serial_number::g_unique_key, _ptr);
         break;
     default:
         break;

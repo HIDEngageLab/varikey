@@ -20,8 +20,13 @@ ENDIF()
 file(WRITE ${CACHE_FILE} "${INCREMENTED_VALUE}")
 
 #Create the header
-message("Generate build number ${INCREMENTED_VALUE} for the next build to ${CMAKE_CURRENT_SOURCE_DIR}/../src/${HEADER_FILE}")
-file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/../src/${HEADER_FILE}" 
+if (NOT DEFINED IDENTITY_DIRECTORY)
+	message(WARNING "Identity files directory not defined.")
+	set(IDENTITY_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../src/engine/identity")
+endif()
+set(BUILD_NUMBER_FULL_FILE_NAME "${IDENTITY_DIRECTORY}/${HEADER_FILE}")
+message("Generate build number ${INCREMENTED_VALUE} for the next build to ${BUILD_NUMBER_FULL_FILE_NAME}")
+file(WRITE "${BUILD_NUMBER_FULL_FILE_NAME}" 
 "/*	
 	Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
 	SPDX-License-Identifier: MIT

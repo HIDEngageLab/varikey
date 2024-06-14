@@ -21,7 +21,7 @@
 #include "param_mapping.hpp"
 #include "parameter.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {

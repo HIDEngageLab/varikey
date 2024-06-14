@@ -53,7 +53,7 @@ namespace engine
             static uint64_t timestamp = platform::board::assembly.soc.get_stopwatch();
             const uint64_t current = platform::board::assembly.soc.get_stopwatch();
             uint64_t us_diff = current - timestamp;
-            if (us_diff > registry::parameter::keypad::g_register.value.click_ms / 2 * 1000)
+            if (us_diff > engine::parameter::keypad::g_register.value.click_ms / 2 * 1000)
             {
                 us_diff = 0;
                 timestamp = platform::board::assembly.soc.get_stopwatch();

@@ -20,8 +20,8 @@
 
 #include "checksum.hpp"
 #include "chunk.h"
-#include "cmd_control.hpp"
-#include "cmd_reset_msg.hpp"
+// #include "cmd_control.hpp"
+// #include "cmd_reset_msg.hpp"
 #include "macros.hpp"
 #include "param_backlight.hpp"
 #include "param_features.hpp"
@@ -33,7 +33,9 @@
 #include "parameter.hpp"
 #include "random.hpp"
 #include "registry.hpp"
-#include "varikey.hpp"
+// #include "varikey.hpp"
+#include "engine.hpp"
+#include "registry_notify_interface.hpp"
 
 /* If FORMAT_PARAMETER_REGISTRY was defined, the registry memory and backup will be recreated */
 #define _FORMAT_PARAMETER_REGISTRY
@@ -64,7 +66,8 @@ namespace registry
         if (parameter::param_check() == FAILURE)
         {
             parameter::param_format();
-            engine::hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::PARAMETER_MISSED);
+            const notify::Event notify_event = {notify::EVENT_CAUSE::RESET, notify::EVENT_IDENTIFIER::PARAMETER_MISSED};
+            engine::registry_notifier.send(notify_event);
         }
 
         node_config_init();
@@ -73,16 +76,19 @@ namespace registry
             if (parameter::param_backup_check() == FAILURE)
             {
                 parameter::param_backup_create();
-                engine::hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::BACKUP_CREATED);
+                const notify::Event notify_event = {notify::EVENT_CAUSE::RESET, notify::EVENT_IDENTIFIER::BACKUP_CREATED};
+                engine::registry_notifier.send(notify_event);
             }
         }
         else
         {
-            engine::hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::CRITICAL_ERROR);
+            const notify::Event notify_event = {notify::EVENT_CAUSE::RESET, notify::EVENT_IDENTIFIER::CRITICAL_ERROR};
+            engine::registry_notifier.send(notify_event);
             if (parameter::param_backup_restore() != SUCCESS)
             {
                 parameter::param_backup_create();
-                engine::hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::BACKUP_CREATED);
+                const notify::Event notify_event = {notify::EVENT_CAUSE::RESET, notify::EVENT_IDENTIFIER::BACKUP_CREATED};
+                engine::registry_notifier.send(notify_event);
             }
         }
 
@@ -151,7 +157,7 @@ namespace registry
             nodes with a special (=equal) serial number makes
             similarly probability based decisions over the time
          ****************************************************** */
-        srand(*(uint16_t *)parameter::serial_number::g_register.value);
+        srand(*(uint16_t *)engine::parameter::serial_number::g_register.value);
 
         /* Attention: do not load testregister  */
 

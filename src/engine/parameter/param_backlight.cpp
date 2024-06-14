@@ -16,11 +16,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "backlight_settings.hpp"
+//#include "backlight_settings.hpp"
 #include "macros.hpp"
 #include "param_backlight.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
@@ -36,10 +36,10 @@ namespace registry
             */
             void register_t::initialize(void)
             {
-                value.program = engine::BacklightSetting::DEFAULT_MODE;
-                value.left = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT;
-                value.right = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT;
-                value.timeout = engine::BacklightSetting::DEFAULT_MOUNT_TIMEOUT;
+                //value.program = engine::BacklightSetting::DEFAULT_MODE;
+                //value.left = engine::BacklightSetting::MOUNTED_BACKLIGHT_LEFT;
+                //value.right = engine::BacklightSetting::MOUNTED_BACKLIGHT_RIGHT;
+                //value.timeout = engine::BacklightSetting::DEFAULT_MOUNT_TIMEOUT;
             }
 
             /**

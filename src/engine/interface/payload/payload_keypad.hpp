@@ -43,6 +43,7 @@ namespace engine
                 ENABLE = common::function::ENABLE,
                 GET = common::function::GET,
                 SET = common::function::SET,
+                CLEAN = common::function::CLEAN,
 
                 CLICK = common::function::CUSTOM,
                 PRESS = common::function::CUSTOM + 1,

@@ -57,10 +57,10 @@ namespace engine
                 size_t parameter_index = 0;
                 for (auto& i : Keycode::custom_value)
                 {
-                    i.modifier.value = registry::parameter::mapping::g_register.value[parameter_index].modifier;
-                    i.value[0] = registry::parameter::mapping::g_register.value[parameter_index].code;
+                    i.modifier.value = engine::parameter::mapping::g_register.value[parameter_index].modifier;
+                    i.value[0] = engine::parameter::mapping::g_register.value[parameter_index].code;
 
-                    if (parameter_index < registry::parameter::mapping::SIZE)
+                    if (parameter_index < engine::parameter::mapping::SIZE)
                         parameter_index++;
                     else
                         break;

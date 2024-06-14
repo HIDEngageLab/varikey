@@ -337,6 +337,10 @@ namespace engine
                     case engine::payload::parameter::FUNCTION::GET:
                         parameter_request.identifier = set_report.parameter.identifier;
                         parameter_request.function = set_report.parameter.function;
+                        if (parameter_request.identifier == engine::parameter::IDENTIFIER::MAPPING)
+                        {
+                            parameter_request.parameter.mapping.item.index = set_report.parameter.parameter.mapping.item.index;
+                        }
                         break;
                     case engine::payload::parameter::FUNCTION::SET:
                         engine::payload::parameter::set_parameter(set_report.parameter);

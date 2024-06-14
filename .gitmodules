@@ -1,0 +1,3 @@
+[submodule "src/engine/interface/hci/host"]
+	path = src/engine/interface/hci/host
+	url = git@github.com:HIDEngageLab/varihost.git

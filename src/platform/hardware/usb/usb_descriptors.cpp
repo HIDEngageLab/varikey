@@ -27,7 +27,7 @@
 
 #include "engine.hpp"
 #include "macros.hpp"
-#include "param_serial_number.hpp"
+//#include "param_serial_number.hpp"
 #include "platform_defines.hpp"
 #include "revision.h"
 #include "usb_descriptors.hpp"
@@ -294,12 +294,12 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t lang_id)
     case 3:
     {
         // Serials, should use chip ID
-        char serial[registry::parameter::serial_number::SIZE * 2 + 1];
-        for (size_t i = 0; i < registry::parameter::serial_number::SIZE; ++i)
+        char serial[engine::parameter::serial_number::SIZE * 2 + 1];
+        for (size_t i = 0; i < engine::parameter::serial_number::SIZE; ++i)
         {
-            sprintf(&serial[i * 2], "%02x", registry::parameter::serial_number::g_register.value[i]);
+            sprintf(&serial[i * 2], "%02x", engine::parameter::serial_number::g_register.value[i]);
         }
-        serial[registry::parameter::serial_number::SIZE * 2] = 0;
+        serial[engine::parameter::serial_number::SIZE * 2] = 0;
         send_report(serial);
         break;
     }

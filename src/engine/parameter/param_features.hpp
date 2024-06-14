@@ -16,10 +16,11 @@
 #ifndef __PARAM_FEATURES_HPP__
 #define __PARAM_FEATURES_HPP__
 
-#include "macros.hpp"
-#include "parameter.hpp"
+#include <cstdint>
 
-namespace registry
+#include "macros.hpp"
+
+namespace engine
 {
     namespace parameter
     {

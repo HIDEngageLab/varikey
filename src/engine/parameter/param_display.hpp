@@ -17,9 +17,8 @@
 #define __PARAM_DISPLAY_HPP__
 
 #include "macros.hpp"
-#include "parameter.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {

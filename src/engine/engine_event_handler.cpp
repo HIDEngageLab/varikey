@@ -7,6 +7,7 @@
  */
 
 #include "engine_event_handler.hpp"
+#include "backlight3.hpp"
 #include "board_assembly.hpp"
 #include "cmd_control.hpp"
 #include "cmd_feature.hpp"
@@ -203,7 +204,7 @@ namespace engine
 
                     backlight::set_program(backlight::PROGRAM::TURBO, 0);
                     backlight::set_program(backlight::PROGRAM::MOUNT,
-                                           registry::parameter::backlight::g_register.value.timeout);
+                                           engine::parameter::backlight::g_register.value.timeout);
                     break;
                 case payload::gadget::FUNCTION::UNMOUNT:
                     engine::unmount();
@@ -211,7 +212,7 @@ namespace engine
                     backlight::set_program(backlight::PROGRAM::ALERT, 0);
                     break;
                 case payload::gadget::FUNCTION::SUSPEND:
-                    engine::suspend(registry::parameter::features::g_register.value.wakeup);
+                    engine::suspend(engine::parameter::features::g_register.value.wakeup);
 
                     backlight::set_program(backlight::PROGRAM::SUSPEND, 0);
                     break;
@@ -220,7 +221,7 @@ namespace engine
 
                     backlight::set_program(backlight::PROGRAM::TURBO, 0);
                     backlight::set_program(backlight::PROGRAM::MOUNT,
-                                           registry::parameter::backlight::g_register.value.timeout);
+                                           engine::parameter::backlight::g_register.value.timeout);
                     break;
                 default:
                     break;
