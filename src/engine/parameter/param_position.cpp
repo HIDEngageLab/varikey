@@ -20,7 +20,7 @@
 #include "macros.hpp"
 #include "param_position.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
@@ -35,8 +35,8 @@ namespace registry
             */
             void register_t::initialize(void)
             {
-                value.latitude = identity::Settings::MAGIC_LATITUDE;
-                value.longitude = identity::Settings::MAGIC_LONGITUDE;
+                //value.latitude = identity::Settings::MAGIC_LATITUDE;
+                //value.longitude = identity::Settings::MAGIC_LONGITUDE;
             }
 
             /**

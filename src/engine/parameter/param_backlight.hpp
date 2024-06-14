@@ -16,11 +16,11 @@
 #ifndef __PARAM_BACKLIGHT_HPP__
 #define __PARAM_BACKLIGHT_HPP__
 
-#include "backlight3.hpp"
 #include "backlight_color.hpp"
-#include "parameter.hpp"
+#include "backlight_mode.hpp"
+#include "macros.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {

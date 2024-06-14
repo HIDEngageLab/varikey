@@ -21,31 +21,31 @@ const size_t content_t::size() const
     switch (identifier)
     {
     case IDENTIFIER::BACKLIGHT:
-        payload_size += registry::parameter::backlight::SIZE;
+        payload_size += engine::parameter::backlight::SIZE;
         break;
     case IDENTIFIER::DISPLAY:
-        payload_size += registry::parameter::display::SIZE;
+        payload_size += engine::parameter::display::SIZE;
         break;
     case IDENTIFIER::FEATURES:
-        payload_size += registry::parameter::features::SIZE;
+        payload_size += engine::parameter::features::SIZE;
         break;
     case IDENTIFIER::KEYPAD:
-        payload_size += registry::parameter::keypad::SIZE;
+        payload_size += engine::parameter::keypad::SIZE;
         break;
     case IDENTIFIER::MAINTAINER:
-        payload_size += registry::parameter::maintainer::SIZE;
+        payload_size += engine::parameter::maintainer::SIZE;
         break;
     case IDENTIFIER::MAPPING:
-        payload_size += sizeof(registry::parameter::mapping::item_t);
+        payload_size += sizeof(engine::parameter::mapping::item_t);
         break;
     case IDENTIFIER::POSITION:
-        payload_size += registry::parameter::position::SIZE;
+        payload_size += engine::parameter::position::SIZE;
         break;
     case IDENTIFIER::SERIAL_NUMBER:
-        payload_size += registry::parameter::serial_number::SIZE;
+        payload_size += engine::parameter::serial_number::SIZE;
         break;
     case IDENTIFIER::USER:
-        payload_size += registry::parameter::user::SIZE;
+        payload_size += engine::parameter::user::SIZE;
         break;
     default:
         break;
@@ -60,7 +60,7 @@ const size_t content_t::size() const
  */
 void content_t::deserialize(uint8_t const *const _space)
 {
-    identifier = registry::parameter::to_identifier(_space[0]);
+    identifier = engine::parameter::to_identifier(_space[0]);
     function = static_cast<FUNCTION>(_space[1]);
 
     switch (identifier)
@@ -187,21 +187,21 @@ extern registry::result_t engine::payload::parameter::set_parameter(const engine
     case IDENTIFIER::BACKLIGHT:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.backlight.byte,
-                                            .size = registry::parameter::backlight::SIZE};
+                                            .size = engine::parameter::backlight::SIZE};
         result = registry::backlight_set(parameter_space);
         break;
     }
     case IDENTIFIER::DISPLAY:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.display.byte,
-                                            .size = registry::parameter::display::SIZE};
+                                            .size = engine::parameter::display::SIZE};
         result = registry::display_set(parameter_space);
         break;
     }
     case IDENTIFIER::FEATURES:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.features.byte,
-                                            .size = registry::parameter::features::SIZE};
+                                            .size = engine::parameter::features::SIZE};
 
         result = registry::features_set(parameter_space);
         break;
@@ -209,20 +209,20 @@ extern registry::result_t engine::payload::parameter::set_parameter(const engine
     case IDENTIFIER::KEYPAD:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.keypad.byte,
-                                            .size = registry::parameter::keypad::SIZE};
+                                            .size = engine::parameter::keypad::SIZE};
         result = registry::keypad_set(parameter_space);
         break;
     }
     case IDENTIFIER::MAINTAINER:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.maintainer.byte,
-                                            .size = registry::parameter::maintainer::SIZE};
+                                            .size = engine::parameter::maintainer::SIZE};
         result = registry::maintainer_set(parameter_space);
         break;
     }
     case IDENTIFIER::MAPPING:
     {
-        using namespace registry::parameter;
+        using namespace engine::parameter;
         const const_chunk_t parameter_space{.space = _content.parameter.mapping.byte,
                                             .size = sizeof(mapping::item_t)};
         result = registry::mapping_set(_content.parameter.mapping.item.index, parameter_space);
@@ -231,21 +231,21 @@ extern registry::result_t engine::payload::parameter::set_parameter(const engine
     case IDENTIFIER::POSITION:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.position.byte,
-                                            .size = registry::parameter::position::SIZE};
+                                            .size = engine::parameter::position::SIZE};
         result = registry::position_set(parameter_space);
         break;
     }
     case IDENTIFIER::SERIAL_NUMBER:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.serial_number.value,
-                                            .size = registry::parameter::serial_number::SIZE};
+                                            .size = engine::parameter::serial_number::SIZE};
         result = registry::serial_number_set(parameter_space);
         break;
     }
     case IDENTIFIER::USER:
     {
         const const_chunk_t parameter_space{.space = _content.parameter.user.value,
-                                            .size = registry::parameter::user::SIZE};
+                                            .size = engine::parameter::user::SIZE};
         result = registry::user_set(parameter_space);
         break;
     }
@@ -272,64 +272,63 @@ extern registry::result_t engine::payload::parameter::get_parameter(engine::payl
     case IDENTIFIER::BACKLIGHT:
     {
         chunk_t parameter_space{.space = _content.parameter.backlight.byte,
-                                .size = registry::parameter::backlight::SIZE};
+                                .size = engine::parameter::backlight::SIZE};
         result = registry::backlight_get(parameter_space);
         break;
     }
     case IDENTIFIER::DISPLAY:
     {
         chunk_t parameter_space{.space = _content.parameter.display.byte,
-                                .size = registry::parameter::display::SIZE};
+                                .size = engine::parameter::display::SIZE};
         result = registry::display_get(parameter_space);
         break;
     }
     case IDENTIFIER::FEATURES:
     {
         chunk_t parameter_space{.space = _content.parameter.features.byte,
-                                .size = registry::parameter::features::SIZE};
+                                .size = engine::parameter::features::SIZE};
         result = registry::features_get(parameter_space);
         break;
     }
     case IDENTIFIER::KEYPAD:
     {
         chunk_t parameter_space{.space = _content.parameter.keypad.byte,
-                                .size = registry::parameter::keypad::SIZE};
+                                .size = engine::parameter::keypad::SIZE};
         result = registry::keypad_get(parameter_space);
         break;
     }
     case IDENTIFIER::MAINTAINER:
     {
         chunk_t parameter_space{.space = _content.parameter.maintainer.byte,
-                                .size = registry::parameter::maintainer::SIZE};
+                                .size = engine::parameter::maintainer::SIZE};
         result = registry::maintainer_get(parameter_space);
         break;
     }
     case IDENTIFIER::MAPPING:
     {
-        using namespace registry::parameter;
         chunk_t parameter_space{.space = _content.parameter.mapping.byte,
-                                .size = sizeof(mapping::item_t)};
+                                .size = sizeof(engine::parameter::mapping::item_t)};
         result = registry::mapping_get(_content.parameter.mapping.item.index, parameter_space);
         break;
     }
     case IDENTIFIER::POSITION:
     {
         chunk_t parameter_space{.space = _content.parameter.position.byte,
-                                .size = registry::parameter::position::SIZE};
+                                .size = engine::parameter::position::SIZE};
         result = registry::position_get(parameter_space);
         break;
     }
     case IDENTIFIER::SERIAL_NUMBER:
     {
         chunk_t parameter_space{.space = _content.parameter.serial_number.value,
-                                .size = registry::parameter::serial_number::SIZE};
+                                .size = engine::parameter::serial_number::SIZE};
         result = registry::serial_number_get(parameter_space);
         break;
     }
     case IDENTIFIER::USER:
     {
         chunk_t parameter_space{.space = _content.parameter.user.value,
-                                .size = registry::parameter::user::SIZE};
+                                .size = engine::parameter::user::SIZE};
         result = registry::user_get(parameter_space);
         break;
     }

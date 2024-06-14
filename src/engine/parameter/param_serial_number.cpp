@@ -16,12 +16,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "chunk.h"
 #include "macros.hpp"
 #include "param_serial_number.hpp"
-#include "parameter.hpp"
-#include "random.hpp"
+#include "platform.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
@@ -37,7 +37,7 @@ namespace registry
             void register_t::initialize(void)
             {
                 chunk_t chunk = {value, SIZE};
-                random_create_sequence(&chunk);
+                platform::random_generator.create_sequence(&chunk);
             }
 
             /**

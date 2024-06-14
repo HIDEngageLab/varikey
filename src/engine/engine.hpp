@@ -11,6 +11,7 @@
 
 #include "chunk.h"
 #include "engine_defines.hpp"
+#include "registry_notify_interface.hpp"
 
 namespace engine
 {
@@ -28,6 +29,17 @@ namespace engine
     extern void resume();
 
     extern defines::STATE get_state(void);
+
+    namespace notify
+    {
+        struct RegistryNotifier : public registry::notify::Notifier
+        {
+            virtual void send(const registry::notify::Event &) const;
+        };
+
+    }
+    extern notify::RegistryNotifier registry_notifier;
+
 }
 
 #endif /* __ENGINE_HPP__ */

@@ -49,11 +49,11 @@ namespace registry
         /* load and serialize adc */
         if (parameter::param_backlight_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::backlight::register_t)); /* node param adc chunk null */
+            assert(_chunk.size >= sizeof(engine::parameter::backlight::register_t)); /* node param adc chunk null */
 
             uint8_t *ptr = _chunk.space;
-            parameter::backlight::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::backlight::register_t);
+            engine::parameter::backlight::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::backlight::register_t);
 
             return SUCCESS;
         }
@@ -65,11 +65,11 @@ namespace registry
     */
     extern result_t backlight_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS);                                   /* state should be initialized */
-        assert(_chunk.size == sizeof(parameter::backlight::register_t)); /* chunk is not null */
+        assert(is_ready() == SUCCESS);                                           /* state should be initialized */
+        assert(_chunk.size == sizeof(engine::parameter::backlight::register_t)); /* chunk is not null */
 
         /* deserialize and save backlight */
-        parameter::backlight::g_register.deserialize(_chunk.space);
+        engine::parameter::backlight::g_register.deserialize(_chunk.space);
         if (parameter::param_backlight_store() == SUCCESS)
         {
             return SUCCESS;
@@ -87,11 +87,11 @@ namespace registry
         /* load and serialize display */
         if (parameter::param_display_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::display::register_t)); /* node param display chunk null */
+            assert(_chunk.size >= sizeof(engine::parameter::display::register_t)); /* node param display chunk null */
 
             uint8_t *ptr = _chunk.space;
-            parameter::display::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::display::register_t);
+            engine::parameter::display::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::display::register_t);
 
             return SUCCESS;
         }
@@ -103,11 +103,11 @@ namespace registry
     */
     extern result_t display_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS);                                 /* state should be initialized */
-        assert(_chunk.size == sizeof(parameter::display::register_t)); /* chunk is not null */
+        assert(is_ready() == SUCCESS);                                         /* state should be initialized */
+        assert(_chunk.size == sizeof(engine::parameter::display::register_t)); /* chunk is not null */
 
         /* deserialize and save display */
-        parameter::display::g_register.deserialize(_chunk.space);
+        engine::parameter::display::g_register.deserialize(_chunk.space);
         if (parameter::param_display_store() == SUCCESS)
         {
             return SUCCESS;
@@ -127,8 +127,8 @@ namespace registry
         if (parameter::param_features_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
-            parameter::features::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::features::register_t);
+            engine::parameter::features::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::features::register_t);
 
             return SUCCESS;
         }
@@ -143,7 +143,7 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* deserialize and save parameter value */
-        parameter::features::g_register.deserialize(_chunk.space);
+        engine::parameter::features::g_register.deserialize(_chunk.space);
 
         if (parameter::param_features_store() == SUCCESS)
         {
@@ -162,11 +162,11 @@ namespace registry
         /* load and serialize keypad */
         if (parameter::param_keypad_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::keypad::register_t)); /* node param key chunk null */
+            assert(_chunk.size >= sizeof(engine::parameter::keypad::register_t)); /* node param key chunk null */
 
             uint8_t *ptr = _chunk.space;
-            parameter::keypad::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::keypad::register_t);
+            engine::parameter::keypad::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::keypad::register_t);
 
             return SUCCESS;
         }
@@ -182,7 +182,7 @@ namespace registry
         assert(_chunk.size == 4);      /* chunk is not null */
 
         /* deserialize and save keypad */
-        parameter::keypad::g_register.deserialize(_chunk.space);
+        engine::parameter::keypad::g_register.deserialize(_chunk.space);
         if (parameter::param_keypad_store() == SUCCESS)
         {
             return SUCCESS;
@@ -201,8 +201,8 @@ namespace registry
         if (parameter::param_maintainer_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
-            parameter::maintainer::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::maintainer::register_t);
+            engine::parameter::maintainer::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::maintainer::register_t);
 
             return SUCCESS;
         }
@@ -217,7 +217,7 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* deserialize, set and save parameter value*/
-        parameter::maintainer::g_register.deserialize(_chunk.space);
+        engine::parameter::maintainer::g_register.deserialize(_chunk.space);
         if (parameter::param_maintainer_store() == SUCCESS)
         {
             return SUCCESS;
@@ -233,11 +233,11 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* load and serialize serial number */
-        if (parameter::param_mapping_load() == SUCCESS)
+        if (registry::parameter::param_mapping_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
-            parameter::mapping::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::mapping::register_t);
+            engine::parameter::mapping::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::mapping::register_t);
 
             return SUCCESS;
         }
@@ -253,8 +253,8 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* deserialize and save */
-        parameter::mapping::g_register.deserialize(_chunk.space);
-        if (parameter::param_mapping_store() == SUCCESS)
+        engine::parameter::mapping::g_register.deserialize(_chunk.space);
+        if (registry::parameter::param_mapping_store() == SUCCESS)
         {
             return SUCCESS;
         }
@@ -269,20 +269,20 @@ namespace registry
         /* load parameter ... */
         if (parameter::param_mapping_load() == SUCCESS)
         {
-            if (_index < mapping::SIZE)
+            if (_index < engine::parameter::mapping::SIZE)
             {
                 /* ... and "serialize" */
-                const mapping::item_t item = {
+                const engine::parameter::mapping::item_t item = {
                     .item = {
                         .index = _index,
                         .value = {
-                            .modifier = mapping::g_register.value[_index].modifier,
-                            .code = mapping::g_register.value[_index].code,
+                            .modifier = engine::parameter::mapping::g_register.value[_index].modifier,
+                            .code = engine::parameter::mapping::g_register.value[_index].code,
                         },
                     },
                 };
                 item.serialize(&_chunk.space);
-                _chunk.size = sizeof(mapping::item_t);
+                _chunk.size = sizeof(engine::parameter::mapping::item_t);
                 return SUCCESS;
             }
         }
@@ -294,14 +294,14 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
         using namespace registry::parameter;
 
-        if (_index < mapping::SIZE)
+        if (_index < engine::parameter::mapping::SIZE)
         {
             /* set ...*/
-            mapping::item_t mapping;
+            engine::parameter::mapping::item_t mapping;
             mapping.deserialize(_chunk.space);
 
-            mapping::g_register.value[_index].modifier = mapping.item.value.modifier;
-            mapping::g_register.value[_index].code = mapping.item.value.code;
+            engine::parameter::mapping::g_register.value[_index].modifier = mapping.item.value.modifier;
+            engine::parameter::mapping::g_register.value[_index].code = mapping.item.value.code;
 
             /* ...and save */
             if (parameter::param_mapping_store() == SUCCESS)
@@ -324,11 +324,11 @@ namespace registry
         /* load and serialize position */
         if (parameter::param_position_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::position::register_t)); /* node param position chunk null */
+            assert(_chunk.size >= sizeof(engine::parameter::position::register_t)); /* node param position chunk null */
 
             uint8_t *ptr = _chunk.space;
-            parameter::position::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::position::register_t);
+            engine::parameter::position::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::position::register_t);
 
             return SUCCESS;
         }
@@ -344,7 +344,7 @@ namespace registry
         assert(_chunk.size == 8);      /* chunk is not null */
 
         /* deserialize and save position */
-        parameter::position::g_register.deserialize(_chunk.space);
+        engine::parameter::position::g_register.deserialize(_chunk.space);
         if (parameter::param_position_store() == SUCCESS)
         {
             return SUCCESS;
@@ -363,8 +363,8 @@ namespace registry
         if (parameter::param_serial_number_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
-            parameter::serial_number::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::serial_number::register_t);
+            engine::parameter::serial_number::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::serial_number::register_t);
 
             return SUCCESS;
         }
@@ -380,7 +380,7 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* deserialize and save */
-        parameter::serial_number::g_register.deserialize(_chunk.space);
+        engine::parameter::serial_number::g_register.deserialize(_chunk.space);
         if (parameter::param_serial_number_store() == SUCCESS)
         {
             return SUCCESS;
@@ -399,8 +399,8 @@ namespace registry
         if (parameter::param_user_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
-            parameter::user::g_register.serialize(&ptr);
-            _chunk.size = sizeof(parameter::user::register_t);
+            engine::parameter::user::g_register.serialize(&ptr);
+            _chunk.size = sizeof(engine::parameter::user::register_t);
 
             return SUCCESS;
         }
@@ -416,7 +416,7 @@ namespace registry
         assert(is_ready() == SUCCESS); /* state should be initialized */
 
         /* deserialize parameter value */
-        parameter::user::g_register.deserialize(_chunk.space);
+        engine::parameter::user::g_register.deserialize(_chunk.space);
         if (parameter::param_user_store() == SUCCESS)
         {
             return SUCCESS;

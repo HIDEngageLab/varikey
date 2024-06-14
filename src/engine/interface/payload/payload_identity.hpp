@@ -14,8 +14,7 @@
 #include <iostream>
 
 #include "identity.hpp"
-#include "param_maintainer.hpp"
-#include "param_serial_number.hpp"
+#include "macros.hpp"
 #include "payload_identifier.hpp"
 #include "revision.h"
 

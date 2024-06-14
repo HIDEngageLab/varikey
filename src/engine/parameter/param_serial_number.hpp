@@ -16,9 +16,9 @@
 #ifndef __PARAM_SERIAL_NUMBER_HPP__
 #define __PARAM_SERIAL_NUMBER_HPP__
 
-#include "parameter.hpp"
+#include <cstdint>
 
-namespace registry
+namespace engine
 {
 	namespace parameter
 	{

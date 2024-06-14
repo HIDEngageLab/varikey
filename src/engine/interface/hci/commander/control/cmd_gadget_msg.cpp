@@ -161,7 +161,7 @@ namespace engine
 
                     _msg->gadget.serialize(&ptr);
 
-                    serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);
+                    serialize_long(engine::parameter::serial_number::g_unique_key, &ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }
@@ -183,7 +183,7 @@ namespace engine
 
                     _msg->gadget.serialize(&ptr);
 
-                    serialize_long(registry::parameter::serial_number::g_unique_key, &ptr);
+                    serialize_long(engine::parameter::serial_number::g_unique_key, &ptr);
 
                     serial::frame::send(engine::hci::INTERPRETER_ADDRESS, &_msg->value);
                 }

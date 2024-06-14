@@ -1,13 +1,13 @@
 /**
- * \file param_display.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
+ * \file param_keypad.cpp
+ * \author Roman Koch, koch.roman@gmail.com
  *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+ * \copyright Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
  * SPDX-License-Identifier: MIT
  */
 
 /**
-    \brief Parameter "wheel"
+    \brief Parameter "keypad"
 
     \internal
     \author Roman Koch, koch.roman@gmail.com
@@ -16,26 +16,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+//#include "keypad_keycode_type.hpp"
 #include "macros.hpp"
-#include "param_display.hpp"
+#include "param_keypad.hpp"
 
-namespace registry
+namespace engine
 {
     namespace parameter
     {
-        namespace display
+        namespace keypad
         {
-
-            register_t g_register = {.byte = {0xff}};
+            register_t g_register = {.byte = {0xff, 0xff, 0xff, 0xff}};
 
             /**
                 \brief Initialize field with default values
             */
             void register_t::initialize(void)
             {
-                value.inverse = DISABLE;
-                value.rotate = DISABLE;
-                value.slides = ENABLE;
+                //value.click_ms = engine::Keycode::DEFAULT_CLICK_MS;
+                //value.push_ms = engine::Keycode::DEFAULT_PUSH_MS;
             }
 
             /**
@@ -44,7 +43,9 @@ namespace registry
             void register_t::deserialize(uint8_t const *const _space)
             {
                 /* ATTENTION: NO CHECKS */
-                byte[0] = _space[0];
+                const uint8_t *ptr = _space;
+                value.click_ms = deserialize_word(&ptr);
+                value.push_ms = deserialize_word(&ptr);
             }
 
             /**
@@ -53,7 +54,8 @@ namespace registry
             void register_t::serialize(uint8_t **_ptr) const
             {
                 /* ATTENTION: NO CHECKS */
-                *(*_ptr)++ = byte[0];
+                serialize_word(value.click_ms, _ptr);
+                serialize_word(value.push_ms, _ptr);
             }
         }
     }

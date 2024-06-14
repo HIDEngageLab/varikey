@@ -18,12 +18,16 @@
 #include "engine_variant.hpp"
 #include "hid_handler.hpp"
 #include "keypad.hpp"
+#include "platform.hpp"
 #include "random.hpp"
 #include "registry.hpp"
 #include "serial.hpp"
+#include "varikey.hpp"
 
 namespace engine
 {
+    notify::RegistryNotifier registry_notifier;
+
     static defines::STATE state = defines::STATE::UNDEFINED;
     static defines::STATE next_state = defines::STATE::UNDEFINED;
 
@@ -38,7 +42,7 @@ namespace engine
         assert(state == defines::STATE::UNDEFINED);
         state = defines::STATE::IDLE;
 
-        random_init();
+        platform::random_generator.init();
         serial::init();
 
         registry::initialize();
@@ -170,7 +174,7 @@ namespace engine
                 /* todo: check event queue and execute lines below only if no more events exists */
 
                 state = next_state;
-                if (registry::parameter::features::g_register.value.autostart == ability_t::ENABLE)
+                if (engine::parameter::features::g_register.value.autostart == ability_t::ENABLE)
                 {
                     /* autostart */
                     next_state = defines::STATE::ACTIVE;
@@ -242,4 +246,35 @@ namespace engine
         display::clean();
     }
 
+    namespace notify
+    {
+        void RegistryNotifier::send(const registry::notify::Event &_event) const
+        {
+            switch (_event.cause)
+            {
+            case registry::notify::EVENT_CAUSE::RESET:
+                switch (_event.identifier)
+                {
+                case registry::notify::EVENT_IDENTIFIER::BACKUP_CREATED:
+                    /* code */
+                    hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::BACKUP_CREATED);
+                    break;
+                case registry::notify::EVENT_IDENTIFIER::CRITICAL_ERROR:
+                    /* code */
+                    hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::CRITICAL_ERROR);
+                    break;
+                case registry::notify::EVENT_IDENTIFIER::PARAMETER_MISSED:
+                    /* code */
+                    hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::PARAMETER_MISSED);
+                    break;
+
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+    }
 }

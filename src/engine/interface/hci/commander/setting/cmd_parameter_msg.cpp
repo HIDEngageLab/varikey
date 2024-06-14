@@ -47,7 +47,7 @@ namespace engine
                     assert(_chunk != NULL && _msg != NULL); /* param message chunk null */
 
                     using FUNCTION = engine::payload::parameter::FUNCTION;
-                    using IDENTIFIER = registry::parameter::IDENTIFIER;
+                    using IDENTIFIER = engine::parameter::IDENTIFIER;
 
                     auto set_message_result = [&](const registry::result_t result)
                     {

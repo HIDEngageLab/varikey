@@ -35,7 +35,7 @@ namespace engine
     {
         namespace parameter
         {
-            using IDENTIFIER = registry::parameter::IDENTIFIER;
+            using IDENTIFIER = engine::parameter::IDENTIFIER;
 
             /** \brief Parameter length type */
             enum class TYPELEN : uint8_t
@@ -61,15 +61,15 @@ namespace engine
                 FUNCTION function;
                 union
                 {
-                    registry::parameter::backlight::register_t backlight;
-                    registry::parameter::display::register_t display;
-                    registry::parameter::features::register_t features;
-                    registry::parameter::keypad::register_t keypad;
-                    registry::parameter::maintainer::register_t maintainer;
-                    registry::parameter::mapping::item_t mapping;
-                    registry::parameter::position::register_t position;
-                    registry::parameter::serial_number::register_t serial_number;
-                    registry::parameter::user::register_t user;
+                    engine::parameter::backlight::register_t backlight;
+                    engine::parameter::display::register_t display;
+                    engine::parameter::features::register_t features;
+                    engine::parameter::keypad::register_t keypad;
+                    engine::parameter::maintainer::register_t maintainer;
+                    engine::parameter::mapping::item_t mapping;
+                    engine::parameter::position::register_t position;
+                    engine::parameter::serial_number::register_t serial_number;
+                    engine::parameter::user::register_t user;
                 } parameter;
 
                 const size_t size() const;

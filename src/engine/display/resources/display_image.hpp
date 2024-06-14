@@ -28,8 +28,8 @@ namespace engine
             ADD_CIRCLE_32 = 0x0007,
             ADD_SQUARE_8 = 0x0008,
             ADD_SQUARE_16 = 0x0009,
-            ADD_SQUARE_24 = 0x0010,
-            ADD_SQUARE_32 = 0x0011,
+            ADD_SQUARE_24 = 0x000a,
+            ADD_SQUARE_32 = 0x000b,
             UNDEFINED = 0xffff,
         };
 

@@ -17,8 +17,20 @@
 #define __PULP_RANDOM_HPP__
 
 #include "chunk.h"
+#include "temperature_interface.hpp"
 
-extern void random_init(void);
-extern void random_create_sequence(chunk_t *const _sequence);
+namespace pulp
+{
+	struct Random
+	{
+		Random(TemperatureInterface &instance) : instance(instance) {}
+
+		void init();
+		void create_sequence(chunk_t *const _sequence);
+
+	private:
+		TemperatureInterface &instance;
+	};
+}
 
 #endif /* __PULP_RANDOM_HPP__ */
