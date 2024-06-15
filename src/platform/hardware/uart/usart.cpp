@@ -15,6 +15,7 @@
 #include <hardware/irq.h>
 #include <hardware/sync.h>
 #include <hardware/uart.h>
+#include <pico/binary_info.h>
 #include <pico/stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -84,6 +85,9 @@ namespace platform
 
             gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
             gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+
+            bi_decl(bi_1pin_with_name(UART_RX_PIN, "SERIAL_RX"));
+            bi_decl(bi_1pin_with_name(UART_TX_PIN, "SERIAL_TX"));
 
             int __unused actual = uart_set_baudrate(uart0, BAUD_RATE);
             uart_set_hw_flow(uart0, false, false);

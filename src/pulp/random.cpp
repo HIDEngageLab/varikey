@@ -56,6 +56,12 @@ namespace pulp
         srand(seed);
     }
 
+    void Random::shutdown()
+    {
+        assert(state == READY); // random generator not initialized
+        state = UNDEFINED;
+    }
+
     /**
         \brief Create random sequence
     */

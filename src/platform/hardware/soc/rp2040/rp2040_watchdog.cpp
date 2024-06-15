@@ -7,6 +7,7 @@
  */
 
 #include <hardware/watchdog.h>
+#include <pico/bootrom.h>
 #include <pico/time.h>
 
 #include "rp2040_watchdog.hpp"
@@ -32,6 +33,11 @@ namespace platform
             watchdog_enable(0, false);
             while (true)
                 ;
+        }
+
+        void RP2040Watchdog::bootsel()
+        {
+            reset_usb_boot((0x00000001 << PICO_DEFAULT_LED_PIN), 0);
         }
     }
 }

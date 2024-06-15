@@ -43,8 +43,16 @@ namespace platform
             temperature.shutdown();
             ticker.shutdown();
             stopwatch.shutdown();
+        }
 
+        void RP2040::reboot()
+        {
             watchdog.reboot();
+        }
+
+        void RP2040::bootsel()
+        {
+            watchdog.bootsel();
         }
 
         const DIRECTION RP2040::get_gpio_direction(const IDENTIFIER _identifier) const

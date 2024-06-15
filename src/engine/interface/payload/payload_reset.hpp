@@ -27,11 +27,12 @@ namespace engine
             {
                 SHUTDOWN = common::function::CUSTOM,
                 FORMAT = common::function::CUSTOM + 1,
+                BOOTSEL = common::function::CUSTOM + 2,
 
                 UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
             };
 
-            struct content_t 
+            struct content_t
             {
                 FUNCTION function;
 

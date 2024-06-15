@@ -42,6 +42,16 @@ namespace platform
             soc.shutdown();
         }
 
+        void Assembly::reboot()
+        {
+            soc.reboot();
+        }
+
+        void Assembly::bootsel()
+        {
+            soc.bootsel();
+        }
+
         void Assembly::perform()
         {
             usb.perform();

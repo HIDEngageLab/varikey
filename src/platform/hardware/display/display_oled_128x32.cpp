@@ -29,18 +29,27 @@ namespace platform
             gpio_set_function(platform::hardware::Display::PICO_SPI_SCK, GPIO_FUNC_SPI);
             gpio_set_function(platform::hardware::Display::PICO_SPI_TX, GPIO_FUNC_SPI);
 
+            bi_decl(bi_2pins_with_names(platform::hardware::Display::PICO_SPI_SCK, "DISPLAY_CLOCK",
+                                        platform::hardware::Display::PICO_SPI_TX, "DISPLAY_TX"));
+
             // Chip select is active-low, so we'll initialise it to a driven-high state
             gpio_init(platform::hardware::Display::PICO_SPI_CS);
             gpio_set_dir(platform::hardware::Display::PICO_SPI_CS, GPIO_OUT);
             gpio_put(platform::hardware::Display::PICO_SPI_CS, 1);
 
+            bi_decl(bi_1pin_with_name(platform::hardware::Display::PICO_SPI_CS, "DISPLAY_SELECT"));
+
             gpio_init(platform::hardware::Display::DISPLAY_RESET);
             gpio_set_dir(platform::hardware::Display::DISPLAY_RESET, GPIO_OUT);
             gpio_put(platform::hardware::Display::DISPLAY_RESET, 1);
 
+            bi_decl(bi_1pin_with_name(platform::hardware::Display::DISPLAY_RESET, "DISPLAY_RESET"));
+
             gpio_init(platform::hardware::Display::DISPLAY_CMD_SEL);
             gpio_set_dir(platform::hardware::Display::DISPLAY_CMD_SEL, GPIO_OUT);
             gpio_put(platform::hardware::Display::DISPLAY_CMD_SEL, 0);
+
+            bi_decl(bi_1pin_with_name(platform::hardware::Display::DISPLAY_CMD_SEL, "DISPLAY_CMD"));
 
             ssd1306::initialize(platform::hardware::Display::DISPLAY_CMD_SEL,
                                 platform::hardware::Display::PICO_SPI_CS);

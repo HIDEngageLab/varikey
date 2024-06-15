@@ -290,13 +290,25 @@ namespace engine
             case payload::IDENTIFIER::PARAMETER:
                 break;
             case payload::IDENTIFIER::RESET:
-                if (_event.reset.function == engine::payload::reset::FUNCTION::FORMAT)
+                switch (_event.reset.function)
                 {
+                case engine::payload::reset::FUNCTION::SHUTDOWN:
+                    varikey_shutdown();
+                    varikey_reboot(); /* no  return */
+                    break;
+                case engine::payload::reset::FUNCTION::FORMAT:
                     registry::parameter::param_format();
-                }
+                    varikey_shutdown();
+                    varikey_reboot(); /* no  return */
+                    break;
+                case engine::payload::reset::FUNCTION::BOOTSEL:
+                    varikey_shutdown();
+                    varikey_bootsel(); /* no  return */
+                    break;
 
-                /* no  return */
-                varikey_shutdown();
+                default:
+                    break;
+                }
 
                 break;
             default:

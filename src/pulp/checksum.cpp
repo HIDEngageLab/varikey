@@ -212,16 +212,3 @@ static uint32_t mix32(uint32_t const _hash)
     _result -= _result << 13;
     return _result;
 }
-
-/**
-    \brief CRC test
-*/
-void checksum_test(void)
-{
-#if defined(CHECKSUM_TEST)
-    uint16_t bla = 0;
-    uint8_t a[10] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a};
-    chunk_t b = {a, 10};
-    bla = checksum_crc(&b, 0);
-#endif
-}

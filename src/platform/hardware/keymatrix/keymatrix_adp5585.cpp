@@ -40,6 +40,9 @@ namespace platform
             gpio_set_function(platform::hardware::Keymatrix::PICO_I2C_SDA, GPIO_FUNC_I2C);
             gpio_set_function(platform::hardware::Keymatrix::PICO_I2C_SCL, GPIO_FUNC_I2C);
 
+            bi_decl(bi_2pins_with_names(platform::hardware::Keymatrix::PICO_I2C_SDA, "KEYMATRIX_SDA",
+                                        platform::hardware::Keymatrix::PICO_I2C_SCL, "KEYMATRIX_SCL"));
+
             gpio_pull_up(platform::hardware::Keymatrix::PICO_I2C_SDA);
             gpio_pull_up(platform::hardware::Keymatrix::PICO_I2C_SCL);
 
@@ -49,7 +52,11 @@ namespace platform
             gpio_set_pulls(platform::hardware::Keymatrix::AD5585_INT, true, false);
             gpio_set_irq_enabled_with_callback(platform::hardware::Keymatrix::AD5585_INT, GPIO_IRQ_EDGE_FALL, true, &keymatrix_callback);
 
+            bi_decl(bi_1pin_with_name(platform::hardware::Keymatrix::AD5585_INT, "KEYMATRIX_INT"));
+
             gpio_put(platform::hardware::Keymatrix::AD5585_RST, 1);
+            bi_decl(bi_1pin_with_name(platform::hardware::Keymatrix::AD5585_RST, "KEYMATRIX_RST"));
+
             platform_adp5585_init(platform::hardware::Keymatrix::AD5585_I2C_ADDRESS);
         }
 

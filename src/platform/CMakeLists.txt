@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+# SPDX-License-Identifier: MIT
+
 add_library(platform)
 
 pico_generate_pio_header(platform "${PROJECT_SOURCE_DIR}/src/platform/hardware/backlight/ws2812.pio")
@@ -37,12 +40,12 @@ target_include_directories(platform PUBLIC
 target_link_libraries(platform 
     pico_stdlib
     hardware_adc
+    hardware_exception
     hardware_flash
     hardware_i2c
+    hardware_pio
     hardware_spi
     hardware_sync
-    hardware_pio
-    hardware_exception
     tinyusb_board
     tinyusb_device
     registry

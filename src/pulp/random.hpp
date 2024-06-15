@@ -26,6 +26,8 @@ namespace pulp
 		Random(TemperatureInterface &instance) : instance(instance) {}
 
 		void init();
+		void shutdown();
+		
 		void create_sequence(chunk_t *const _sequence);
 
 	private:

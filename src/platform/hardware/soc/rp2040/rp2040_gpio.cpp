@@ -14,6 +14,7 @@
 */
 
 #include <hardware/gpio.h>
+#include <pico/binary_info.h>
 #include <pico/stdlib.h>
 
 #include "rp2040_gpio.hpp"
@@ -110,6 +111,11 @@ namespace platform
             gpio_set_dir(platform::driver::SoC::DEBUG_PIN_2, GPIO_OUT);
             gpio_set_dir(platform::driver::SoC::DEBUG_PIN_3, GPIO_OUT);
             gpio_set_dir(platform::driver::SoC::DEBUG_PIN_4, GPIO_OUT);
+
+            bi_decl(bi_1pin_with_name(platform::driver::SoC::DEBUG_PIN_1, "GPIO_1"));
+            bi_decl(bi_1pin_with_name(platform::driver::SoC::DEBUG_PIN_2, "GPIO_2"));
+            bi_decl(bi_1pin_with_name(platform::driver::SoC::DEBUG_PIN_3, "GPIO_3"));
+            bi_decl(bi_1pin_with_name(platform::driver::SoC::DEBUG_PIN_4, "GPIO_4"));
         }
 
         void RP2040Gpio::shutdown()

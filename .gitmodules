@@ -1,3 +1,6 @@
 [submodule "src/engine/interface/hci/host"]
 	path = src/engine/interface/hci/host
 	url = git@github.com:HIDEngageLab/varihost.git
+[submodule "src/test/unity"]
+	path = src/test/unity
+	url = git@github.com:ThrowTheSwitch/Unity.git

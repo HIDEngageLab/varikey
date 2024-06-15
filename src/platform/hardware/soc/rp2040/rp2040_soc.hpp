@@ -35,6 +35,9 @@ namespace platform
             virtual void initialize();
             virtual void shutdown();
 
+            void reboot();
+            void bootsel();
+
             const float get_temperature(void) const { return temperature.get_value(); }
             const uint16_t get_temperature_raw(void) const { return temperature.get_raw_value(); }
 

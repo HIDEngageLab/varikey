@@ -10,16 +10,20 @@
         "**/bin": true,
     },
     "cSpell.language": "en,de",
-    "cmake.generator": "Unix Makefiles",
+    "cmake.generator": "Ninja",
     "cmake.configureSettings": {
         //"HARDWARE_PLATFORM":"GOSSENMETRAWATT",
         "HARDWARE_PLATFORM":"VARIKEY",
-        "FIRMWARE_PRODUCT":"KEYPAD_DEMO"
+        "FIRMWARE_PRODUCT":"KEYPAD_DEMO",
+        //"FIRMWARE_PRODUCT":"KEYPAD_10BWDB",
+        "ENABLE_UNIT_TESTING": "ON"
     },
     "cSpell.words": [
         "backlighting",
         "bitloop",
         "blub",
+        "bootsel",
+        "BOOTSEL",
         "bwdb",
         "BWDB",
         "bytering",
@@ -198,5 +202,6 @@
     },
     "r.lsp.promptToInstall": false,
     "C_Cpp.errorSquiggles": "enabled",
-    "cmake.options.statusBarVisibility": "visible"
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.configureOnOpen": false
 }
