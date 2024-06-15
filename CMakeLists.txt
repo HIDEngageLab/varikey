@@ -107,7 +107,7 @@ add_dependencies(${EXECUTABLE_NAME} ascii_art)
 
 target_sources(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/src/varikey.cpp
-    )
+)
 
 target_include_directories(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/build/

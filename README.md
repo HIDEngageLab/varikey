@@ -1,6 +1,6 @@
 # VariKey
 
-The VaryKey platform is a customizable keyboard solution featuring a key matrix, mikrocontroller, and the capability to control a small display and smart LED backlighting using the HID protocol.
+The VaryKey platform is a customizable keypad solution featuring a key matrix, mikrocontroller, and the capability to control a small display and smart LED backlighting using the HID protocol.
 
 # Overview
 
