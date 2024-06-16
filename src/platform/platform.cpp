@@ -14,6 +14,21 @@ namespace platform
     Temperature temperature;
     pulp::Random random_generator(temperature);
 
+    extern void initialize(void)
+    {
+        board::assembly.initialize();
+    }
+
+    extern void shutdown(void)
+    {
+        platform::board::assembly.shutdown();
+    }
+
+    extern void bootsel(void)
+    {
+        platform::board::assembly.bootsel();
+    }
+
     const float Temperature::get_value(void) const
     {
         return platform::board::assembly.soc.get_temperature();

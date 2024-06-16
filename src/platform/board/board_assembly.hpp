@@ -34,6 +34,8 @@ namespace platform
 
             virtual void perform();
 
+            void bootsel();
+
             hardware::Backlight backlight;
             hardware::Display display;
             hardware::Keymatrix keypad;

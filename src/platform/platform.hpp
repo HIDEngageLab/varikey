@@ -15,6 +15,11 @@
 
 namespace platform
 {
+    extern void initialize(void);
+    extern void shutdown(void);
+
+    extern void bootsel(void);
+
     struct Temperature : public pulp::TemperatureInterface
     {
         const float get_value(void) const;

@@ -47,6 +47,17 @@ namespace platform
             watchdog.reboot();
         }
 
+        void RP2040::bootsel()
+        {
+            watchdog.shutdown();
+            gpio.shutdown();
+            temperature.shutdown();
+            ticker.shutdown();
+            stopwatch.shutdown();
+
+            watchdog.bootsel();
+        }
+
         const DIRECTION RP2040::get_gpio_direction(const IDENTIFIER _identifier) const
         {
             DIRECTION direction = DIRECTION::UNDEFINED;

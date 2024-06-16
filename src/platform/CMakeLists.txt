@@ -37,12 +37,12 @@ target_include_directories(platform PUBLIC
 target_link_libraries(platform 
     pico_stdlib
     hardware_adc
+    hardware_exception
     hardware_flash
     hardware_i2c
+    hardware_pio
     hardware_spi
     hardware_sync
-    hardware_pio
-    hardware_exception
     tinyusb_board
     tinyusb_device
     registry

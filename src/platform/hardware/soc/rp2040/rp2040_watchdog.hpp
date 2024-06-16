@@ -25,6 +25,7 @@ namespace platform
             void start();
             void update();
             void reboot();
+            void bootsel();
         };
     }
 }

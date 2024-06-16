@@ -14,7 +14,8 @@ void content_t::deserialize(uint8_t const *const _space)
 {
     function = static_cast<const FUNCTION>(_space[0]);
     if (!(function == FUNCTION::SHUTDOWN ||
-          function == FUNCTION::FORMAT))
+          function == FUNCTION::FORMAT ||
+          function == FUNCTION::BOOTSEL))
     {
         function = FUNCTION::UNDEFINED;
     }
@@ -22,7 +23,8 @@ void content_t::deserialize(uint8_t const *const _space)
 void content_t::serialize(uint8_t **_ptr) const
 {
     if ((function == FUNCTION::SHUTDOWN ||
-         function == FUNCTION::FORMAT))
+         function == FUNCTION::FORMAT ||
+         function == FUNCTION::BOOTSEL))
     {
         *(*_ptr)++ = (uint8_t)function;
     }
