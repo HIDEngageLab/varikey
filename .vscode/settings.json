@@ -10,7 +10,7 @@
         "**/bin": true,
     },
     "cSpell.language": "en,de",
-    "cmake.generator": "Unix Makefiles",
+    "cmake.generator": "Ninja",
     "cmake.configureSettings": {
         //"HARDWARE_PLATFORM":"GOSSENMETRAWATT",
         "HARDWARE_PLATFORM":"VARIKEY",
