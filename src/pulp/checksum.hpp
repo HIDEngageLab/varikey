@@ -29,6 +29,4 @@ extern uint16_t checksum_crc_postprocess(uint16_t const _crc);
 
 extern uint32_t checksum_hash(chunk_t const *const _chunk);
 
-void checksum_test(void);
-
 #endif /* __PULP_CHECKSUM_HPP__ */

@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+# SPDX-License-Identifier: MIT
+
 add_library(platform)
 
 pico_generate_pio_header(platform "${PROJECT_SOURCE_DIR}/src/platform/hardware/backlight/ws2812.pio")

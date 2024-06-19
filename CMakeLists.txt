@@ -1,6 +1,9 @@
 # Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
 # SPDX-License-Identifier: MIT
 
+# ------------------------------------------------------------
+# CMake, SDK, Conpiler and Project config
+# ------------------------------------------------------------
 cmake_minimum_required(VERSION 3.22)
 
 unset(ENV{PICO_SDK_PATH})
@@ -30,7 +33,18 @@ add_compile_options(-Wall
 -O0
 )
 
-# platform variants management
+if (ENABLE_UNIT_TESTING)
+        message(STATUS "Unit testing enabled")
+        add_compile_options(-DENABLE_UNIT_TESTS=1)
+else()
+        message(STATUS "Unit testing disabled")
+        add_compile_options(-DENABLE_UNIT_TESTS=0)
+endif()
+
+# ------------------------------------------------------------
+# Platform variants management
+# ------------------------------------------------------------
+
 if (NOT HARDWARE_PLATFORM)
         message(WARNING "platform is not defined, default is VARIKEY")
         # set default hardware
@@ -52,7 +66,10 @@ else()
 endif()
 message(STATUS "platform is ${HARDWARE_PLATFORM} (internal ID:${HARDWARE_IDENTIFIER} NUM:${HARDWARE_NUMBER} VAR:${HARDWARE_VARIANT})")
 
-# product variants management
+# ------------------------------------------------------------
+# Product variants management
+# ------------------------------------------------------------
+
 if (NOT FIRMWARE_PRODUCT)
         message(WARNING "product is not defined, default is KEYPAD_DEMO")
         # set default device name
@@ -71,14 +88,30 @@ else()
 endif()
 message(STATUS "product is ${FIRMWARE_PRODUCT} (internal ID:${FIRMWARE_IDENTIFIER} REV:${PROJECT_VERSION})")
 
-set(EXECUTABLE_NAME "${PROJECT_NAME}_${FIRMWARE_PRODUCT}_${HARDWARE_PLATFORM}_${HARDWARE_NUMBER}_${HARDWARE_VARIANT}")
+# ------------------------------------------------------------
+# Source code structure
+# ------------------------------------------------------------
+
+if (ENABLE_UNIT_TESTING)
+        set(EXECUTABLE_NAME "TEST_${PROJECT_NAME}_${FIRMWARE_PRODUCT}_${HARDWARE_PLATFORM}_${HARDWARE_NUMBER}_${HARDWARE_VARIANT}")
+else()
+        set(EXECUTABLE_NAME "${PROJECT_NAME}_${FIRMWARE_PRODUCT}_${HARDWARE_PLATFORM}_${HARDWARE_NUMBER}_${HARDWARE_VARIANT}")
+endif()
 string(TOLOWER ${EXECUTABLE_NAME} EXECUTABLE_NAME)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/pulp)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/platform)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/registry)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/engine)
+if (ENABLE_UNIT_TESTING)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/src/test/unity)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/src/test/unit-tests)
+endif()
 add_executable(${EXECUTABLE_NAME})
+
+# ------------------------------------------------------------
+# Revision description generator
+# ------------------------------------------------------------
 
 set(BUILD_MACROS_DIRECTORY "${PROJECT_SOURCE_DIR}/build")
 set(IDENTITY_DIRECTORY "${PROJECT_SOURCE_DIR}/src/engine/identity")
@@ -86,6 +119,10 @@ set(IDENTITY_DIRECTORY "${PROJECT_SOURCE_DIR}/src/engine/identity")
 set(GIT_HASH_SIZE 8)
 execute_process (COMMAND bash -c "git rev-parse --short=${GIT_HASH_SIZE} HEAD | tr -d '\n'" OUTPUT_VARIABLE GIT_HASH)
 configure_file(${BUILD_MACROS_DIRECTORY}/revision.h.in ${IDENTITY_DIRECTORY}/revision.h @ONLY)
+
+# ------------------------------------------------------------
+# Build Number generator
+# ------------------------------------------------------------
 
 if(NOT EXISTS "${IDENTITY_DIRECTORY}/build_number.h")
         execute_process(
@@ -102,12 +139,26 @@ else()
         ENDIF(CMAKE_BUILD_TYPE MATCHES "Release")
 endif()
 
+# ------------------------------------------------------------
+# Nice grafiti
+# ------------------------------------------------------------
+
 include("${CMAKE_SOURCE_DIR}/build/graffiti.cmake")
 add_dependencies(${EXECUTABLE_NAME} ascii_art)
 
-target_sources(${EXECUTABLE_NAME} PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/src/varikey.cpp
-)
+# ------------------------------------------------------------
+# Executable management
+# ------------------------------------------------------------
+
+if (ENABLE_UNIT_TESTING)
+        target_sources(${EXECUTABLE_NAME} PUBLIC
+                ${CMAKE_CURRENT_LIST_DIR}/src/test/test.cpp
+        )
+else()
+        target_sources(${EXECUTABLE_NAME} PUBLIC
+                ${CMAKE_CURRENT_LIST_DIR}/src/varikey.cpp
+        )
+endif()
 
 target_include_directories(${EXECUTABLE_NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/build/
@@ -124,9 +175,120 @@ target_link_libraries(${EXECUTABLE_NAME} PUBLIC
         engine
 )
 
+if (ENABLE_UNIT_TESTING)
+        target_link_libraries(${EXECUTABLE_NAME} PUBLIC
+                unit_tests
+        )
+endif()
+
 # add url via pico_set_program_url
 # example_auto_set_url(${PROJECT_NAME})
 
-# pico_enable_stdio_usb(${PROJECT_NAME} 0)
-pico_enable_stdio_uart(${EXECUTABLE_NAME} 1)
+if (ENABLE_UNIT_TESTING)
+        pico_enable_stdio_usb(${EXECUTABLE_NAME} 1)
+        pico_enable_stdio_uart(${EXECUTABLE_NAME} 1)
+else()
+        pico_enable_stdio_usb(${EXECUTABLE_NAME} 0)
+        pico_enable_stdio_uart(${EXECUTABLE_NAME} 1)
+endif()
+
 pico_add_extra_outputs(${EXECUTABLE_NAME})
+
+# ------------------------------------------------------------
+# Testing
+# ------------------------------------------------------------
+
+include(CTest)
+list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+list(APPEND CMAKE_CTEST_ARGUMENTS "--verbose")
+
+enable_testing()
+
+set (PICOTOOL_UPDATE_TARGET_COMMAND "${PROJECT_SOURCE_DIR}/tools/picotool/bin/picotool" )
+set (PICOTOOL_TEST_SCRIPT "${PROJECT_SOURCE_DIR}/tools/start-test.sh")
+
+set (okRegex "OK")
+set (blaRegex "BLA")
+set_property(TEST PROPERTY OK_REGULAR_EXPRESSION "${okRegex}")
+set_property(TEST PROPERTY BLA_REGULAR_EXPRESSION "${blaRegex}")
+
+set (passRegex "PASSED")
+set (failRegex "FAILED|TIMEOUT")
+set_property(TEST PROPERTY PASS_REGULAR_EXPRESSION "${passRegex}")
+set_property(TEST PROPERTY FAIL_REGULAR_EXPRESSION "${failRegex}")
+
+add_test(NAME upload
+        COMMAND ${PICOTOOL_UPDATE_TARGET_COMMAND} load -v ${PROJECT_BINARY_DIR}/${EXECUTABLE_NAME}.uf2
+)
+add_test(NAME checksum_sum
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 0 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_hash
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 1 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_crc
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 2 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_crc_reflected
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 3 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_crc_byte
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 4 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_crc_post
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 5 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+add_test(NAME checksum_crc_reflected_post
+        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 6 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
+)
+        
+set_tests_properties(
+        upload
+        checksum_sum 
+        checksum_hash
+        checksum_crc
+        checksum_crc_reflected
+        checksum_crc_byte
+        checksum_crc_post
+        checksum_crc_reflected_post
+        PROPERTIES TIMEOUT 15
+) 
+
+set_tests_properties(
+        upload
+        PROPERTIES OK_REGULAR_EXPRESSION "${okRegex}"
+) 
+set_tests_properties(
+        upload
+        PROPERTIES BLA_REGULAR_EXPRESSION "${blaRegex}"
+) 
+
+set_tests_properties(
+        checksum_sum 
+        checksum_hash 
+        checksum_crc 
+        checksum_crc_reflected
+        checksum_crc_byte
+        checksum_crc_post
+        checksum_crc_reflected_post
+        PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}"
+) 
+set_tests_properties(
+        checksum_sum 
+        checksum_hash 
+        checksum_crc 
+        checksum_crc_reflected
+        checksum_crc_byte
+        checksum_crc_post
+        checksum_crc_reflected_post
+        PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}"
+) 
+
+# run CTest from the command-line
+# ctest --extra-verbose
+
+# run a single test or a subset of tests
+# ctest -R checksum_sum
+
+# exclude test or a subset of tests
+# ctest -E upload

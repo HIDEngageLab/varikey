@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
+# SPDX-License-Identifier: MIT
+
 add_library(registry STATIC) 
 
 target_sources(registry PRIVATE

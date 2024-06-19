@@ -7,13 +7,13 @@
  */
 
 #include "varikey.hpp"
-#include "platform.hpp"
 #include "engine.hpp"
+#include "platform.hpp"
 
 static bool running = true;
 
 int main(void)
-{    
+{
     platform::initialize();
     engine::initialize();
     engine::start();

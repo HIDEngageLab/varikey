@@ -14,7 +14,9 @@
     "cmake.configureSettings": {
         //"HARDWARE_PLATFORM":"GOSSENMETRAWATT",
         "HARDWARE_PLATFORM":"VARIKEY",
-        "FIRMWARE_PRODUCT":"KEYPAD_DEMO"
+        "FIRMWARE_PRODUCT":"KEYPAD_DEMO",
+        //"FIRMWARE_PRODUCT":"KEYPAD_10BWDB",
+        "ENABLE_UNIT_TESTING": "ON"
     },
     "cSpell.words": [
         "backlighting",
