@@ -185,7 +185,7 @@ endif()
 # example_auto_set_url(${PROJECT_NAME})
 
 if (ENABLE_UNIT_TESTING)
-        pico_enable_stdio_usb(${EXECUTABLE_NAME} 1)
+        pico_enable_stdio_usb(${EXECUTABLE_NAME} 0)
         pico_enable_stdio_uart(${EXECUTABLE_NAME} 1)
 else()
         pico_enable_stdio_usb(${EXECUTABLE_NAME} 0)
@@ -198,91 +198,40 @@ pico_add_extra_outputs(${EXECUTABLE_NAME})
 # Testing
 # ------------------------------------------------------------
 
-include(CTest)
-list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
-list(APPEND CMAKE_CTEST_ARGUMENTS "--verbose")
-
 enable_testing()
 
-set (PICOTOOL_UPDATE_TARGET_COMMAND "${PROJECT_SOURCE_DIR}/tools/picotool/bin/picotool" )
-set (PICOTOOL_TEST_SCRIPT "${PROJECT_SOURCE_DIR}/tools/start-test.sh")
+include(CTest)
+list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+list(APPEND CMAKE_CTEST_ARGUMENTS "--extra-verbose")
 
-set (okRegex "OK")
-set (blaRegex "BLA")
-set_property(TEST PROPERTY OK_REGULAR_EXPRESSION "${okRegex}")
-set_property(TEST PROPERTY BLA_REGULAR_EXPRESSION "${blaRegex}")
+set (PICOTOOL_TEST_SCRIPT "${PROJECT_SOURCE_DIR}/tools/test.sh")
 
-set (passRegex "PASSED")
+set (passRegex "PASSED|OK")
 set (failRegex "FAILED|TIMEOUT")
 set_property(TEST PROPERTY PASS_REGULAR_EXPRESSION "${passRegex}")
 set_property(TEST PROPERTY FAIL_REGULAR_EXPRESSION "${failRegex}")
 
-add_test(NAME upload
-        COMMAND ${PICOTOOL_UPDATE_TARGET_COMMAND} load -v ${PROJECT_BINARY_DIR}/${EXECUTABLE_NAME}.uf2
-)
-add_test(NAME checksum_sum
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 0 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_hash
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 1 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_crc
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 2 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_crc_reflected
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 3 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_crc_byte
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 4 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_crc_post
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 5 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-add_test(NAME checksum_crc_reflected_post
-        COMMAND ${PICOTOOL_TEST_SCRIPT} 0 6 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools
-)
-        
-set_tests_properties(
-        upload
-        checksum_sum 
-        checksum_hash
-        checksum_crc
-        checksum_crc_reflected
-        checksum_crc_byte
-        checksum_crc_post
-        checksum_crc_reflected_post
-        PROPERTIES TIMEOUT 15
-) 
+function(do_test test_name group identifier)
+        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+        set_tests_properties( ${name} PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}") 
+        set_tests_properties( ${name} PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}") 
+        set_tests_properties( ${name} PROPERTIES TIMEOUT 20)
+endfunction()
 
-set_tests_properties(
-        upload
-        PROPERTIES OK_REGULAR_EXPRESSION "${okRegex}"
-) 
-set_tests_properties(
-        upload
-        PROPERTIES BLA_REGULAR_EXPRESSION "${blaRegex}"
-) 
+function(do_upload_test test_name group identifier binary)
+        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} ${binary} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+        set_tests_properties( ${name} PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}") 
+        set_tests_properties( ${name} PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}") 
+        set_tests_properties( ${name} PROPERTIES TIMEOUT 20)
+endfunction()
 
-set_tests_properties(
-        checksum_sum 
-        checksum_hash 
-        checksum_crc 
-        checksum_crc_reflected
-        checksum_crc_byte
-        checksum_crc_post
-        checksum_crc_reflected_post
-        PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}"
-) 
-set_tests_properties(
-        checksum_sum 
-        checksum_hash 
-        checksum_crc 
-        checksum_crc_reflected
-        checksum_crc_byte
-        checksum_crc_post
-        checksum_crc_reflected_post
-        PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}"
-) 
+do_upload_test(checksum_sum 0 0 "${PROJECT_SOURCE_DIR}/bin/${EXECUTABLE_NAME}.uf2")
+do_test(checksum_hash 0 1)
+do_test(checksum_crc 0 2)
+do_test(checksum_crc_reflected 0 3)
+do_test(checksum_crc_byte 0 4)
+do_test(checksum_crc_post 0 5)
+do_test(checksum_crc_reflected_post 0 6)
 
 # run CTest from the command-line
 # ctest --extra-verbose

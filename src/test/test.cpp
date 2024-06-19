@@ -14,7 +14,7 @@
 
 #include "unit_test.hpp"
 
-#define TEST_PARAMETER_FLASH_START 0x20002000
+#define TEST_PARAMETER_FLASH_START 0x10100000
 
 struct test_parameter_struct
 {
@@ -22,7 +22,7 @@ struct test_parameter_struct
     uint16_t identifier;
 } __attribute__((packed));
 
-test_parameter_struct *const test_parameter = (test_parameter_struct *)TEST_PARAMETER_FLASH_START;
+test_parameter_struct * test_parameter = reinterpret_cast<test_parameter_struct *>(TEST_PARAMETER_FLASH_START);
 
 int main(void)
 {

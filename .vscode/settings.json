@@ -202,5 +202,6 @@
     },
     "r.lsp.promptToInstall": false,
     "C_Cpp.errorSquiggles": "enabled",
-    "cmake.options.statusBarVisibility": "visible"
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.configureOnOpen": false
 }
