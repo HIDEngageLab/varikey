@@ -211,15 +211,15 @@ set (failRegex "FAILED|TIMEOUT")
 set_property(TEST PROPERTY PASS_REGULAR_EXPRESSION "${passRegex}")
 set_property(TEST PROPERTY FAIL_REGULAR_EXPRESSION "${failRegex}")
 
-function(do_test test_name group identifier)
-        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+function(do_upload_test test_name group identifier binary)
+        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} ${binary} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
         set_tests_properties( ${name} PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}") 
         set_tests_properties( ${name} PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}") 
         set_tests_properties( ${name} PROPERTIES TIMEOUT 20)
 endfunction()
 
-function(do_upload_test test_name group identifier binary)
-        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} ${binary} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+function(do_test test_name group identifier)
+        add_test(NAME ${test_name} COMMAND ${PICOTOOL_TEST_SCRIPT} ${group} ${identifier} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
         set_tests_properties( ${name} PROPERTIES PASS_REGULAR_EXPRESSION "${passRegex}") 
         set_tests_properties( ${name} PROPERTIES FAIL_REGULAR_EXPRESSION "${failRegex}") 
         set_tests_properties( ${name} PROPERTIES TIMEOUT 20)
@@ -232,12 +232,16 @@ do_test(checksum_crc_reflected 0 3)
 do_test(checksum_crc_byte 0 4)
 do_test(checksum_crc_post 0 5)
 do_test(checksum_crc_reflected_post 0 6)
+do_test(random_8 1 0)
+do_test(random_11 1 1)
+do_test(random_32 1 2)
+do_test(random_many 1 3)
 
 # run CTest from the command-line
 # ctest --extra-verbose
 
 # run a single test or a subset of tests
-# ctest -R checksum_sum
+# ctest -R checksum
 
 # exclude test or a subset of tests
 # ctest -E upload

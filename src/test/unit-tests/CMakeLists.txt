@@ -5,6 +5,7 @@ add_library(unit_tests STATIC)
 
 target_sources(unit_tests PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/test_checksum.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/test_random.cpp
     ${CMAKE_CURRENT_LIST_DIR}/unit_test.cpp
 )
 

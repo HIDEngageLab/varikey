@@ -11,5 +11,6 @@
 #include <stdint.h>
 
 extern int test_checksum(const uint16_t _identifier);
+extern int test_random(const uint16_t _identifier);
 
 extern void test_unknown(void);

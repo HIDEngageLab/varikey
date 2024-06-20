@@ -38,6 +38,9 @@ int main(void)
     case 0:
         number_failed = test_checksum(test_parameter->identifier);
         break;
+    case 1:
+        number_failed = test_random(test_parameter->identifier);
+        break;
     default:
         printf("FAILED: ");
         printf("unknown group\n");

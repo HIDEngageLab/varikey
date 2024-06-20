@@ -9,6 +9,14 @@
 #include "unit_test.hpp"
 #include "unity.h"
 
+void setUp(void)
+{
+}
+
+void tearDown(void)
+{
+}
+
 extern void test_unknown(void)
 {
     TEST_ASSERT_MESSAGE(0, "unknown test");

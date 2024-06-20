@@ -28,14 +28,6 @@ static const uint16_t RESULT_CRC_POST = 0xcd4b;
 static const uint16_t RESULT_CRC_REFLECTED_POST = 0x94c5;
 static const uint32_t RESULT_HASH = 0xb384c08b;
 
-void setUp(void)
-{
-}
-
-void tearDown(void)
-{
-}
-
 void test_checksum_sum(void)
 {
     const uint16_t result_value = checksum_sum(&b, INITAL_VALUE);
@@ -100,7 +92,6 @@ void test_checksum_hash(void)
 }
 
 
-// not needed when using generate_test_runner.rb
 extern int test_checksum(const uint16_t _identifier)
 {
     UNITY_BEGIN();
