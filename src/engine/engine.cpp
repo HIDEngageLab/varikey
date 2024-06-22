@@ -49,6 +49,14 @@ namespace engine
         backlight::initialize();
     }
 
+    extern void shutdown(void)
+    {
+        assert(state == defines::STATE::IDLE);
+        state = defines::STATE::UNDEFINED;
+
+        /* todo: board shutdown */
+    }
+
     extern void start(void)
     {
         assert(state != defines::STATE::UNDEFINED);
@@ -121,11 +129,6 @@ namespace engine
     extern void resume()
     {
         next_state = defines::STATE::ACTIVE;
-    }
-
-    extern void shutdown(void)
-    {
-        /* todo: board shutdown */
     }
 
     extern void perform(void)

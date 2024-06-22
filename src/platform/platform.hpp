@@ -18,6 +18,7 @@ namespace platform
     extern void initialize(void);
     extern void shutdown(void);
 
+    extern void reboot(void);
     extern void bootsel(void);
 
     struct Temperature : public pulp::TemperatureInterface

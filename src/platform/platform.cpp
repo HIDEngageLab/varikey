@@ -21,20 +21,26 @@ namespace platform
 
     extern void shutdown(void)
     {
-        platform::board::assembly.shutdown();
+        board::assembly.shutdown();
+    }
+
+    extern void reboot(void)
+    {
+        board::assembly.reboot();
     }
 
     extern void bootsel(void)
     {
-        platform::board::assembly.bootsel();
+        board::assembly.bootsel();
     }
 
     const float Temperature::get_value(void) const
     {
-        return platform::board::assembly.soc.get_temperature();
+        return board::assembly.soc.get_temperature();
     }
+
     const uint16_t Temperature::get_raw_value(void) const
     {
-        return platform::board::assembly.soc.get_temperature_raw();
+        return board::assembly.soc.get_temperature_raw();
     }
 } // namespace platform

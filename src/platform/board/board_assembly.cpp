@@ -42,13 +42,13 @@ namespace platform
             soc.shutdown();
         }
 
+        void Assembly::reboot()
+        {
+            soc.reboot();
+        }
+
         void Assembly::bootsel()
         {
-            keypad.shutdown();
-            uart.shutdown();
-            usb.shutdown();
-            display.shutdown();
-            backlight.shutdown();
             soc.bootsel();
         }
 

@@ -43,18 +43,15 @@ namespace platform
             temperature.shutdown();
             ticker.shutdown();
             stopwatch.shutdown();
+        }
 
+        void RP2040::reboot()
+        {
             watchdog.reboot();
         }
 
         void RP2040::bootsel()
         {
-            watchdog.shutdown();
-            gpio.shutdown();
-            temperature.shutdown();
-            ticker.shutdown();
-            stopwatch.shutdown();
-
             watchdog.bootsel();
         }
 

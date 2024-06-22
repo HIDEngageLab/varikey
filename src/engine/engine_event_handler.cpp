@@ -293,13 +293,16 @@ namespace engine
                 switch (_event.reset.function)
                 {
                 case engine::payload::reset::FUNCTION::SHUTDOWN:
-                    varikey_shutdown(); /* no  return */
+                    varikey_shutdown();
+                    varikey_reboot(); /* no  return */
                     break;
                 case engine::payload::reset::FUNCTION::FORMAT:
                     registry::parameter::param_format();
-                    varikey_shutdown(); /* no  return */
+                    varikey_shutdown();
+                    varikey_reboot(); /* no  return */
                     break;
                 case engine::payload::reset::FUNCTION::BOOTSEL:
+                    varikey_shutdown();
                     varikey_bootsel(); /* no  return */
                     break;
 

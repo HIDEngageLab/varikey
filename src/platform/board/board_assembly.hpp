@@ -34,6 +34,7 @@ namespace platform
 
             virtual void perform();
 
+            void reboot();
             void bootsel();
 
             hardware::Backlight backlight;
