@@ -33,6 +33,8 @@ add_compile_options(-Wall
 -O0
 )
 
+add_link_options(-T ${CMAKE_CURRENT_LIST_DIR}/build/memmap_extended.ld)
+
 if (ENABLE_UNIT_TESTING)
         message(STATUS "Unit testing enabled")
         add_compile_options(-DENABLE_UNIT_TESTS=1)
