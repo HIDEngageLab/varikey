@@ -36,3 +36,4 @@ bin
 src/revision.h
 src/build_number.h
 #.vscode
+revision.h

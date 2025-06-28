@@ -1,0 +1,173 @@
+
+set(LIBRARY_SOURCE_LIST
+    ${VARIKEY_LIBRARY_DIR}/engine/backlight/backlight3.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/display/display.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/display_font.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/display_image.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts/font_big.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts/font_huge.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts/font_normal.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts/font_small.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts/font_symbol.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_circle_16.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_circle_24.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_circle_32.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_circle_8.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_square_16.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_square_24.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_square_32.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_add_square_8.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_frame.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_gmc.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_heart.c
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images/image_varikey.c
+    ${VARIKEY_LIBRARY_DIR}/engine/engine_event_handler.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/engine.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/gpio/engine_gpio.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/cmd_control.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/cmd_feature.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/cmd_setting.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/commander.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/cmd_gadget_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/cmd_hash_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/cmd_protocol_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/cmd_reset_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/cmd_temperature_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/feature/cmd_backlight_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/feature/cmd_display_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/feature/cmd_gpio_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/feature/cmd_keypad_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/setting/cmd_identity_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/setting/cmd_parameter_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/serial/serial_frame.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/serial/serial_msg.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/serial/serial.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hid/hid_handler.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hid/hid_report.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_backlight.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_display.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_gadget.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_gpio.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_identity.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_keypad.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_parameter.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_reset.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/payload_temperature.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_keycode_10bwdb.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_keycode_15sbla.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_keycode_varikey.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_keycode.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_modifiers.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/board/board_assembly.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/backlight_ws2812.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/ws2812.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/display_oled_128x32.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/ssd1306.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_gpio.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_soc.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_stopwatch.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_temperature.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_ticker.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_watchdog.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/uart/usart.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/usb/usb_descriptors.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/usb/usb_device.cpp
+    ${VARIKEY_LIBRARY_DIR}/pulp/bytering.cpp
+    ${VARIKEY_LIBRARY_DIR}/pulp/checksum.cpp
+    ${VARIKEY_LIBRARY_DIR}/pulp/macros.cpp
+    ${VARIKEY_LIBRARY_DIR}/pulp/random.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_backlight.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_display.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_features.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_keypad.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_maintainer.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_mapping.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_position.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_serial_number.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/param_user.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/parameter_identifier.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/registry_interface.cpp
+    ${VARIKEY_LIBRARY_DIR}/registry/registry.cpp
+    ${VARIKEY_LIBRARY_DIR}/varikey.cpp
+)
+
+if (${HARDWARE_IDENTIFIER} EQUAL 2 OR ${HARDWARE_IDENTIFIER} EQUAL 1)
+    list(APPEND LIBRARY_SOURCE_LIST
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip/keymatrix_chip_component.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip/keymatrix_chip.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip/keymatrix_handler_adp5585.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip/keymatrix_handler_type_gmc.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip/keymatrix_handler_type_varikey.cpp
+    )
+elseif (${HARDWARE_IDENTIFIER} EQUAL 3)
+    list(APPEND LIBRARY_SOURCE_LIST
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/core/keymatrix_core_component.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/core/keymatrix_core.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/core/keymatrix_handler_type_varikey_15sbla.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/scanner/keymatrix_queue.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/scanner/keymatrix_scanner.cpp
+        ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/scanner/keymatrix.cpp
+    )
+else()
+    message(FATAL_ERROR "Bedienung nicht erfüllt. Build wird abgebrochen.")
+endif()
+
+add_library(${VARIKEY_LIBRARY_NAME} ${LIBRARY_SOURCE_LIST})
+
+pico_generate_pio_header(${VARIKEY_LIBRARY_NAME} "${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/ws2812.pio")
+
+target_include_directories(${VARIKEY_LIBRARY_NAME} PUBLIC
+    ${VARIKEY_LIBRARY_DIR}/
+    ${VARIKEY_LIBRARY_DIR}/engine/
+    ${VARIKEY_LIBRARY_DIR}/engine/backlight/
+    ${VARIKEY_LIBRARY_DIR}/engine/display/
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/fonts
+    ${VARIKEY_LIBRARY_DIR}/engine/display/resources/images
+    ${VARIKEY_LIBRARY_DIR}/engine/event/
+    ${VARIKEY_LIBRARY_DIR}/engine/gpio/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/control/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/feature/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/commander/setting/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hci/serial/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/hid/
+    ${VARIKEY_LIBRARY_DIR}/engine/interface/payload/
+    ${VARIKEY_LIBRARY_DIR}/engine/keypad/
+    ${VARIKEY_LIBRARY_DIR}/identity/
+    ${VARIKEY_LIBRARY_DIR}/platform/
+    ${VARIKEY_LIBRARY_DIR}/platform/board/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/button/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/chip
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/core
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/scanner
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/uart/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/usb/
+    ${VARIKEY_LIBRARY_DIR}/pulp/
+    ${VARIKEY_LIBRARY_DIR}/registry/
+    ${VARIKEY_LIBRARY_DIR}/registry/parameter/
+)
+
+target_link_libraries(${VARIKEY_LIBRARY_NAME} PUBLIC
+    hardware_adc
+    hardware_flash
+    hardware_i2c
+    hardware_spi
+    hardware_sync
+    hardware_pio
+    hardware_exception
+    pico_stdlib
+    pico_multicore
+    tinyusb_board
+    tinyusb_device
+)

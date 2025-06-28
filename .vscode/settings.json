@@ -13,10 +13,13 @@
     "cmake.generator": "Unix Makefiles",
     "cmake.configureSettings": {
         //"HARDWARE_PLATFORM":"GOSSENMETRAWATT",
-        "HARDWARE_PLATFORM":"VARIKEY",
-        "FIRMWARE_PRODUCT":"KEYPAD_DEMO"
+        //"HARDWARE_PLATFORM":"VARIKEY",
+        "HARDWARE_PLATFORM":"VARIKEY_15SBLA_PROTO",
+        //"FIRMWARE_PRODUCT":"KEYPAD_DEMO"
+        "FIRMWARE_PRODUCT":"KEYPAD_15SBLA"
     },
     "cSpell.words": [
+        "ascii",
         "bitloop",
         "blub",
         "bwdb",
@@ -76,6 +79,8 @@
         "romsila",
         "RPULL",
         "RSHIFT",
+        "sbla",
+        "SBLA",
         "SCROLLLOCK",
         "SETBYTE",
         "SETHUGE",
@@ -84,6 +89,7 @@
         "shiftdir",
         "sideset",
         "softkey",
+        "STREQUAL",
         "termbase",
         "Thach",
         "tinyusb",
