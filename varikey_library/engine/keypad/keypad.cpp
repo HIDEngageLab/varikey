@@ -5,7 +5,7 @@
 // SPDX-FileType: SOURCE
 
 #include "keypad.hpp"
-#include "backlight3.hpp"
+#include "backlight.hpp"
 #include "display.hpp"
 #include "engine_event_handler.hpp"
 #include "hid_handler.hpp"

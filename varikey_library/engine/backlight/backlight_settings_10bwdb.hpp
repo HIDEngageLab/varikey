@@ -6,13 +6,15 @@
 
 #pragma once
 
-#include "backlight_color.hpp"
-#include "backlight_mode.hpp"
+#include "backlight_program.hpp"
+#include "smartled_color.hpp"
 
-namespace engine::backlight
+namespace engine::backlight::settings
 {
-    struct Backlight10BWDB
+    struct Gmci10BWDB
     {
+        using Color = platform::hardware::smartled::Color;
+
         static const PROGRAM DEFAULT_MODE = PROGRAM::TURBO;
         static const uint64_t DEFAULT_MOUNT_TIMEOUT = 15000;
         static constexpr Color MOUNTED_BACKLIGHT_LEFT = {.rgb = {.r = 0x00, .g = 0x0f, .b = 0x00}};

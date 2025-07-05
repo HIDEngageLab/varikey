@@ -5,6 +5,7 @@
 // SPDX-FileType: SOURCE
 
 #include "engine_event_handler.hpp"
+#include "backlight_color.hpp"
 #include "board_assembly.hpp"
 #include "cmd_control.hpp"
 #include "cmd_feature.hpp"
@@ -124,47 +125,36 @@ namespace engine::handler
         switch (_event.identifier)
         {
         case payload::IDENTIFIER::BACKLIGHT:
-            switch (_event.backlight.program)
+        {
+
+            if (_event.backlight.program == PROGRAM::ALERT ||
+                _event.backlight.program == PROGRAM::CONST ||
+                _event.backlight.program == PROGRAM::MEDIUM ||
+                _event.backlight.program == PROGRAM::MOUNT ||
+                _event.backlight.program == PROGRAM::OFF ||
+                _event.backlight.program == PROGRAM::SLOW ||
+                _event.backlight.program == PROGRAM::SUSPEND ||
+                _event.backlight.program == PROGRAM::TURBO)
             {
-            case PROGRAM::ALERT:
-                backlight::set_program(backlight::PROGRAM::ALERT, 0);
-                break;
-            case PROGRAM::CONST:
-                backlight::set_program(backlight::PROGRAM::CONST, 0);
-                break;
-            case PROGRAM::MEDIUM:
-                backlight::set_program(backlight::PROGRAM::MEDIUM, 0);
-                break;
-            case PROGRAM::MORPH:
-                backlight::set_program(backlight::PROGRAM::CONST, 0);
-                backlight::morph_left(_event.backlight.left);
-                backlight::morph_right(_event.backlight.right);
-                break;
-            case PROGRAM::MOUNT:
-                backlight::set_program(backlight::PROGRAM::MOUNT, 0);
-                break;
-            case PROGRAM::OFF:
-                backlight::set_program(backlight::PROGRAM::OFF, 0);
-                break;
-            case PROGRAM::SET:
-                backlight::set_program(backlight::PROGRAM::CONST, 0);
-                backlight::set_left(_event.backlight.left);
-                backlight::set_right(_event.backlight.right);
-                break;
-            case PROGRAM::SLOW:
-                backlight::set_program(backlight::PROGRAM::SLOW, 0);
-                break;
-            case PROGRAM::SUSPEND:
-                backlight::set_program(backlight::PROGRAM::SUSPEND, 0);
-                break;
-            case PROGRAM::TURBO:
-                backlight::set_program(backlight::PROGRAM::TURBO, 0);
-                break;
-            default:
-                backlight::set_program(backlight::PROGRAM::MEDIUM, 0);
-                break;
+                backlight::set_program(_event.backlight.program,
+                                       _event.backlight.channel,
+                                       0);
+            }
+            else if (_event.backlight.program == PROGRAM::MORPH ||
+                     _event.backlight.program == PROGRAM::SET)
+            {
+                backlight::set_program(backlight::PROGRAM::CONST,
+                                       _event.backlight.channel,
+                                       _event.backlight.left,
+                                       _event.backlight.right,
+                                       0);
+            }
+            else
+            {
+                backlight::set_program(backlight::PROGRAM::MEDIUM, _event.backlight.channel, 0);
             }
             break;
+        }
         case payload::IDENTIFIER::DISPLAY:
             switch (_event.display.function)
             {
@@ -194,25 +184,31 @@ namespace engine::handler
             case payload::gadget::FUNCTION::MOUNT:
                 engine::mount();
 
-                backlight::set_program(backlight::PROGRAM::TURBO, 0);
-                backlight::set_program(backlight::PROGRAM::MOUNT,
+                backlight::set_program(backlight::PROGRAM::CONST,
+                                       backlight::CHANNEL::FRONTLIGHT,
+                                       engine::backlight::GLIMMER_COLOR,
+                                       engine::backlight::GLIMMER_COLOR,
+                                       0);
+
+                backlight::set_program(backlight::PROGRAM::TURBO, backlight::CHANNEL::BACKLIGHT, 0);
+                backlight::set_program(backlight::PROGRAM::MOUNT, backlight::CHANNEL::BACKLIGHT,
                                        registry::parameter::backlight::g_register.value.timeout);
                 break;
             case payload::gadget::FUNCTION::UNMOUNT:
                 engine::unmount();
 
-                backlight::set_program(backlight::PROGRAM::ALERT, 0);
+                backlight::set_program(backlight::PROGRAM::ALERT, backlight::CHANNEL::BACKLIGHT, 0);
                 break;
             case payload::gadget::FUNCTION::SUSPEND:
                 engine::suspend(registry::parameter::features::g_register.value.wakeup);
 
-                backlight::set_program(backlight::PROGRAM::SUSPEND, 0);
+                backlight::set_program(backlight::PROGRAM::SUSPEND, backlight::CHANNEL::BACKLIGHT, 0);
                 break;
             case payload::gadget::FUNCTION::RESUME:
                 engine::resume();
 
-                backlight::set_program(backlight::PROGRAM::TURBO, 0);
-                backlight::set_program(backlight::PROGRAM::MOUNT,
+                backlight::set_program(backlight::PROGRAM::TURBO, backlight::CHANNEL::BACKLIGHT, 0);
+                backlight::set_program(backlight::PROGRAM::MOUNT, backlight::CHANNEL::BACKLIGHT,
                                        registry::parameter::backlight::g_register.value.timeout);
                 break;
             default:

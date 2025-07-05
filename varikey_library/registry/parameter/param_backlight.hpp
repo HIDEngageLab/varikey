@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "backlight3.hpp"
-#include "backlight_color.hpp"
+#include "backlight.hpp"
 #include "parameter.hpp"
+#include "smartled_color.hpp"
 
 namespace registry::parameter::backlight
 {
@@ -17,8 +17,8 @@ namespace registry::parameter::backlight
     struct backlight_t
     {
         PROGRAM program;
-        Color left;
-        Color right;
+        platform::hardware::smartled::Color left;
+        platform::hardware::smartled::Color right;
         uint16_t timeout;
     } __attribute__((packed));
 

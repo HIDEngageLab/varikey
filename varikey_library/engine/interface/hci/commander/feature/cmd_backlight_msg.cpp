@@ -7,7 +7,7 @@
 #include <cassert>
 #include <cstdlib>
 
-#include "backlight3.hpp"
+#include "backlight.hpp"
 #include "cmd_backlight_msg.hpp"
 #include "commander.hpp"
 #include "macros.hpp"
@@ -24,50 +24,37 @@ namespace engine::hci::cmd::backlight
         assert(_chunk != NULL && _msg != NULL);
 
         _msg->result = RESULT::SUCCESS;
-
         _msg->content.deserialize(_chunk->space);
 
-        switch (_msg->content.program)
+        if (_msg->content.program == engine::backlight::PROGRAM::MORPH ||
+            _msg->content.program == engine::backlight::PROGRAM::SET)
         {
-        case engine::backlight::PROGRAM::ALERT:
-            engine::backlight::set_program(engine::backlight::PROGRAM::ALERT, 0);
-            break;
-        case engine::backlight::PROGRAM::CONST:
-            engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
-            break;
-        case engine::backlight::PROGRAM::MEDIUM:
-            engine::backlight::set_program(engine::backlight::PROGRAM::MEDIUM, 0);
-            break;
-        case engine::backlight::PROGRAM::MORPH:
-            engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
-            engine::backlight::morph_left(_msg->content.left);
-            engine::backlight::morph_right(_msg->content.right);
-            break;
-        case engine::backlight::PROGRAM::MOUNT:
-            engine::backlight::set_program(engine::backlight::PROGRAM::MOUNT, 0);
-            break;
-        case engine::backlight::PROGRAM::OFF:
-            engine::backlight::set_program(engine::backlight::PROGRAM::OFF, 0);
-            break;
-        case engine::backlight::PROGRAM::SET:
-            engine::backlight::set_program(engine::backlight::PROGRAM::CONST, 0);
-            engine::backlight::set_left(_msg->content.left);
-            engine::backlight::set_right(_msg->content.right);
-            break;
-        case engine::backlight::PROGRAM::SLOW:
-            engine::backlight::set_program(engine::backlight::PROGRAM::SLOW, 0);
-            break;
-        case engine::backlight::PROGRAM::SUSPEND:
-            engine::backlight::set_program(engine::backlight::PROGRAM::SUSPEND, 0);
-            break;
-        case engine::backlight::PROGRAM::TURBO:
-            engine::backlight::set_program(engine::backlight::PROGRAM::TURBO, 0);
-            break;
-        default:
-            engine::backlight::set_program(engine::backlight::PROGRAM::MEDIUM, 0);
-            _msg->result = RESULT::WRONG_MODE;
-            break;
+            engine::backlight::set_program(engine::backlight::PROGRAM::CONST,
+                                           _msg->content.channel,
+                                           _msg->content.left,
+                                           _msg->content.right,
+                                           0);
         }
+        else if (_msg->content.program == engine::backlight::PROGRAM::ALERT ||
+                 _msg->content.program == engine::backlight::PROGRAM::SLOW ||
+                 _msg->content.program == engine::backlight::PROGRAM::TURBO ||
+                 _msg->content.program == engine::backlight::PROGRAM::MEDIUM ||
+                 _msg->content.program == engine::backlight::PROGRAM::SUSPEND ||
+                 _msg->content.program == engine::backlight::PROGRAM::MOUNT ||
+                 _msg->content.program == engine::backlight::PROGRAM::OFF)
+        {
+            engine::backlight::set_program(_msg->content.program,
+                                           _msg->content.channel,
+                                           0);
+        }
+        else
+        {
+            engine::backlight::set_program(engine::backlight::PROGRAM::MEDIUM,
+                                           _msg->content.channel,
+                                           0);
+            _msg->result = RESULT::WRONG_MODE;
+        }
+
         _msg->value.size = 0;
         _msg->value.space = 0;
     }

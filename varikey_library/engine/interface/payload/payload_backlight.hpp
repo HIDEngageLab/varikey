@@ -9,18 +9,21 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "backlight_color.hpp"
-#include "backlight_mode.hpp"
+#include "backlight_channel.hpp"
+#include "backlight_program.hpp"
 #include "payload_identifier.hpp"
+#include "smartled_color.hpp"
 
 namespace engine::payload::backlight
 {
     struct content_t
     {
         using PROGRAM = engine::backlight::PROGRAM;
-        using Color = engine::backlight::Color;
+        using CHANNEL = engine::backlight::CHANNEL;
+        using Color = platform::hardware::smartled::Color;
 
         PROGRAM program;
+        CHANNEL channel;
         Color left;
         Color right;
 

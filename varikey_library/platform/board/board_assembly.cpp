@@ -22,6 +22,7 @@ namespace platform::board
     {
         soc.initialize();
         backlight.initialize();
+        frontlight.initialize();
         // display.initialize();
         usb.initialize();
         uart.initialize();
@@ -34,6 +35,7 @@ namespace platform::board
         uart.shutdown();
         usb.shutdown();
         // display.shutdown();
+        frontlight.shutdown();
         backlight.shutdown();
         soc.shutdown();
     }

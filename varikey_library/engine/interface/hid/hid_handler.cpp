@@ -6,7 +6,7 @@
 
 #include <tusb.h>
 
-#include "backlight_color.hpp"
+#include "smartled_color.hpp"
 #include "board_assembly.hpp"
 #include "engine_event_handler.hpp"
 #include "engine_gpio.hpp"

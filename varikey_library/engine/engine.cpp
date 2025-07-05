@@ -6,7 +6,8 @@
 
 #include <stdlib.h>
 
-#include "backlight3.hpp"
+#include "backlight.hpp"
+#include "backlight_color.hpp"
 #include "board_assembly.hpp"
 #include "cmd_control.hpp"
 #include "display.hpp"
@@ -221,7 +222,11 @@ namespace engine
 
     static void start_device_application()
     {
-        backlight::set_program(backlight::PROGRAM::TURBO, 0);
+        backlight::set_program(backlight::PROGRAM::CONST, backlight::CHANNEL::FRONTLIGHT,
+                               engine::backlight::GLIMMER_COLOR,
+                               engine::backlight::GLIMMER_COLOR,
+                               0);
+        backlight::set_program(backlight::PROGRAM::TURBO, backlight::CHANNEL::BACKLIGHT, 0);
 
         display::set_cursor(0, 0);
         display::draw(engine::Variant::LOGO);
@@ -232,7 +237,8 @@ namespace engine
 
     static void stop_device_application()
     {
-        backlight::set_program(backlight::PROGRAM::OFF, 0);
+        backlight::set_program(backlight::PROGRAM::OFF, backlight::CHANNEL::BACKLIGHT, 0);
+        backlight::set_program(backlight::PROGRAM::OFF, backlight::CHANNEL::FRONTLIGHT, 0);
         display::clean();
     }
 }

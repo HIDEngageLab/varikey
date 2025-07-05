@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "backlight_10bwdb.hpp"
-#include "backlight_15sbla.hpp"
-#include "backlight_demo.hpp"
+#include "backlight_settings_10bwdb.hpp"
+#include "backlight_settings_15sbla.hpp"
+#include "backlight_settings_demo.hpp"
 #include "engine_defines.hpp"
 #include "revision.h"
 
@@ -25,19 +25,19 @@ namespace engine::backlight
         template <>
         struct Entity<engine::defines::Identifier::KEYPAD_DEMO>
         {
-            using Settings = engine::backlight::BacklightDemo;
+            using Settings = engine::backlight::settings::VarikeyDemo;
         };
 
         template <>
         struct Entity<engine::defines::Identifier::KEYPAD_10BWDB>
         {
-            using Settings = engine::backlight::Backlight10BWDB;
+            using Settings = engine::backlight::settings::Gmci10BWDB;
         };
 
         template <>
         struct Entity<engine::defines::Identifier::KEYPAD_15SBLA>
         {
-            using Settings = engine::backlight::Backlight15SBLA;
+            using Settings = engine::backlight::settings::Varikey15SBLA;
         };
     }
     using Settings = engine::backlight::variant::Entity<engine::defines::Identifier(identity::firmware::IDENTIFIER)>::Settings;

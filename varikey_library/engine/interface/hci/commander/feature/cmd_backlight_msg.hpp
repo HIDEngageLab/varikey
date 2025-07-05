@@ -9,9 +9,9 @@
 #include "chunk.h"
 #include "macros.hpp"
 
-#include "backlight_color.hpp"
-#include "backlight_mode.hpp"
+#include "backlight_program.hpp"
 #include "payload_backlight.hpp"
+#include "smartled_color.hpp"
 
 namespace engine::hci::cmd::backlight
 {
@@ -22,6 +22,8 @@ namespace engine::hci::cmd::backlight
         SUCCESS = common::result::SUCCESS,
         FAILURE = common::result::FAILURE,
         WRONG_MODE = common::result::CUSTOM,
+        WRONG_CHANNEL = common::result::CUSTOM + 1,
+        WRONG_COLOR = common::result::CUSTOM + 2,
     };
 
     struct message_t

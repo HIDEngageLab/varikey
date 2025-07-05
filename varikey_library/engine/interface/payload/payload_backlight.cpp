@@ -9,7 +9,7 @@
 using namespace engine::payload::backlight;
 
 static const size_t CFM_CMD_SIZE = 1;
-static const size_t CFM_CLR_SIZE = CFM_CMD_SIZE + sizeof(uint8_t) * 6;
+static const size_t CFM_CLR_SIZE = CFM_CMD_SIZE + sizeof(uint8_t) * 8;
 
 const size_t content_t::size() const
 {
@@ -40,18 +40,22 @@ void content_t::deserialize(uint8_t const *const _space)
     else if (program == PROGRAM::MORPH ||
              program == PROGRAM::SET)
     {
-        left.rgb.r = _space[1];
-        left.rgb.g = _space[2];
-        left.rgb.b = _space[3];
-        right.rgb.r = _space[4];
-        right.rgb.g = _space[5];
-        right.rgb.b = _space[6];
+        channel = static_cast<const CHANNEL>(_space[1]);
+        left.rgb.r = _space[2];
+        left.rgb.g = _space[3];
+        left.rgb.b = _space[4];
+        right.rgb.r = _space[5];
+        right.rgb.g = _space[6];
+        right.rgb.b = _space[7];
+    } else {
+        channel = static_cast<const CHANNEL>(_space[1]);
     }
 }
 
 void content_t::serialize(uint8_t **_ptr) const
 {
     *(*_ptr)++ = (uint8_t)program;
+    *(*_ptr)++ = (uint8_t)channel;
     if (program == PROGRAM::MORPH ||
         program == PROGRAM::SET)
     {

@@ -1,6 +1,6 @@
 
 set(LIBRARY_SOURCE_LIST
-    ${VARIKEY_LIBRARY_DIR}/engine/backlight/backlight3.cpp
+    ${VARIKEY_LIBRARY_DIR}/engine/backlight/backlight.cpp
     ${VARIKEY_LIBRARY_DIR}/engine/display/display.cpp
     ${VARIKEY_LIBRARY_DIR}/engine/display/resources/display_font.cpp
     ${VARIKEY_LIBRARY_DIR}/engine/display/resources/display_image.cpp
@@ -60,8 +60,7 @@ set(LIBRARY_SOURCE_LIST
     ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad_modifiers.cpp
     ${VARIKEY_LIBRARY_DIR}/engine/keypad/keypad.cpp
     ${VARIKEY_LIBRARY_DIR}/platform/board/board_assembly.cpp
-    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/backlight_ws2812.cpp
-    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/ws2812.cpp
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/smartled/smartled.cpp
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/display_oled_128x32.cpp
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/ssd1306.cpp
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/soc/rp2040/rp2040_gpio.cpp
@@ -116,7 +115,7 @@ endif()
 
 add_library(${VARIKEY_LIBRARY_NAME} ${LIBRARY_SOURCE_LIST})
 
-pico_generate_pio_header(${VARIKEY_LIBRARY_NAME} "${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/ws2812.pio")
+pico_generate_pio_header(${VARIKEY_LIBRARY_NAME} "${VARIKEY_LIBRARY_DIR}/platform/hardware/smartled/ws2812.pio")
 
 target_include_directories(${VARIKEY_LIBRARY_NAME} PUBLIC
     ${VARIKEY_LIBRARY_DIR}/
@@ -142,7 +141,7 @@ target_include_directories(${VARIKEY_LIBRARY_NAME} PUBLIC
     ${VARIKEY_LIBRARY_DIR}/platform/
     ${VARIKEY_LIBRARY_DIR}/platform/board/
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/
-    ${VARIKEY_LIBRARY_DIR}/platform/hardware/backlight/
+    ${VARIKEY_LIBRARY_DIR}/platform/hardware/smartled/
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/button/
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/display/
     ${VARIKEY_LIBRARY_DIR}/platform/hardware/keymatrix/
