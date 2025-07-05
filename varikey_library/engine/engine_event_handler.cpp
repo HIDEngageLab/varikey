@@ -229,6 +229,7 @@ namespace engine::handler
             }
             if (events_over_usb_enabled)
             {
+                // TODO: Implement USB event handling logic here if required.
             }
             break;
         }
