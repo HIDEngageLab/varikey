@@ -46,7 +46,7 @@ jobs:
         gh sbom -c -l >> varikey-spdx-cyclondx-${{ env.git_branch }}-${{ env.git_short }}.json
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v4
       with:
         name: varikey-src-${{ env.git_branch }}-${{ env.git_short }}
         path: |
