@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Keymatrix core keymatrix core functionality
+// SPDX-FileType: SOURCE
 
 #include "keymatrix_core.hpp"
 #include "keymatrix_queue.hpp"
@@ -20,12 +25,12 @@ namespace platform::hardware
         {
             if (event.type == keymatrix::KeyEvent::PRESS)
             {
-                //printf("Key Pressed: Row %d, Col %d\n", event.row, event.col);
+                // printf("Key Pressed: Row %d, Col %d\n", event.row, event.col);
                 *_state = 1;
             }
             else if (event.type == keymatrix::KeyEvent::RELEASE)
             {
-                //printf("Key Released: Row %d, Col %d\n", event.row, event.col);
+                // printf("Key Released: Row %d, Col %d\n", event.row, event.col);
                 *_state = 0;
             }
             else

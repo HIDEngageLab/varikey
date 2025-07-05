@@ -1,53 +1,45 @@
-/**
- * \file identity.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Identity configuration and management interface
+// SPDX-FileType: SOURCE
 
-#ifndef __VARIKEY_IDENTITY_HPP__
-#define __VARIKEY_IDENTITY_HPP__
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
 
-namespace identity
+namespace identity::firmware
 {
-    namespace firmware
+    static const size_t SIZE{10};
+
+    union content_t
     {
-        static const size_t SIZE{10};
-
-        union content_t
+        uint8_t byte[SIZE];
+        struct
         {
-            uint8_t byte[SIZE];
-            struct
-            {
-                uint16_t identifier;
-                uint16_t revision;
-                uint16_t patch;
-                uint16_t build;
-                uint16_t vendor;
-            };
-        } __attribute__((packed));
-    }
-
-    namespace hardware
-    {
-        static const size_t SIZE{6};
-
-        union content_t
-        {
-            uint8_t byte[SIZE];
-            struct
-            {
-                uint16_t maintainer;
-                uint16_t identifier;
-                uint8_t number;
-                uint8_t variant;
-            };
-        } __attribute__((packed));
-    }
+            uint16_t identifier;
+            uint16_t revision;
+            uint16_t patch;
+            uint16_t build;
+            uint16_t vendor;
+        };
+    } __attribute__((packed));
 }
 
-#endif /* __VARIKEY_IDENTITY_HPP__ */
+namespace identity::hardware
+{
+    static const size_t SIZE{6};
+
+    union content_t
+    {
+        uint8_t byte[SIZE];
+        struct
+        {
+            uint16_t maintainer;
+            uint16_t identifier;
+            uint8_t number;
+            uint8_t variant;
+        };
+    } __attribute__((packed));
+}

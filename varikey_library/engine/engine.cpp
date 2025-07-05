@@ -1,10 +1,8 @@
-/**
- * \file engine.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Main engine implementation
+// SPDX-FileType: SOURCE
 
 #include <stdlib.h>
 
@@ -52,9 +50,9 @@ namespace engine
         switch (state)
         {
         case defines::STATE::IDLE:
-            /* TODO: autostart */
+
             next_state = defines::STATE::ACTIVE;
-            /* start engine ticker */
+
             platform::board::assembly.soc.ticker_start(tick);
             break;
         case defines::STATE::ACTIVE:
@@ -80,7 +78,7 @@ namespace engine
         {
         case defines::STATE::IDLE:
             next_state = state;
-            /* start engine ticker */
+
             platform::board::assembly.soc.ticker_stop();
             break;
         case defines::STATE::ACTIVE:
@@ -121,7 +119,6 @@ namespace engine
 
     extern void shutdown(void)
     {
-        /* todo: board shutdown */
     }
 
     extern void perform(void)
@@ -141,7 +138,6 @@ namespace engine
                 handler::set_hci_enabled(true);
                 handler::set_hid_enabled(true);
 
-                /* show state */
                 start_device_application();
 
                 engine::hci::cmd::control::gadget_indication(state);
@@ -167,24 +163,22 @@ namespace engine
         case defines::STATE::PENDING:
             if (next_state == defines::STATE::IDLE)
             {
-                /* todo: check event queue and execute lines below only if no more events exists */
 
                 state = next_state;
                 if (registry::parameter::features::g_register.value.autostart == ability_t::ENABLE)
                 {
-                    /* autostart */
+
                     next_state = defines::STATE::ACTIVE;
                 }
                 else
                 {
-                    /* true unmount */
+
                     next_state = defines::STATE::UNDEFINED;
                 }
 
                 handler::set_hci_enabled(false);
                 handler::set_hid_enabled(false);
 
-                /* show state */
                 stop_device_application();
 
                 engine::hci::cmd::control::gadget_indication(state);

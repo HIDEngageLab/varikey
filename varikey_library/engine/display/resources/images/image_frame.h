@@ -1,18 +1,12 @@
-/**
- * \file image_frame.h
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- *
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Display image image frame resource
+// SPDX-FileType: SOURCE
 
-#ifndef __IMAGE_FRAME_H__
-#define __IMAGE_FRAME_H__
+#pragma once
 
 extern const unsigned char IMAGE_FRAME_WIDTH;
 extern const unsigned char IMAGE_FRAME_HEIGHT;
 
 extern const unsigned char IMAGE_FRAME[512];
-
-#endif // __IMAGE_FRAME_H__

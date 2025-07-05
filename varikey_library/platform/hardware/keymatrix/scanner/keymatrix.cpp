@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware keymatrix functionality
+// SPDX-FileType: SOURCE
 
 #include <cstdio>
 #include <cstring>
@@ -117,28 +122,7 @@ void keymatrix_events(void)
                 keymatrix::push_event(type, col_idx, row_idx);
 
             }
-            /*
-            if (key_now[r][c])
-            {
-                printf("KEY PRESSED R%d C%d\n", r + 1, c + 1);
-                keymatrix::KeyEvent event = {
-                    keymatrix::KeyEvent::PRESS,
-                    col_idx,
-                    row_idx,
-                };
-                push_event(event);
-            }
-            else
-            {
-                printf("KEY RELEASED R%d C%d\n", r + 1, c + 1);
-                keymatrix::KeyEvent event = {
-                    keymatrix::KeyEvent::RELEASE,
-                    col_idx,
-                    row_idx,
-                };
-                push_event(event);
-            }
-            */
+            
         }
     }
 }

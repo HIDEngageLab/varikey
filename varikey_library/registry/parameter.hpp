@@ -1,30 +1,18 @@
-/**
- * \file parameter.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Parameter management interface
+// SPDX-FileType: SOURCE
 
-/**
-    \brief Configuration parameter storage
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __REGISTRY_PARAMETER_HPP__
-#define __REGISTRY_PARAMETER_HPP__
+#pragma once
 
 #include <cstdint>
 
 #include "macros.hpp"
 #include "registry_defines.hpp"
 
-namespace registry
+namespace registry::parameter
 {
-    namespace parameter
-    {
         extern result_t param_format(void);
         extern result_t param_check(void);
 
@@ -60,7 +48,4 @@ namespace registry
         extern result_t param_user_store(void);
 
         extern void debug_out_mem();
-    }
 }
-
-#endif /* __REGISTRY_PARAMETER_HPP__ */

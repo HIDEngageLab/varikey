@@ -1,58 +1,37 @@
-/**
- * \file param_features.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Features parameter configuration
+// SPDX-FileType: SOURCE
 
-/**
-    \brief Parameter "features"
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __PARAM_FEATURES_HPP__
-#define __PARAM_FEATURES_HPP__
+#pragma once
 
 #include "macros.hpp"
 #include "parameter.hpp"
 
-namespace registry
+namespace registry::parameter::features
 {
-    namespace parameter
+    struct features_t
     {
-        namespace features
-        {
-            /** \brief Node features details */
-            struct features_t
-            {
-                ability_t autostart : 1;
-                ability_t display : 1;
-                ability_t keypad : 1;
-                ability_t wakeup : 1;
-                uint16_t reserved : 12;
-            } __attribute__((packed));
+        ability_t autostart : 1;
+        ability_t display : 1;
+        ability_t keypad : 1;
+        ability_t wakeup : 1;
+        uint16_t reserved : 12;
+    } __attribute__((packed));
 
-            static const size_t SIZE = sizeof(features_t);
+    static const size_t SIZE = sizeof(features_t);
 
-            /** \brief Features parameter */
-            union register_t
-            {
-                uint8_t byte[SIZE];
-                features_t value;
+    union register_t
+    {
+        uint8_t byte[SIZE];
+        features_t value;
 
-                void initialize(void);
+        void initialize(void);
 
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            } __attribute__((packed));
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    } __attribute__((packed));
 
-            /** \brief Global parameter "features" */
-            extern register_t g_register;
-        }
-    }
+    extern register_t g_register;
 }
-
-#endif /* __PARAM_FEATURES_HPP__ */

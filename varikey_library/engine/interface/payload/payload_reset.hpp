@@ -1,13 +1,10 @@
-/**
- * \file payload_reset.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload reset module
+// SPDX-FileType: SOURCE
 
-#ifndef __PAYLOAD_RESET_HPP__
-#define __PAYLOAD_RESET_HPP__
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
@@ -16,31 +13,22 @@
 #include "macros.hpp"
 #include "payload_identifier.hpp"
 
-namespace engine
+namespace engine::payload::reset
 {
-    namespace payload
+    enum class FUNCTION : uint8_t
     {
-        namespace reset
-        {
-            /** \brief Status request/confirmation function value */
-            enum class FUNCTION : uint8_t
-            {
-                SHUTDOWN = common::function::CUSTOM,
-                FORMAT = common::function::CUSTOM + 1,
+        SHUTDOWN = common::function::CUSTOM,
+        FORMAT = common::function::CUSTOM + 1,
 
-                UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
-            };
+        UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
+    };
 
-            struct content_t 
-            {
-                FUNCTION function;
+    struct content_t
+    {
+        FUNCTION function;
 
-                const size_t size100() const { return 2; }
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            };
-        }
-    }
+        const size_t size100() const { return 2; }
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    };
 }
-
-#endif // __PAYLOAD_RESET_HPP__

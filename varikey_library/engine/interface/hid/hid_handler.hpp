@@ -1,23 +1,15 @@
-/**
- * \file hid_handler.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: hid handler module
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_HANDLER_HPP__
-#define __ENGINE_HANDLER_HPP__
+#pragma once
 
 #include "hid_report.hpp"
 
-namespace engine
+namespace engine::hid
 {
-    namespace hid
-    {
-        extern void set_report_handler(const uint8_t, const const_chunk_t &);
-        extern void get_report_handler(const uint8_t, const chunk_t &);
-    }
+    extern void set_report_handler(const uint8_t, const const_chunk_t &);
+    extern void get_report_handler(const uint8_t, const chunk_t &);
 }
-
-#endif // __ENGINE_HANDLER_HPP__

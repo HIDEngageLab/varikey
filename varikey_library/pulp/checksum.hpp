@@ -1,22 +1,10 @@
-/**
- * \file checksum.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Checksum calculation utilities
+// SPDX-FileType: SOURCE
 
-/**
-	\brief CRC16 calculator
-
-	\attention Depends on chunk data type
-
-	\internal
-	\author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __PULP_CHECKSUM_HPP__
-#define __PULP_CHECKSUM_HPP__
+#pragma once
 
 #include "chunk.h"
 
@@ -30,5 +18,3 @@ extern uint16_t checksum_crc_postprocess(uint16_t const _crc);
 extern uint32_t checksum_hash(chunk_t const *const _chunk);
 
 void checksum_test(void);
-
-#endif /* __PULP_CHECKSUM_HPP__ */

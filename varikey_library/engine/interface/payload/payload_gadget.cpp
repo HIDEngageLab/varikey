@@ -1,10 +1,8 @@
-/**
- * \file payload_gadget.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload gadget module
+// SPDX-FileType: SOURCE
 
 #include "payload_gadget.hpp"
 
@@ -19,7 +17,7 @@ void content_t::deserialize(uint8_t const *const _space)
         function == FUNCTION::SUSPEND ||
         function == FUNCTION::UNMOUNT)
     {
-        /* do nothing */
+        
     }
     else
     {

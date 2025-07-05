@@ -1,13 +1,10 @@
-/**
- * \file component_interface.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Component interface definition
+// SPDX-FileType: SOURCE
 
-#ifndef __PULP_COMPONENT_INTERFACE_HPP__
-#define __PULP_COMPONENT_INTERFACE_HPP__
+#pragma once
 
 namespace pulp
 {
@@ -19,5 +16,3 @@ namespace pulp
         virtual void shutdown() = 0;
     };
 }
-
-#endif // __PULP_COMPONENT_INTERFACE_HPP__

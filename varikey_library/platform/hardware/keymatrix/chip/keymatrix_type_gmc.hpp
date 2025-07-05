@@ -1,10 +1,8 @@
-/**
- * \file keymatrix_apd5585_gossenmetrawatt.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Keymatrix chip keymatrix type gmci functionality
+// SPDX-FileType: SOURCE
 
 #pragma once
 

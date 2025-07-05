@@ -1,67 +1,40 @@
-/**
- * \file cmd_keypad_msg.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-/**
-    \brief Event message
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: cmd keypad msg module
+// SPDX-FileType: SOURCE
 
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __CMD_KEYPAD_MSG_HPP__
-#define __CMD_KEYPAD_MSG_HPP__
+#pragma once
 
 #include "chunk.h"
 #include "macros.hpp"
 
 #include "payload_keypad.hpp"
 
-namespace engine
+namespace engine::hci::cmd::keypad
 {
-    namespace hci
+    enum class RESULT : uint8_t
     {
-        namespace cmd
-        {
-            namespace keypad
-            {
-                /** \brief Event result */
-                enum class RESULT : uint8_t
-                {
-                    ERROR = common::result::ERROR,
-                    FAILURE = common::result::FAILURE,
-                    SUCCESS = common::result::SUCCESS,
-                    UNKNOWN = common::result::UNKNOWN,
-                    UNSUPPORTED = common::result::UNSUPPORTED,
+        ERROR = common::result::ERROR,
+        FAILURE = common::result::FAILURE,
+        SUCCESS = common::result::SUCCESS,
+        UNKNOWN = common::result::UNKNOWN,
+        UNSUPPORTED = common::result::UNSUPPORTED,
 
-                    WRONG_FUNCTION = common::result::CUSTOM + 1,
-                    WRONG_IDENTIFIER = common::result::CUSTOM,
-                    WRONG_SOURCE = common::result::CUSTOM + 3,
-                    WRONG_VALUE = common::result::CUSTOM + 2,
-                };
+        WRONG_FUNCTION = common::result::CUSTOM + 1,
+        WRONG_IDENTIFIER = common::result::CUSTOM,
+        WRONG_SOURCE = common::result::CUSTOM + 3,
+        WRONG_VALUE = common::result::CUSTOM + 2,
+    };
 
-                /**
-                    \brief Event message
+    struct message_t
+    {
+        RESULT result;
+        payload::keypad::content_t keypad;
+        chunk_t value;
+    };
 
-                    Event request und confirmation
-                    Trigger indication
-                */
-                struct message_t
-                {
-                    RESULT result;
-                    payload::keypad::content_t keypad;
-                    chunk_t value;
-                };
-
-                extern void request(chunk_t const *const _chunk, message_t *const _msg);
-                extern void confirmation(message_t *const _msg);
-                extern void indication(message_t *const _msg);
-            }
-        }
-    }
+    extern void request(chunk_t const *const _chunk, message_t *const _msg);
+    extern void confirmation(message_t *const _msg);
+    extern void indication(message_t *const _msg);
 }
-
-#endif /* __CMD_KEYPAD_MSG_HPP__ */

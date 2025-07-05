@@ -1,10 +1,8 @@
-/**
- * \file backlight_settings.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Backlight settings configuration
+// SPDX-FileType: SOURCE
 
 #pragma once
 
@@ -14,9 +12,9 @@
 #include "engine_defines.hpp"
 #include "revision.h"
 
-namespace engine
+namespace engine::backlight
 {
-    namespace backlight
+    namespace variant
     {
         template <engine::defines::Identifier>
         struct Entity
@@ -42,5 +40,5 @@ namespace engine
             using Settings = engine::backlight::Backlight15SBLA;
         };
     }
-    using BacklightSetting = engine::backlight::Entity<engine::defines::Identifier(identity::firmware::IDENTIFIER)>::Settings;
+    using Settings = engine::backlight::variant::Entity<engine::defines::Identifier(identity::firmware::IDENTIFIER)>::Settings;
 }

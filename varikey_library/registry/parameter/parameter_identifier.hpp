@@ -1,10 +1,8 @@
-/**
- * \file parameter_identifier.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Parameter identifier definitions
+// SPDX-FileType: SOURCE
 
 #pragma once
 
@@ -12,9 +10,7 @@
 
 namespace registry::parameter
 {
-    /**
-        \brief Parameter identifier type
-    */
+    
     enum class IDENTIFIER : uint8_t
     {
         BACKLIGHT = 0xA1,

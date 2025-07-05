@@ -1,20 +1,14 @@
-/**
- * \file payload_parameter.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload parameter module
+// SPDX-FileType: SOURCE
 
 #include "payload_parameter.hpp"
 
 using namespace engine::payload::parameter;
 
-/**
- * \brief Get payload size
- *
- * \return const size_t
- */
+
 const size_t content_t::size() const
 {
     size_t payload_size = 2;
@@ -53,11 +47,7 @@ const size_t content_t::size() const
     return payload_size;
 }
 
-/**
- * \brief Deserialize parameter value
- *
- * \param _space
- */
+
 void content_t::deserialize(uint8_t const *const _space)
 {
     identifier = registry::parameter::to_identifier(_space[0]);
@@ -128,11 +118,7 @@ void content_t::deserialize(uint8_t const *const _space)
     }
 }
 
-/**
- * \brief Serialize parameter value
- *
- * \param _space
- */
+
 void content_t::serialize(uint8_t **_ptr) const
 {
     *(*_ptr)++ = (uint8_t)identifier;
@@ -172,12 +158,7 @@ void content_t::serialize(uint8_t **_ptr) const
     }
 }
 
-/**
- * \brief Set the parameter object
- *
- * \param _content Parameter payload
- * \return result_t
- */
+
 extern registry::result_t engine::payload::parameter::set_parameter(const engine::payload::parameter::content_t &_content)
 {
     registry::result_t result = registry::result_t::FAILURE;
@@ -257,12 +238,7 @@ extern registry::result_t engine::payload::parameter::set_parameter(const engine
     return result;
 }
 
-/**
- * \brief Get the parameter object
- *
- * \param _content Parameter payload
- * \return result_t
- */
+
 extern registry::result_t engine::payload::parameter::get_parameter(engine::payload::parameter::content_t &_content)
 {
     registry::result_t result = registry::result_t::FAILURE;

@@ -1,13 +1,10 @@
-/**
- * \file registry_defines.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: registry defines module
+// SPDX-FileType: SOURCE
 
-#ifndef __REGISTRY_DEFINES_HPP__
-#define __REGISTRY_DEFINES_HPP__
+#pragma once
 
 #include <cstdint>
 
@@ -24,5 +21,3 @@ namespace registry
         ERROR = common::result::ERROR,
     };
 }
-
-#endif // __REGISTRY_DEFINES_HPP__

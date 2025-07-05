@@ -44,10 +44,10 @@ add_compile_options(
 if (NOT HARDWARE_PLATFORM)
     message(WARNING "platform is not defined, default is VARIKEY")
     # set default hardware
-    # evailable platfroms are: VARIKEY, GOSSENMETRAWATT  
+    # evailable platfroms are: VARIKEY, GMCI  
     set(HARDWARE_PLATFORM "VARIKEY")
 endif()
-if (${HARDWARE_PLATFORM} STREQUAL "GOSSENMETRAWATT")
+if (${HARDWARE_PLATFORM} STREQUAL "GMCI")
     set(HARDWARE_IDENTIFIER 2)
     set(HARDWARE_NUMBER 1)
     set(HARDWARE_VARIANT 0)

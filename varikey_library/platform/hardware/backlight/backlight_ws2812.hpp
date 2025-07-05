@@ -1,40 +1,29 @@
-/**
- * \file backlight_ws2812.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware backlight ws2812 functionality
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_BACKLIGHT_WS2812_HPP__
-#define __PLATFORM_BACKLIGHT_WS2812_HPP__
+#pragma once
 
 #include "backlight_color.hpp"
 #include "component_interface.hpp"
 
-namespace platform
+namespace platform::hardware::backlight
 {
-    namespace hardware
+    enum INDEX
     {
-        namespace backlight
-        {
-            enum INDEX
-            {
-                FIRST,
-                SECOND,
-                THIRD
-            };
+        FIRST,
+        SECOND,
+        THIRD
+    };
 
-            struct BacklightWs2812 : public pulp::ComponentInterface
-            {
-                virtual void initialize();
-                virtual void shutdown();
+    struct BacklightWs2812 : public pulp::ComponentInterface
+    {
+        virtual void initialize();
+        virtual void shutdown();
 
-                void set_backlight(const engine::backlight::Color &,
-                                   const engine::backlight::Color &);
-            };
-        }
-    }
+        void set_backlight(const engine::backlight::Color &,
+                           const engine::backlight::Color &);
+    };
 }
-
-#endif /* __PLATFORM_BACKLIGHT_WS2812_HPP__ */

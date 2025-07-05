@@ -1,13 +1,10 @@
-/**
- * \file payload_temperature.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload temperature module
+// SPDX-FileType: SOURCE
 
-#ifndef __PAYLOAD_TEMPERATURE_HPP__
-#define __PAYLOAD_TEMPERATURE_HPP__
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
@@ -16,33 +13,24 @@
 #include "macros.hpp"
 #include "payload_identifier.hpp"
 
-namespace engine
+namespace engine::payload::temperature
 {
-    namespace payload
+    enum class FUNCTION : uint8_t
     {
-        namespace temperature
-        {
-            /** \brief Status request/confirmation function value */
-            enum class FUNCTION : uint8_t
-            {
-                GET = common::function::GET,
+        GET = common::function::GET,
 
-                ALARM = common::function::CUSTOM,
+        ALARM = common::function::CUSTOM,
 
-                UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
-            };
+        UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
+    };
 
-            struct content_t
-            {
-                FUNCTION function;
-                float value;
+    struct content_t
+    {
+        FUNCTION function;
+        float value;
 
-                const size_t size() const { return 2; }
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            };
-        }
-    }
+        const size_t size() const { return 2; }
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    };
 }
-
-#endif // __PAYLOAD_TEMPERATURE_HPP__

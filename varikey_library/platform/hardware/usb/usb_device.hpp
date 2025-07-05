@@ -1,28 +1,20 @@
-/**
- * \file usb_device.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware usb device functionality
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_USB_DEVICE_HPP__
-#define __PLATFORM_USB_DEVICE_HPP__
+#pragma once
 
 #include "component_interface.hpp"
 
-namespace platform
+namespace platform::hardware
 {
-    namespace hardware
+    struct UsbDevice : public pulp::ComponentInterface
     {
-        struct UsbDevice : public pulp::ComponentInterface
-        {
-            virtual void initialize();
-            virtual void shutdown();
+        virtual void initialize();
+        virtual void shutdown();
 
-            void perform();
-        };
-    }
+        void perform();
+    };
 }
-
-#endif // __PLATFORM_USB_DEVICE_HPP__

@@ -1,13 +1,10 @@
-/**
- * \file component_state.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Component state definitions
+// SPDX-FileType: SOURCE
 
-#ifndef __PULP_COMPONENT_STATE_HPP__
-#define __PULP_COMPONENT_STATE_HPP__
+#pragma once
 
 #include <stdint.h>
 
@@ -21,5 +18,3 @@ namespace pulp
         UNDEFINED = 0xff,
     };
 }
-
-#endif // __PULP_COMPONENT_STATE_HPP__

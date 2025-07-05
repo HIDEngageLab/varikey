@@ -1,27 +1,13 @@
-/**
- * \file serial.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-/**
-    \brief Entry point serial engine, data exchange over UART interface
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: serial module
+// SPDX-FileType: SOURCE
 
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+#pragma once
 
-#ifndef __SERIAL_HPP__
-#define __SERIAL_HPP__
-
-namespace engine
+namespace engine::serial
 {
-    namespace serial
-    {
         extern void init(void);
         extern void perform(void);
-    }
 }
-
-#endif /* __SERIAL_HPP__ */

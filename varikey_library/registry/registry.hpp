@@ -1,20 +1,10 @@
-/**
- * \file registry.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Registry interface for parameter management
+// SPDX-FileType: SOURCE
 
-/**
-	\brief Configuration parameter
-
-	\internal
-	\author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __REGISTRY_HPP__
-#define __REGISTRY_HPP__
+#pragma once
 
 #include "macros.hpp"
 #include "registry_defines.hpp"
@@ -26,5 +16,3 @@ namespace registry
 
 	extern result_t is_ready(void);
 }
-
-#endif /* __REGISTRY_HPP__ */

@@ -20,7 +20,7 @@ fi
 
 # define hardware platform with
 #hw_plarform=VARIKEY
-#hw_plarform=GOSSENMETRAWATT
+#hw_plarform=GMCI
 
 # define product variant
 #fw_product=KEYPAD_10BWDB

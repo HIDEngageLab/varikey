@@ -1,13 +1,10 @@
-/**
- * \file engine_event.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Engine event definitions
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_EVENT_HPP__
-#define __ENGINE_EVENT_HPP__
+#pragma once
 
 #include <cstdint>
 #include <queue>
@@ -23,39 +20,34 @@
 #include "payload_reset.hpp"
 #include "payload_temperature.hpp"
 
-namespace engine
+namespace engine::handler
 {
-    namespace handler
+    struct event_t
     {
-        struct event_t
+        payload::IDENTIFIER identifier;
+        union
         {
-            payload::IDENTIFIER identifier;
-            union
-            {
-                payload::backlight::content_t backlight;
-                payload::display::content_t display;
-                payload::gadget::content_t gadget;
-                payload::gpio::content_t gpio;
-                payload::identity::content_t identity;
-                payload::keypad::content_t keypad;
-                payload::parameter::content_t parameter;
-                payload::reset::content_t reset;
-                payload::temperature::content_t temperature;
-            };
+            payload::backlight::content_t backlight;
+            payload::display::content_t display;
+            payload::gadget::content_t gadget;
+            payload::gpio::content_t gpio;
+            payload::identity::content_t identity;
+            payload::keypad::content_t keypad;
+            payload::parameter::content_t parameter;
+            payload::reset::content_t reset;
+            payload::temperature::content_t temperature;
         };
+    };
 
-        union event_plane_t
-        {
-            uint8_t value[sizeof(event_t)];
-            event_t typed;
-        };
+    union event_plane_t
+    {
+        uint8_t value[sizeof(event_t)];
+        event_t typed;
+    };
 
-        struct event_timed_t
-        {
-            uint64_t timestamp;
-            event_plane_t event;
-        };
-    }
+    struct event_timed_t
+    {
+        uint64_t timestamp;
+        event_plane_t event;
+    };
 }
-
-#endif // __ENGINE_EVENT_HPP__

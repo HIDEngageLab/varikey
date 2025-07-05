@@ -1,57 +1,34 @@
-/**
- * \file cmd_temperature_msg.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: cmd temperature msg module
+// SPDX-FileType: SOURCE
 
-/**
-    \brief Temperature message
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __CMD_TEMPERATURE_MSG_HPP__
-#define __CMD_TEMPERATURE_MSG_HPP__
+#pragma once
 
 #include "macros.hpp"
 #include "payload_temperature.hpp"
 
-namespace engine
+namespace engine::hci::cmd::temperature
 {
-    namespace hci
+    using content_t = engine::payload::temperature::content_t;
+
+    enum class RESULT : uint8_t
     {
-        namespace cmd
-        {
-            namespace temperature
-            {
-                using content_t = engine::payload::temperature::content_t;
+        SUCCESS = common::result::SUCCESS,
+        FAILURE = common::result::FAILURE,
+        UNSUPPORTED = common::result::UNSUPPORTED,
+        UNKNOWN = common::result::UNKNOWN,
+    };
 
-                /** \brief Temperature message result code */
-                enum class RESULT : uint8_t
-                {
-                    SUCCESS = common::result::SUCCESS,
-                    FAILURE = common::result::FAILURE,
-                    UNSUPPORTED = common::result::UNSUPPORTED,
-                    UNKNOWN = common::result::UNKNOWN,
-                };
+    struct message_t
+    {
+        RESULT result;
+        content_t content;
+        chunk_t value;
+    };
 
-                /** \brief Temperature message */
-                struct message_t
-                {
-                    RESULT result;
-                    content_t content;
-                    chunk_t value;
-                };
-
-                extern void request(chunk_t const *const _chunk, message_t *const _msg);
-                extern void confirmation(message_t *const _msg);
-                extern void indication(message_t *const _msg);
-            }
-        }
-    }
+    extern void request(chunk_t const *const _chunk, message_t *const _msg);
+    extern void confirmation(message_t *const _msg);
+    extern void indication(message_t *const _msg);
 }
-
-#endif /*  __CMD_TEMPERATURE_MSG_HPP__ */

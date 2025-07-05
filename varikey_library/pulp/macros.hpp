@@ -1,20 +1,10 @@
-/**
- * \file macros.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Common utility macros
+// SPDX-FileType: SOURCE
 
-/**
-	\brief Data macros
-
-	\internal
-	\author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __PULP_MACROS_HPP__
-#define __PULP_MACROS_HPP__
+#pragma once
 
 #include <stdint.h>
 
@@ -39,7 +29,6 @@ namespace common
 {
 	namespace result
 	{
-		/** \brief Anonymous result data type */
 		enum VALUE
 		{
 			ERROR = 0x04,
@@ -53,10 +42,8 @@ namespace common
 			UNDEFINED = 0xFF,
 		};
 	}
-
 	namespace function
 	{
-		/** \brief Anonymous function data type */
 		enum VALUE
 		{
 			CLEAN = 0x08,
@@ -76,14 +63,12 @@ namespace common
 	}
 }
 
-/** \brief Anonymous ability data type  */
 typedef enum
 {
 	DISABLE = 0,
 	ENABLE = 1
 } ability_t;
 
-/** \brief Anonymous bool data type  */
 typedef enum
 {
 	FALSE = 0,
@@ -98,5 +83,3 @@ extern uint32_t deserialize_long(uint8_t const **const _ptr);
 
 extern void serialize_float(float const _value, uint8_t **const _ptr);
 extern float deserialize_float(uint8_t const **const _ptr);
-
-#endif /* __PULP_MACROS_HPP__ */

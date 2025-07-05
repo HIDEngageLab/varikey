@@ -1,18 +1,14 @@
-/**
- * \file bytering.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Byte manipulation utilities
+// SPDX-FileType: SOURCE
 
-#ifndef __PULP_BYTERING_HPP__
-#define __PULP_BYTERING_HPP__
+#pragma once
 
 #include "chunk.h"
 #include <stdlib.h>
 
-/** \brief Ring buffer structure */
 typedef struct buffer_struct
 {
 	chunk_t chunk;
@@ -27,5 +23,3 @@ extern size_t bytering_read(buffer_t *const _buf, uint8_t *const _value);
 extern size_t bytering_copy(buffer_t *const _from, buffer_t *const _to);
 
 extern size_t bytering_peek(buffer_t *const _buf, const size_t _cursor, uint8_t *const _value);
-
-#endif /* __PULP_BYTERING_HPP__ */

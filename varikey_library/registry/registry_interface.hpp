@@ -1,23 +1,10 @@
-/**
- * \file registry_interface.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Registry interface definition
+// SPDX-FileType: SOURCE
 
-/**
-    \brief Node configuration
-
-    Depends on node parameter.
-    Commands should be used with HCI.
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __REGISTRY_INTERFACE_HPP__
-#define __REGISTRY_INTERFACE_HPP__
+#pragma once
 
 #include "chunk.h"
 #include "macros.hpp"
@@ -46,5 +33,3 @@ namespace registry
     extern result_t user_get(chunk_t &_chunk);
     extern result_t user_set(const const_chunk_t &_chunk);
 }
-
-#endif /* __REGISTRY_INTERFACE_HPP__ */

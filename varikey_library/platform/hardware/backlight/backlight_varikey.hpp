@@ -1,32 +1,21 @@
-/**
- * \file backlight_varikey.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware backlight varikey functionality
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_BACKLIGHT_VARIKEY_HPP__
-#define __PLATFORM_BACKLIGHT_VARIKEY_HPP__
+#pragma once
 
 #include "backlight_ws2812.hpp"
 
-namespace platform
+namespace platform::hardware::backlight
 {
-    namespace hardware
+    struct VarikeyPrototype : public BacklightWs2812
     {
-        namespace backlight
-        {
-            struct VarikeyPrototype : public BacklightWs2812
-            {
-                static const unsigned int BACKLIGHT_PIN = 22;
+        static const unsigned int BACKLIGHT_PIN = 22;
 
-                static const backlight::INDEX first = backlight::FIRST;
-                static const backlight::INDEX second = backlight::SECOND;
-                static const backlight::INDEX third = backlight::THIRD;
-            };
-        }
-    }
+        static const backlight::INDEX first = backlight::FIRST;
+        static const backlight::INDEX second = backlight::SECOND;
+        static const backlight::INDEX third = backlight::THIRD;
+    };
 }
-
-#endif /* __PLATFORM_BACKLIGHT_VARIKEY_HPP__ */

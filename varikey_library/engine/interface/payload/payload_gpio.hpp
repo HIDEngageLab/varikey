@@ -1,13 +1,10 @@
-/**
- * \file payload_gpio.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload gpio module
+// SPDX-FileType: SOURCE
 
-#ifndef __PAYLOAD_GPIO_HPP__
-#define __PAYLOAD_GPIO_HPP__
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
@@ -16,48 +13,35 @@
 #include "macros.hpp"
 #include "payload_identifier.hpp"
 
-namespace engine
+namespace engine::payload::gpio
 {
-    namespace payload
+    using IDENTIFIER = platform::board::IDENTIFIER;
+    using DIRECTION = platform::board::DIRECTION;
+    using VALUE = platform::board::VALUE;
+
+    enum class FUNCTION : uint8_t
     {
-        namespace gpio
-        {
-            using IDENTIFIER = platform::board::IDENTIFIER;
+        DISABLE = common::function::DISABLE,
+        ENABLE = common::function::ENABLE,
 
-            /** \brief GPIO message direction code */
-            using DIRECTION = platform::board::DIRECTION;
+        DIRECTION = common::function::CUSTOM,
+        IN = common::function::CUSTOM + 1,
+        OUT = common::function::CUSTOM + 2,
+        VALUE = common::function::CUSTOM + 3,
+        HIGH = common::function::CUSTOM + 4,
+        LOW = common::function::CUSTOM + 5,
 
-            /** \brief GPIO message level code */
-            using VALUE = platform::board::VALUE;
+        UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
+    };
 
-            /** \brief GPIO message function */
-            enum class FUNCTION : uint8_t
-            {
-                DISABLE = common::function::DISABLE,
-                ENABLE = common::function::ENABLE,
+    struct content_t
+    {
+        FUNCTION function;
+        IDENTIFIER identifier;
+        uint32_t diff;
 
-                DIRECTION = common::function::CUSTOM,
-                IN = common::function::CUSTOM + 1,
-                OUT = common::function::CUSTOM + 2,
-                VALUE = common::function::CUSTOM + 3,
-                HIGH = common::function::CUSTOM + 4,
-                LOW = common::function::CUSTOM + 5,
-
-                UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
-            };
-
-            struct content_t
-            {
-                FUNCTION function;
-                IDENTIFIER identifier;
-                uint32_t diff;
-
-                static const size_t size() { return 2; }
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            };
-        }
-    }
+        static const size_t size() { return 2; }
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    };
 }
-
-#endif // __PAYLOAD_GPIO_HPP__

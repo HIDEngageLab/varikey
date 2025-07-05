@@ -1,13 +1,10 @@
-/**
- * \file payload_parameter.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload parameter module
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_PAYLOAD_PARAMETER_HPP__
-#define __ENGINE_PAYLOAD_PARAMETER_HPP__
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
@@ -29,59 +26,49 @@
 #include "registry_defines.hpp"
 #include "registry_interface.hpp"
 
-namespace engine
+namespace engine::payload::parameter
 {
-    namespace payload
+    using IDENTIFIER = registry::parameter::IDENTIFIER;
+
+    enum class TYPELEN : uint8_t
     {
-        namespace parameter
+        BYTE = 0x01,
+        WORD = 0x02,
+        LONG = 0x04,
+        BUFF = 0x80,
+    };
+
+    enum class FUNCTION : uint8_t
+    {
+        GET = common::function::GET,
+        SET = common::function::SET,
+
+        UNDEFINED = common::function::UNDEFINED,
+    };
+
+    struct content_t
+    {
+        IDENTIFIER identifier;
+        FUNCTION function;
+        union
         {
-            using IDENTIFIER = registry::parameter::IDENTIFIER;
+            registry::parameter::backlight::register_t backlight;
+            registry::parameter::display::register_t display;
+            registry::parameter::features::register_t features;
+            registry::parameter::keypad::register_t keypad;
+            registry::parameter::maintainer::register_t maintainer;
+            registry::parameter::mapping::item_t mapping;
+            registry::parameter::position::register_t position;
+            registry::parameter::serial_number::register_t serial_number;
+            registry::parameter::user::register_t user;
+        } parameter;
 
-            /** \brief Parameter length type */
-            enum class TYPELEN : uint8_t
-            {
-                BYTE = 0x01,
-                WORD = 0x02,
-                LONG = 0x04,
-                BUFF = 0x80,
-            };
+        const size_t size() const;
 
-            /** \brief parameter request function type */
-            enum class FUNCTION : uint8_t
-            {
-                GET = common::function::GET,
-                SET = common::function::SET,
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    };
 
-                UNDEFINED = common::function::UNDEFINED,
-            };
-
-            struct content_t
-            {
-                IDENTIFIER identifier;
-                FUNCTION function;
-                union
-                {
-                    registry::parameter::backlight::register_t backlight;
-                    registry::parameter::display::register_t display;
-                    registry::parameter::features::register_t features;
-                    registry::parameter::keypad::register_t keypad;
-                    registry::parameter::maintainer::register_t maintainer;
-                    registry::parameter::mapping::item_t mapping;
-                    registry::parameter::position::register_t position;
-                    registry::parameter::serial_number::register_t serial_number;
-                    registry::parameter::user::register_t user;
-                } parameter;
-
-                const size_t size() const;
-
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            };
-
-            extern registry::result_t set_parameter(const engine::payload::parameter::content_t &);
-            extern registry::result_t get_parameter(engine::payload::parameter::content_t &);
-        }
-    }
+    extern registry::result_t set_parameter(const engine::payload::parameter::content_t &);
+    extern registry::result_t get_parameter(engine::payload::parameter::content_t &);
 }
-
-#endif // __ENGINE_PAYLOAD_PARAMETER_HPP__

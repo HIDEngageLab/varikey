@@ -12,7 +12,7 @@
     "cSpell.language": "en,de",
     "cmake.generator": "Unix Makefiles",
     "cmake.configureSettings": {
-        //"HARDWARE_PLATFORM":"GOSSENMETRAWATT",
+        //"HARDWARE_PLATFORM":"GMCI",
         //"HARDWARE_PLATFORM":"VARIKEY",
         "HARDWARE_PLATFORM":"VARIKEY_15SBLA_PROTO",
         //"FIRMWARE_PRODUCT":"KEYPAD_DEMO"
@@ -32,8 +32,10 @@
         "fifo",
         "fifos",
         "GAMEPAD",
+        "gmci",
         "GMCI",
-        "gossenmetrawatt",
+        "Gmci",
+        "GMCI",
         "GPINTENA",
         "gpio",
         "GPIO",

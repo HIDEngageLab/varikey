@@ -1,17 +1,8 @@
-/**
- * \file param_features.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-
-/**
-    \brief Parameter "features"
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Features parameter implementation
+// SPDX-FileType: SOURCE
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -20,45 +11,29 @@
 #include "param_features.hpp"
 #include "parameter.hpp"
 
-namespace registry
+namespace registry::parameter::features
 {
-    namespace parameter
+    register_t g_register = {.byte = {0xff, 0xff}};
+
+    void register_t::initialize(void)
     {
-        namespace features
-        {
+        value.autostart = ENABLE;
+        value.display = ENABLE;
+        value.keypad = ENABLE;
+        value.wakeup = DISABLE;
+    }
 
-            register_t g_register = {.byte = {0xff, 0xff}};
+    void register_t::deserialize(uint8_t const *const _space)
+    {
 
-            /**
-                \brief Initialize features field with default values
-            */
-            void register_t::initialize(void)
-            {
-                value.autostart = ENABLE;
-                value.display = ENABLE;
-                value.keypad = ENABLE;
-                value.wakeup = DISABLE;
-            }
+        byte[0] = _space[0];
+        byte[1] = _space[1];
+    }
 
-            /**
-                \brief Set features level parameter value
-            */
-            void register_t::deserialize(uint8_t const *const _space)
-            {
-                /* ATTENTION: NO CHECKS */
-                byte[0] = _space[0];
-                byte[1] = _space[1];
-            }
+    void register_t::serialize(uint8_t **_ptr) const
+    {
 
-            /**
-                \brief Serialize parameter value
-            */
-            void register_t::serialize(uint8_t **_ptr) const
-            {
-                /* ATTENTION: NO CHECKS */
-                *(*_ptr)++ = byte[0];
-                *(*_ptr)++ = byte[1];
-            }
-        }
+        *(*_ptr)++ = byte[0];
+        *(*_ptr)++ = byte[1];
     }
 }

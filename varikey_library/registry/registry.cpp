@@ -1,17 +1,8 @@
-/**
- * \file registry.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-
-/**
-    \brief configure node components with persistent parameter
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Registry implementation for parameter management
+// SPDX-FileType: SOURCE
 
 #include <assert.h>
 #include <stdint.h>
@@ -35,12 +26,11 @@
 #include "registry.hpp"
 #include "varikey.hpp"
 
-/* If FORMAT_PARAMETER_REGISTRY was defined, the registry memory and backup will be recreated */
 #define _FORMAT_PARAMETER_REGISTRY
 
 namespace registry
 {
-    /** \brief Node configuration state */
+
     typedef enum
     {
         UNDEFINED,
@@ -55,12 +45,11 @@ namespace registry
     {
 
 #if defined(FORMAT_PARAMETER_REGISTRY)
-        /* format parameter storage */
+
         parameter::param_format();
         parameter::param_backup_create();
 #endif
 
-        /* configure node */
         if (parameter::param_check() == FAILURE)
         {
             parameter::param_format();
@@ -85,93 +74,65 @@ namespace registry
                 engine::hci::cmd::control::reset_indication(engine::hci::cmd::reset::RESULT::BACKUP_CREATED);
             }
         }
-
         // debug_out_mem();
     }
 
-    /**
-        \brief Initialize parameter storage and load parameter from persistent memory
-
-        This function load stored parameter values from persistent memory.
-        Parameter-Functions sets the proper values.
-    */
     static void node_config_init(void)
     {
         assert(status == UNDEFINED); // state should be undefined
 
-        /* load backlight */
         if (parameter::param_backlight_load() == FAILURE)
         {
             return;
         }
 
-        /* load display */
         if (parameter::param_display_load() == FAILURE)
         {
             return;
         }
 
-        /* load features */
         if (parameter::param_features_load() == FAILURE)
         {
             return;
         }
 
-        /* load keypad */
         if (parameter::param_keypad_load() == FAILURE)
         {
             return;
         }
 
-        /* load maintainer */
         if (parameter::param_maintainer_load() == FAILURE)
         {
             return;
         }
 
-        /* load custom mapping table */
         if (parameter::param_mapping_load() == FAILURE)
         {
             return;
         }
 
-        /* load position */
         if (parameter::param_position_load() == FAILURE)
         {
             return;
         }
 
-        /* load serial number */
         if (parameter::param_serial_number_load() == FAILURE)
         {
             return;
         }
-        /* *****************************************************
-            set rand sequence seed;
-            nodes with a special (=equal) serial number makes
-            similarly probability based decisions over the time
-         ****************************************************** */
+
         srand(*(uint16_t *)parameter::serial_number::g_register.value);
 
-        /* Attention: do not load testregister  */
-
-        /* all right */
         status = READY;
     }
 
-    /**
-        \brief cancel configuration
-    */
     extern void shutdown(void)
     {
         assert(status == READY); // state should be initialized
-        /* do nothing */
+
         status = UNDEFINED;
     }
 
-    /**
-        \brief Function returns success if node configuration state is valid
-    */
     extern result_t is_ready(void)
     {
         if (status == READY)
