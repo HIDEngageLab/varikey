@@ -1,17 +1,8 @@
-/**
- * \file registry_interface.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-
-/**
-    \brief configure node components with persistent parameter
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Registry interface implementation
+// SPDX-FileType: SOURCE
 
 #include <assert.h>
 #include <stddef.h>
@@ -37,19 +28,14 @@
 
 namespace registry
 {
-    /**
-        \brief Get BACKLIGHT parameters
 
-        BACKLIGHT combine a two float values: reference voltage and rotation wheel voltage
-    */
     extern result_t backlight_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize adc */
         if (parameter::param_backlight_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::backlight::register_t)); /* node param adc chunk null */
+            assert(_chunk.size >= sizeof(parameter::backlight::register_t));
 
             uint8_t *ptr = _chunk.space;
             parameter::backlight::g_register.serialize(&ptr);
@@ -60,15 +46,11 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save BACKLIGHT parameter value
-    */
     extern result_t backlight_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS);                                   /* state should be initialized */
-        assert(_chunk.size == sizeof(parameter::backlight::register_t)); /* chunk is not null */
+        assert(is_ready() == SUCCESS);
+        assert(_chunk.size == sizeof(parameter::backlight::register_t));
 
-        /* deserialize and save backlight */
         parameter::backlight::g_register.deserialize(_chunk.space);
         if (parameter::param_backlight_store() == SUCCESS)
         {
@@ -77,17 +59,13 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get DISPLAY parameters
-    */
     extern result_t display_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize display */
         if (parameter::param_display_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::display::register_t)); /* node param display chunk null */
+            assert(_chunk.size >= sizeof(parameter::display::register_t));
 
             uint8_t *ptr = _chunk.space;
             parameter::display::g_register.serialize(&ptr);
@@ -98,15 +76,11 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save DISPLAY parameter value
-    */
     extern result_t display_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS);                                 /* state should be initialized */
-        assert(_chunk.size == sizeof(parameter::display::register_t)); /* chunk is not null */
+        assert(is_ready() == SUCCESS);
+        assert(_chunk.size == sizeof(parameter::display::register_t));
 
-        /* deserialize and save display */
         parameter::display::g_register.deserialize(_chunk.space);
         if (parameter::param_display_store() == SUCCESS)
         {
@@ -115,15 +89,11 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get features level parameter value
-    */
     extern result_t features_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
-        assert(_chunk.space != NULL);  /* chunk is not null */
+        assert(is_ready() == SUCCESS);
+        assert(_chunk.space != NULL);
 
-        /* load and serialize parameter value */
         if (parameter::param_features_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
@@ -135,14 +105,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save parameter value
-    */
     extern result_t features_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* deserialize and save parameter value */
         parameter::features::g_register.deserialize(_chunk.space);
 
         if (parameter::param_features_store() == SUCCESS)
@@ -152,17 +118,13 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get KEYPAD parameters
-    */
     extern result_t keypad_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize keypad */
         if (parameter::param_keypad_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::keypad::register_t)); /* node param key chunk null */
+            assert(_chunk.size >= sizeof(parameter::keypad::register_t));
 
             uint8_t *ptr = _chunk.space;
             parameter::keypad::g_register.serialize(&ptr);
@@ -173,15 +135,11 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save KEYPAD parameter value
-    */
     extern result_t keypad_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
-        assert(_chunk.size == 4);      /* chunk is not null */
+        assert(is_ready() == SUCCESS);
+        assert(_chunk.size == 4);
 
-        /* deserialize and save keypad */
         parameter::keypad::g_register.deserialize(_chunk.space);
         if (parameter::param_keypad_store() == SUCCESS)
         {
@@ -190,14 +148,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get maintainer parameter value
-    */
     extern result_t maintainer_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize parameter value */
         if (parameter::param_maintainer_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
@@ -209,14 +163,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save parameter value
-    */
     extern result_t maintainer_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* deserialize, set and save parameter value*/
         parameter::maintainer::g_register.deserialize(_chunk.space);
         if (parameter::param_maintainer_store() == SUCCESS)
         {
@@ -225,14 +175,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get serial number value
-    */
     extern result_t mapping_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize serial number */
         if (parameter::param_mapping_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
@@ -244,15 +190,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief  Save serial number value
-        is unsupported
-    */
     extern result_t mapping_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* deserialize and save */
         parameter::mapping::g_register.deserialize(_chunk.space);
         if (parameter::param_mapping_store() == SUCCESS)
         {
@@ -263,15 +204,14 @@ namespace registry
 
     extern result_t mapping_get(const uint8_t _index, chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
         using namespace registry::parameter;
 
-        /* load parameter ... */
         if (parameter::param_mapping_load() == SUCCESS)
         {
             if (_index < mapping::SIZE)
             {
-                /* ... and "serialize" */
+
                 const mapping::item_t item = {
                     .item = {
                         .index = _index,
@@ -291,19 +231,18 @@ namespace registry
 
     extern result_t mapping_set(const uint8_t _index, const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
         using namespace registry::parameter;
 
         if (_index < mapping::SIZE)
         {
-            /* set ...*/
+
             mapping::item_t mapping;
             mapping.deserialize(_chunk.space);
 
             mapping::g_register.value[_index].modifier = mapping.item.value.modifier;
             mapping::g_register.value[_index].code = mapping.item.value.code;
 
-            /* ...and save */
             if (parameter::param_mapping_store() == SUCCESS)
             {
                 return SUCCESS;
@@ -312,19 +251,13 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get node position
-
-        Position combine a two long values: latitude and longitude
-    */
     extern result_t position_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize position */
         if (parameter::param_position_load() == SUCCESS)
         {
-            assert(_chunk.size >= sizeof(parameter::position::register_t)); /* node param position chunk null */
+            assert(_chunk.size >= sizeof(parameter::position::register_t));
 
             uint8_t *ptr = _chunk.space;
             parameter::position::g_register.serialize(&ptr);
@@ -335,15 +268,11 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save parameter value
-    */
     extern result_t position_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
-        assert(_chunk.size == 8);      /* chunk is not null */
+        assert(is_ready() == SUCCESS);
+        assert(_chunk.size == 8);
 
-        /* deserialize and save position */
         parameter::position::g_register.deserialize(_chunk.space);
         if (parameter::param_position_store() == SUCCESS)
         {
@@ -352,14 +281,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get serial number value
-    */
     extern result_t serial_number_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* load and serialize serial number */
         if (parameter::param_serial_number_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
@@ -371,15 +296,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief  Save serial number value
-        is unsupported
-    */
     extern result_t serial_number_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* deserialize and save */
         parameter::serial_number::g_register.deserialize(_chunk.space);
         if (parameter::param_serial_number_store() == SUCCESS)
         {
@@ -388,14 +308,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Get user register value
-    */
     extern result_t user_get(chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* serialize parameter value */
         if (parameter::param_user_load() == SUCCESS)
         {
             uint8_t *ptr = _chunk.space;
@@ -408,14 +324,10 @@ namespace registry
         return FAILURE;
     }
 
-    /**
-        \brief Save parameter value
-    */
     extern result_t user_set(const const_chunk_t &_chunk)
     {
-        assert(is_ready() == SUCCESS); /* state should be initialized */
+        assert(is_ready() == SUCCESS);
 
-        /* deserialize parameter value */
         parameter::user::g_register.deserialize(_chunk.space);
         if (parameter::param_user_store() == SUCCESS)
         {

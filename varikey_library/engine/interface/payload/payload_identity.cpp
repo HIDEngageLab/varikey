@@ -1,10 +1,8 @@
-/**
- * \file payload_identity.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload identity module
+// SPDX-FileType: SOURCE
 
 #include "payload_identity.hpp"
 
@@ -72,10 +70,7 @@ void content_t::serialize(uint8_t **_ptr) const
         serialize_word(::identity::firmware::PATCH, _ptr);
         serialize_word(::identity::firmware::BUILD, _ptr);
         serialize_word(::identity::firmware::VENDOR, _ptr);
-        /*
-        for (size_t i = 0; i < ::identity::firmware::FIRMWARE_HASH_SIZE; ++i)
-            *(*_ptr)++ = ::identity::firmware::FIRMWARE_HASH[i];
-        */
+        
         break;
     case PART::HARDWARE:
         serialize_word(registry::parameter::maintainer::g_register.word, _ptr);

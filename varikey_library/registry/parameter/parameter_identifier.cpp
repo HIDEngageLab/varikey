@@ -1,21 +1,13 @@
-/**
- * \file parameter_identifier.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Parameter identifier implementation
+// SPDX-FileType: SOURCE
 
 #include "parameter_identifier.hpp"
 
 namespace registry::parameter
 {
-    /**
-     * \brief
-     *
-     * \param _value
-     * \return const IDENTIFIER
-     */
     extern const IDENTIFIER to_identifier(const uint8_t _value)
     {
         IDENTIFIER tmp = static_cast<IDENTIFIER>(_value);

@@ -1,25 +1,14 @@
-/**
- * \file chunk.h
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- *
- */
-/**
-	\brief Byte chunk
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Chunk data structure definitions
+// SPDX-FileType: SOURCE
 
-	\internal
-	\author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __PULP_CHUNK_HPP__
-#define __PULP_CHUNK_HPP__
+#pragma once
 
 #include <stdint.h>
 #include <stdlib.h>
 
-/** \brief Chunk structure */
 struct chunk_t
 {
 	uint8_t *space;
@@ -31,5 +20,3 @@ struct const_chunk_t
 	uint8_t const *space;
 	size_t size;
 };
-
-#endif /* __PULP_CHUNK_HPP__ */

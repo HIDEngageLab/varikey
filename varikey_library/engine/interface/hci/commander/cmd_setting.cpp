@@ -1,16 +1,8 @@
-/**
- * \file cmd_setting.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-/**
-    \brief Module configuration
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: cmd setting module
+// SPDX-FileType: SOURCE
 
 #include "cmd_setting.hpp"
 #include "cmd_identity_msg.hpp"
@@ -27,45 +19,26 @@
 #include "registry_interface.hpp"
 #include "varikey.hpp"
 
-namespace engine
+namespace engine::hci::cmd::setting
 {
-    namespace hci
+    static const size_t PARAMETER_BUFFER_SIZE{registry::PARAMETER_BUFFER_SIZE};
+
+    extern void identifier_request(chunk_t const *_chunk)
     {
-        namespace cmd
-        {
-            namespace setting
-            {
-                static const size_t PARAMETER_BUFFER_SIZE{registry::PARAMETER_BUFFER_SIZE};
+        identity::message_t msg;
+        identity::request(_chunk, &msg);
+        identity::confirmation(&msg);
+    }
 
-                /**
-                    \brief Module Identifier Request
+    extern void parameter_request(chunk_t const *_chunk)
+    {
+        param::message_t msg;
 
-                    Sends a part of a firmware, hardware and module identifier in a confirmation message
-                */
-                extern void identifier_request(chunk_t const *_chunk)
-                {
-                    identity::message_t msg;
-                    identity::request(_chunk, &msg);
-                    identity::confirmation(&msg);
-                }
+        uint8_t space[PARAMETER_BUFFER_SIZE];
+        msg.value.size = PARAMETER_BUFFER_SIZE;
+        msg.value.space = space;
 
-                /**
-                    \brief Parameter request
-
-                    Set or get a module configuration parameter
-                */
-                extern void parameter_request(chunk_t const *_chunk)
-                {
-                    param::message_t msg;
-
-                    uint8_t space[PARAMETER_BUFFER_SIZE];
-                    msg.value.size = PARAMETER_BUFFER_SIZE;
-                    msg.value.space = space;
-
-                    param::request(_chunk, &msg);
-                    param::confirmation(&msg);
-                }
-            }
-        }
+        param::request(_chunk, &msg);
+        param::confirmation(&msg);
     }
 }

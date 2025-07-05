@@ -1,10 +1,8 @@
-/**
- * \file identity_settings.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Identity settings configuration
+// SPDX-FileType: SOURCE
 
 #pragma once
 

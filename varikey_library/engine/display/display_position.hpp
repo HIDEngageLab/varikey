@@ -1,26 +1,18 @@
-/**
- * \file display_position.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Display position definitions
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_DISPLAY_POSITION_HPP__
-#define __ENGINE_DISPLAY_POSITION_HPP__
+#pragma once
 
 #include <cstdint>
 
-namespace engine
+namespace engine::display
 {
-    namespace display
+    struct Position
     {
-        struct Position
-        {
-            uint8_t line;
-            uint8_t column;
-        };
-    }
+        uint8_t line;
+        uint8_t column;
+    };
 }
-
-#endif /* __ENGINE_DISPLAY_POSITION_HPP__ */

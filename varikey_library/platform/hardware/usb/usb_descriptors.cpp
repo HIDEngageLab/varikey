@@ -1,27 +1,8 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2019 Ha Thach (tinyusb.org)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (9the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- */
+// SPDX-FileCopyrightText: 2019 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware usb descriptors functionality
+// SPDX-FileType: SOURCE
 
 #include <tusb.h>
 
@@ -57,19 +38,6 @@
         HID_FEATURE(HID_DATA | HID_VARIABLE | HID_ABSOLUTE), \
         HID_COLLECTION_END
 
-/* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
- * Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
- *
- * Auto ProductID layout's Bitmap:
- * [MSB]             [LSB]
- * +-----------+-+-+-+-+-+
- *            |  | | | | +---- CDC
- *            |  | | | +------ MSC
- *            |  | | +-------- HID
- *            |  | +---------- MIDI
- *            |  +------------ VENDOR
- *            +--------------- PID
- */
 #define _PID_MAP(itf, n) ((CFG_TUD_##itf) << (n))
 #define USB_PID ((platform::defines::usb::PID & platform::defines::usb::PID_MASK) | \
                  _PID_MAP(CDC, 0) | _PID_MAP(MSC, 1) | _PID_MAP(HID, 2) |           \
@@ -77,11 +45,8 @@
 
 #define USB_VID (platform::defines::usb::VID)
 
-#define USB_BCD 0x0200 /* SB Spec Release Number (BCD) */
+#define USB_BCD 0x0200
 
-/**
- * \brief Device Descriptors
- */
 tusb_desc_device_t const desc_device = {
     .bLength = sizeof(tusb_desc_device_t),
     .bDescriptorType = TUSB_DESC_DEVICE,
@@ -101,19 +66,11 @@ tusb_desc_device_t const desc_device = {
 
     .bNumConfigurations = 0x01};
 
-/**
- * \brief Invoked when received GET DEVICE DESCRIPTOR
- *
- * \return uint8_t const* Application return pointer to descriptor
- */
 uint8_t const *tud_descriptor_device_cb(void)
 {
     return (uint8_t const *)&desc_device;
 }
 
-/**
- * \brief HID Report Descriptor
- */
 uint8_t const desc_hid_report[] = {
     TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD))),
     TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(static_cast<uint8_t>(platform::usb::COMMAND::MOUSE))),
@@ -121,24 +78,12 @@ uint8_t const desc_hid_report[] = {
     TUD_HID_REPORT_DESC_CUSTOM(HID_REPORT_ID(static_cast<uint8_t>(platform::usb::COMMAND::CUSTOM))),
 };
 
-/**
- * \brief Invoked when received GET HID REPORT DESCRIPTOR
- *
- * Application return pointer to descriptor
- * Descriptor contents must exist long enough for transfer to complete
- *
- * \param instance
- * \return uint8_t const*
- */
 uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance)
 {
     (void)instance;
     return desc_hid_report;
 }
 
-/**
- * \brief Configuration Descriptor
- */
 enum
 {
     ITF_NUM_HID,
@@ -161,22 +106,8 @@ uint8_t const desc_configuration[] = {
     // TUD_HID_DESCRIPTOR(ITF_NUM_HID, 0, HID_ITF_PROTOCOL_NONE, 4, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 5),
 };
 
-/*
- * ATTENTION:
- * Per USB specs: high speed capable device must report
- * device_qualifier and other_speed_configuration
- */
-
-/**
- * \brief other speed configuration
- */
 uint8_t desc_other_speed_config[CONFIG_TOTAL_LEN];
 
-/**
- * \brief device qualifier
- * device qualifier is mostly similar to device descriptor
- * since we don't change configuration based on speed
- */
 tusb_desc_device_qualifier_t const desc_device_qualifier =
     {
         .bLength = sizeof(tusb_desc_device_qualifier_t),
@@ -191,33 +122,11 @@ tusb_desc_device_qualifier_t const desc_device_qualifier =
         .bNumConfigurations = 0x01,
         .bReserved = 0x00};
 
-/**
- * \brief Invoked when received GET DEVICE QUALIFIER DESCRIPTOR request
- *
- * Application return pointer to descriptor, whose contents must exist long enough
- * for transfer to complete.
- * device_qualifier descriptor describes information about a high-speed capable
- * device that would change if the device were operating at the other speed.
- * If not highspeed capable stall this request.
- *
- * \return uint8_t const*
- */
 uint8_t const *tud_descriptor_device_qualifier_cb(void)
 {
     return (uint8_t const *)&desc_device_qualifier;
 }
 
-/**
- * \brief Invoked when received GET OTHER SEED CONFIGURATION DESCRIPTOR request
- *
- * Application return pointer to descriptor, whose contents must exist long enough
- * for transfer to complete.
- * Configuration descriptor in the other speed e.g if high speed then this is
- * for full speed and vice versa.
- *
- * \param index
- * \return uint8_t const*
- */
 uint8_t const *tud_descriptor_other_speed_configuration_cb(uint8_t index)
 {
     (void)index; // for multiple configurations
@@ -230,14 +139,6 @@ uint8_t const *tud_descriptor_other_speed_configuration_cb(uint8_t index)
     return desc_other_speed_config;
 }
 
-/**
- * \brief Invoked when received GET CONFIGURATION DESCRIPTOR
- *
- * Descriptor contents must exist long enough for transfer to complete
- *
- * \param index
- * \return uint8_t const* Application return pointer to descriptor
- */
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
     (void)index; // for multiple configurations
@@ -249,15 +150,6 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 static const size_t DESCRIPTOR_SIZE = 32;
 static uint16_t _desc_str[DESCRIPTOR_SIZE];
 
-/**
- * \brief Invoked when received GET STRING DESCRIPTOR request
- *
- * Handle string descriptors
- *
- * \param index
- * \param lang_id
- * \return uint16_t const* Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
- */
 uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t lang_id)
 {
     (void)lang_id;
@@ -304,57 +196,33 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t lang_id)
         break;
     }
     default:
-        /*
-          Note: the 0xEE index string is a Microsoft OS 1.0 Descriptors.
-          https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-defined-usb-descriptors
-        */
+
         return NULL;
     }
 
     return _desc_str;
 }
 
-/**
- * \brief Invoked when device is mounted
- */
 void tud_mount_cb(void)
 {
     engine::mount();
 }
 
-/**
- * \brief Invoked when device is unmounted
- */
 void tud_umount_cb(void)
 {
     engine::unmount();
 }
 
-/**
- * \brief Invoked when usb bus is suspended
- *
- * remote_wakeup_en : if host allow us  to perform remote wakeup
- * Within 7ms, device must draw an average of current less than 2.5 mA from bus
- */
 void tud_suspend_cb(bool remote_wakeup_en)
 {
     engine::suspend(remote_wakeup_en);
 }
 
-/**
- * \brief Invoked when usb bus is resumed
- */
 void tud_resume_cb(void)
 {
     engine::resume();
 }
 
-/**
- * \brief Invoked when sent REPORT successfully to host
- *
- * Application can use this to send the next report
- * Note: For composite reports, report[0] is report ID
- */
 void tud_hid_report_complete_cb(uint8_t instance, uint8_t const *report, uint16_t len)
 {
     (void)instance;
@@ -370,18 +238,6 @@ void tud_hid_report_complete_cb(uint8_t instance, uint8_t const *report, uint16_
 #endif
 }
 
-/**
- * \brief Invoked when received SET_REPORT control request
- *
- * Invoked when received SET_REPORT control request or received data
- * on OUT endpoint ( Report ID = 0, Type = 0 )
- *
- * \param instance
- * \param _report_id
- * \param report_type
- * \param buffer
- * \param bufsize
- */
 void tud_hid_set_report_cb(uint8_t instance,
                            uint8_t _report_id,
                            hid_report_type_t report_type,
@@ -398,7 +254,6 @@ void tud_hid_set_report_cb(uint8_t instance,
 #if defined(PRINT_EXTENDED_OUTPUT)
         printf("###### HID_REPORT_TYPE_FEATURE\n");
 #endif
-        /* do nothing */
     }
     else if (report_type == HID_REPORT_TYPE_OUTPUT)
     {
@@ -440,18 +295,6 @@ void tud_hid_set_report_cb(uint8_t instance,
 #endif
 }
 
-/**
- * \brief Invoked when received GET_REPORT control request
- *
- * Application must fill buffer report's content and return its length.
- *
- * \param instance
- * \param report_id
- * \param report_type
- * \param buffer
- * \param bufsize
- * \return uint16_t Return zero will cause the stack to STALL request
- */
 uint16_t tud_hid_get_report_cb(uint8_t instance,
                                uint8_t report_id,
                                hid_report_type_t report_type,
@@ -502,21 +345,18 @@ uint16_t tud_hid_get_report_cb(uint8_t instance,
     return bufsize;
 }
 
-namespace platform
+namespace platform::usb
 {
-    namespace usb
+    extern void sent_keycode(const uint8_t _modifier, const uint8_t _code)
     {
-        extern void sent_keycode(const uint8_t _modifier, const uint8_t _code)
-        {
-            uint8_t keycode[6] = {0};
-            keycode[0] = _code;
+        uint8_t keycode[6] = {0};
+        keycode[0] = _code;
 
-            tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), _modifier, keycode);
-        }
+        tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), _modifier, keycode);
+    }
 
-        extern void sent_keycode()
-        {
-            tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), 0, NULL);
-        }
+    extern void sent_keycode()
+    {
+        tud_hid_keyboard_report(static_cast<uint8_t>(platform::usb::COMMAND::KEYBOARD), 0, NULL);
     }
 }

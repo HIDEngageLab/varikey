@@ -1,13 +1,10 @@
-/**
- * \file payload_keypad.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload keypad module
+// SPDX-FileType: SOURCE
 
-#ifndef __PAYLOAD_KEYPAD_HPP__
-#define __PAYLOAD_KEYPAD_HPP__
+#pragma once
 
 #include <cstdint>
 
@@ -17,68 +14,60 @@
 #include "keypad_modifiers.hpp"
 #include "payload_identifier.hpp"
 
-namespace engine
+namespace engine::payload::keypad
 {
-    namespace payload
+    using TABLE = engine::keypad::TABLE;
+    using KEY_ID = engine::keypad::KEY_ID;
+    using MODIFIER = engine::keypad::MODIFIER;
+
+    enum class IDENTIFIER : uint8_t
     {
-        namespace keypad
+        HCI = 0x00,
+        HID = 0x01,
+        KEYCODE = 0x02,
+        MAPPING = 0x03,
+
+        UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
+    };
+
+    enum class FUNCTION : uint8_t
+    {
+        DISABLE = common::function::DISABLE,
+        ENABLE = common::function::ENABLE,
+        GET = common::function::GET,
+        SET = common::function::SET,
+
+        CLICK = common::function::CUSTOM,
+        PRESS = common::function::CUSTOM + 1,
+        PUSH = common::function::CUSTOM + 2,
+        RELEASE = common::function::CUSTOM + 3,
+        RESET = common::function::CUSTOM + 4,
+
+        UNDEFINED = to_underlying(common::function::UNDEFINED),
+    };
+
+    struct content_t
+    {
+        IDENTIFIER identifier;
+        FUNCTION function;
+        union
         {
-            using TABLE = engine::keypad::TABLE;
-            using KEY_ID = engine::keypad::KEY_ID;
-            using MODIFIER = engine::keypad::MODIFIER;
-
-            enum class IDENTIFIER : uint8_t
+            TABLE table;
+            struct
             {
-                HCI = 0x00,
-                HID = 0x01,
-                KEYCODE = 0x02,
-                MAPPING = 0x03,
-
-                UNDEFINED = to_underlying(payload::IDENTIFIER::UNDEFINED),
-            };
-
-            enum class FUNCTION : uint8_t
+                MODIFIER modifier;
+                KEY_ID code;
+            } key;
+            struct
             {
-                DISABLE = common::function::DISABLE,
-                ENABLE = common::function::ENABLE,
-                GET = common::function::GET,
-                SET = common::function::SET,
+                uint8_t modifier;
+                uint8_t code;
+                TABLE table;
+            } value;
+        };
 
-                CLICK = common::function::CUSTOM,
-                PRESS = common::function::CUSTOM + 1,
-                PUSH = common::function::CUSTOM + 2,
-                RELEASE = common::function::CUSTOM + 3,
-                RESET = common::function::CUSTOM + 4,
-
-                UNDEFINED = to_underlying(common::function::UNDEFINED),
-            };
-
-            struct content_t
-            {
-                IDENTIFIER identifier;
-                FUNCTION function;
-                union
-                {
-                    TABLE table;
-                    struct
-                    {
-                        MODIFIER modifier;
-                        KEY_ID code;
-                    } key;
-                    struct
-                    {
-                        uint8_t modifier;
-                        uint8_t code;
-                        TABLE table;
-                    } value;
-                };
-
-                const size_t size() const;
-                void deserialize(uint8_t const *const);
-                void serialize(uint8_t **) const;
-            };
-        }
-    }
+        const size_t size() const;
+        void deserialize(uint8_t const *const);
+        void serialize(uint8_t **) const;
+    };
 }
-
-#endif // __PAYLOAD_KEYPAD_HPP__

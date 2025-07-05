@@ -1,17 +1,8 @@
-/**
- * \file param_position.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-
-/**
-    \brief Parameter "position"
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Position parameter implementation
+// SPDX-FileType: SOURCE
 
 #include <stdlib.h>
 #include <string.h>
@@ -20,43 +11,26 @@
 #include "macros.hpp"
 #include "param_position.hpp"
 
-namespace registry
+namespace registry::parameter::position
 {
-    namespace parameter
+    register_t g_register = {.byte = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
+
+    void register_t::initialize(void)
     {
-        namespace position
-        {
-            register_t g_register = {.byte = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
+        value.latitude = identity::Settings::MAGIC_LATITUDE;
+        value.longitude = identity::Settings::MAGIC_LONGITUDE;
+    }
 
-            /**
-                \brief initialize field with default values
+    void register_t::deserialize(uint8_t const *const _space)
+    {
 
-                magic values ;)
-            */
-            void register_t::initialize(void)
-            {
-                value.latitude = identity::Settings::MAGIC_LATITUDE;
-                value.longitude = identity::Settings::MAGIC_LONGITUDE;
-            }
+        memcpy(byte, _space, sizeof(register_t));
+    }
 
-            /**
-                \brief Deserialize position parameter value
-            */
-            void register_t::deserialize(uint8_t const *const _space)
-            {
-                /* ATTENTION: NO CHECKS */
-                memcpy(byte, _space, sizeof(register_t));
-            }
+    void register_t::serialize(uint8_t **_ptr) const
+    {
 
-            /**
-                \brief Serialize position parameter value
-            */
-            void register_t::serialize(uint8_t **_ptr) const
-            {
-                /* ATTENTION: NO CHECKS */
-                memcpy(*_ptr, byte, sizeof(register_t));
-                (*_ptr) += sizeof(register_t);
-            }
-        }
+        memcpy(*_ptr, byte, sizeof(register_t));
+        (*_ptr) += sizeof(register_t);
     }
 }

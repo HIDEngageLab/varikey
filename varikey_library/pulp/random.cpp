@@ -1,17 +1,8 @@
-/**
- * \file random.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
-
-/**
-    \brief Random number and sequences generator
-
-    \internal
-    \author Roman Koch, koch.roman@gmail.com
-*/
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Random number generation implementation
+// SPDX-FileType: SOURCE
 
 #include <assert.h>
 #include <stdlib.h>
@@ -31,15 +22,13 @@ static state_t state = UNDEFINED;
 
 static uint8_t create_random(const uint16_t _value);
 
-/**
-    \brief random generator initialization
-*/
+
 extern void random_init(void)
 {
     assert(state == UNDEFINED); // random generator not initialized
     state = READY;
 
-    /* calculate seed (paranoid) */
+    
     const uint16_t value = platform::board::assembly.soc.get_temperature_raw();
     const uint8_t result = 1 + (create_random(value) & 0x0f);
     uint16_t seed = result;
@@ -54,15 +43,13 @@ extern void random_init(void)
     srand(seed);
 }
 
-/**
-    \brief Create random sequence
-*/
+
 extern void random_create_sequence(chunk_t *const _sequence)
 {
     assert(state == READY);    // random sequence, generator uninitialized
     assert(_sequence != NULL); // random sequence parameter is null
 
-    /* calculate sequence item */
+    
     uint8_t *ptr = _sequence->space;
     uint8_t len = _sequence->size & ~0x01;
 
@@ -80,9 +67,7 @@ extern void random_create_sequence(chunk_t *const _sequence)
     }
 }
 
-/**
- * \brief create random byte
- */
+
 uint8_t create_random(const uint16_t _value)
 {
     assert(state == READY);

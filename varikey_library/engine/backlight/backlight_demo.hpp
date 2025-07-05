@@ -1,35 +1,23 @@
-/**
- * \file backlight_demo.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Demo backlight configuration
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_BACKLIGHT_DEMO_HPP__
-#define __ENGINE_BACKLIGHT_DEMO_HPP__
+#pragma once
 
 #include "backlight_color.hpp"
 #include "backlight_mode.hpp"
 
-namespace engine
+namespace engine::backlight
 {
-    namespace backlight
+    struct BacklightDemo
     {
-        struct BacklightDemo
-        {
-            static const PROGRAM DEFAULT_MODE = PROGRAM::TURBO;
-            static const uint16_t DEFAULT_MOUNT_TIMEOUT = 15000;
-            static constexpr backlight::Color MOUNTED_BACKLIGHT_LEFT = {.rgb = {.r = 0x00, .g = 0x0f, .b = 0x0f}};
-            static constexpr backlight::Color MOUNTED_BACKLIGHT_RIGHT = {.rgb = {.r = 0x00, .g = 0x0e, .b = 0x1f}};
-            static const uint16_t BLINK_ALERT_TIMEOUT = 250;
-            static const uint16_t BLINK_MOUNT_TIMEOUT = 1000;
-            static const uint16_t BLINK_SUSPEND_TIMEOUT = 2500;
-        };
-
-    }
+        static const PROGRAM DEFAULT_MODE = PROGRAM::TURBO;
+        static const uint16_t DEFAULT_MOUNT_TIMEOUT = 15000;
+        static constexpr Color MOUNTED_BACKLIGHT_LEFT = {.rgb = {.r = 0x00, .g = 0x0f, .b = 0x0f}};
+        static constexpr Color MOUNTED_BACKLIGHT_RIGHT = {.rgb = {.r = 0x00, .g = 0x0e, .b = 0x1f}};
+        static const uint16_t BLINK_ALERT_TIMEOUT = 250;
+        static const uint16_t BLINK_MOUNT_TIMEOUT = 1000;
+        static const uint16_t BLINK_SUSPEND_TIMEOUT = 2500;
+    };
 }
-
-#define EMBEDDED_KEYBOARD
-
-#endif // __ENGINE_BACKLIGHT_DEMO_HPP__

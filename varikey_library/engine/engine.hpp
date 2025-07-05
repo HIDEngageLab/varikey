@@ -1,13 +1,10 @@
-/**
- * \file engine.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Main engine interface
+// SPDX-FileType: SOURCE
 
-#ifndef __ENGINE_HPP__
-#define __ENGINE_HPP__
+#pragma once
 
 #include "chunk.h"
 #include "engine_defines.hpp"
@@ -29,5 +26,3 @@ namespace engine
 
     extern defines::STATE get_state(void);
 }
-
-#endif /* __ENGINE_HPP__ */

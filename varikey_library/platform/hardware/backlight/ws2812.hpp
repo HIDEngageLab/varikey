@@ -1,27 +1,15 @@
-/**
- * \file ws2812.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- *
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: WS2812 LED driver interface for platform hardware abstraction
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_WS2812_HPP__
-#define __PLATFORM_WS2812_HPP__
+#pragma once
 
 #include <stdint.h>
 
-namespace platform
+namespace platform::hardware::ws2812
 {
-    namespace hardware
-    {
-        namespace ws2812
-        {
-            extern void init(void);
-            extern void put_pixel(uint8_t r, uint8_t g, uint8_t b);
-        }
-    }
+    extern void init(void);
+    extern void put_pixel(uint8_t r, uint8_t g, uint8_t b);
 }
-
-#endif // __PLATFORM_WS2812_HPP__

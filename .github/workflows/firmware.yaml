@@ -25,7 +25,7 @@ jobs:
   build:
     strategy:
       matrix:
-        hardware: [VARIKEY, GOSSENMETRAWATT]
+        hardware: [VARIKEY, GMCI]
         product: [KEYPAD_DEMO, KEYPAD_10BWDB]
     runs-on: ubuntu-latest
 

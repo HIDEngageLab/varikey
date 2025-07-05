@@ -1,10 +1,8 @@
-/**
- * \file keymatrix_adp5585_handler_type.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Keymatrix chip keymatrix chip handler type functionality
+// SPDX-FileType: SOURCE
 
 #pragma once
 
@@ -30,7 +28,7 @@ namespace platform::hardware
         };
 
         template <>
-        struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
+        struct Entity<platform::defines::IDENTIFIER::GMCI_1_0>
         {
             using Type = platform::hardware::KeymatrixHandlerGmc;
         };

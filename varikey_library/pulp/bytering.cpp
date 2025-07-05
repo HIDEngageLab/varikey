@@ -1,10 +1,8 @@
-/**
- * \file bytering.cpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Byte manipulation implementation
+// SPDX-FileType: SOURCE
 
 #include "bytering.hpp"
 
@@ -15,9 +13,7 @@ static void bytering_test(void);
 static void randtest(void);
 #endif
 
-/**
-    \brief Initialize byte ring buffer
-*/
+
 extern void bytering_init(buffer_t *const buf, uint8_t *const _space, size_t const _size)
 {
     buf->chunk.space = _space;
@@ -27,9 +23,7 @@ extern void bytering_init(buffer_t *const buf, uint8_t *const _space, size_t con
     buf->out = 0;
 }
 
-/**
-    \brief Store a byte in the buffer
-*/
+
 extern size_t bytering_write(buffer_t *const _buf, uint8_t const _value)
 {
     if (_buf->number_of_free_items == 0)
@@ -53,9 +47,7 @@ extern size_t bytering_write(buffer_t *const _buf, uint8_t const _value)
     return 1;
 }
 
-/**
-    \brief Read a byte from buffer
-*/
+
 extern size_t bytering_read(buffer_t *const _buf, uint8_t *const _value)
 {
     if ((_buf->number_of_free_items == _buf->chunk.size) && (_buf->in == _buf->out))
@@ -79,9 +71,7 @@ extern size_t bytering_read(buffer_t *const _buf, uint8_t *const _value)
     return 1;
 }
 
-/**
-    \brief Copy ring data
-*/
+
 extern size_t bytering_copy(buffer_t *const _from, buffer_t *const _to)
 {
     size_t cntr = 0;
@@ -130,9 +120,7 @@ extern size_t bytering_peek(buffer_t *const _buf, const size_t _cursor, uint8_t 
     return 1;
 }
 
-/**
-    \brief Test
-*/
+
 #ifdef DEBUG_BYTE_RING
 static void bytering_test(void)
 {
@@ -192,7 +180,7 @@ static void bytering_test(void)
     result1 = bytering_write(&tx_buffer, '5');
     result1 = bytering_copy(&tx_buffer, &rx_buffer);
 }
-#endif /* DEBUG_BYTE_RING */
+#endif 
 
 #ifdef DEBUG_BYTE_RING
 static void randtest(void)
@@ -225,4 +213,4 @@ static void randtest(void)
         }
     }
 }
-#endif /* DEBUG_BYTE_RING */
+#endif 

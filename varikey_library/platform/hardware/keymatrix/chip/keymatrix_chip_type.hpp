@@ -1,10 +1,8 @@
-/**
- * \file keymatrix.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Keymatrix chip keymatrix chip type functionality
+// SPDX-FileType: SOURCE
 
 #pragma once
 
@@ -31,7 +29,7 @@ namespace platform::hardware
         };
 
         template <>
-        struct Entity<platform::defines::IDENTIFIER::GOSSENMETRAWATT_1_0>
+        struct Entity<platform::defines::IDENTIFIER::GMCI_1_0>
         {
             using Type = platform::hardware::KeymatrixApd5585Gmc;
         };

@@ -1,32 +1,24 @@
-/**
- * \file rp2040_watchdog.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware rp2040 watchdog functionality
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_SOC_RP2040_WATCHDOG_HPP__
-#define __PLATFORM_SOC_RP2040_WATCHDOG_HPP__
+#pragma once
 
 #include "component_interface.hpp"
 
-namespace platform
+namespace platform::soc
 {
-    namespace soc
+    struct RP2040Watchdog : public pulp::ComponentInterface
     {
-        struct RP2040Watchdog : public pulp::ComponentInterface
-        {
-            virtual ~RP2040Watchdog() {}
+        virtual ~RP2040Watchdog() {}
 
-            virtual void initialize() {}
-            virtual void shutdown() {}
+        virtual void initialize() {}
+        virtual void shutdown() {}
 
-            void start();
-            void update();
-            void reboot();
-        };
-    }
+        void start();
+        void update();
+        void reboot();
+    };
 }
-
-#endif

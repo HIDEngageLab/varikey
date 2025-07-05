@@ -1,13 +1,10 @@
-/**
- * \file rp2040_soc.hpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware rp2040 soc functionality
+// SPDX-FileType: SOURCE
 
-#ifndef __PLATFORM_SOC_RP2040_HPP__
-#define __PLATFORM_SOC_RP2040_HPP__
+#pragma once
 
 #include <stdint.h>
 
@@ -19,48 +16,43 @@
 #include "rp2040_ticker.hpp"
 #include "rp2040_watchdog.hpp"
 
-namespace platform
+namespace platform::soc
 {
-    namespace soc
+    using DIRECTION = platform::board::DIRECTION;
+    using IDENTIFIER = platform::board::IDENTIFIER;
+    using VALUE = platform::board::VALUE;
+
+    struct RP2040 : public pulp::ComponentInterface
     {
-        using DIRECTION = platform::board::DIRECTION;
-        using IDENTIFIER = platform::board::IDENTIFIER;
-        using VALUE = platform::board::VALUE;
+        RP2040();
+        virtual ~RP2040() {}
 
-        struct RP2040 : public pulp::ComponentInterface
-        {
-            RP2040();
-            virtual ~RP2040() {}
+        virtual void initialize();
+        virtual void shutdown();
 
-            virtual void initialize();
-            virtual void shutdown();
+        const float get_temperature(void) const { return temperature.get_value(); }
+        const uint16_t get_temperature_raw(void) const { return temperature.get_raw_value(); }
 
-            const float get_temperature(void) const { return temperature.get_value(); }
-            const uint16_t get_temperature_raw(void) const { return temperature.get_raw_value(); }
+        void ticker_start(platform::board::ticker_handler_t _handler) { ticker.start(_handler); }
+        void ticker_stop(void) { ticker.stop(); }
 
-            void ticker_start(platform::board::ticker_handler_t _handler) { ticker.start(_handler); }
-            void ticker_stop(void) { ticker.stop(); }
+        const uint64_t get_stopwatch(void) const { return stopwatch.get_value(); }
 
-            const uint64_t get_stopwatch(void) const { return stopwatch.get_value(); }
+        const DIRECTION get_gpio_direction(const IDENTIFIER) const;
+        void set_gpio_direction(const IDENTIFIER, DIRECTION);
+        void enable_gpio_event(platform::board::callback_t, const bool);
+        const VALUE get_value(const IDENTIFIER);
+        void set_value(const IDENTIFIER, const bool);
 
-            const DIRECTION get_gpio_direction(const IDENTIFIER) const;
-            void set_gpio_direction(const IDENTIFIER, DIRECTION);
-            void enable_gpio_event(platform::board::callback_t, const bool);
-            const VALUE get_value(const IDENTIFIER);
-            void set_value(const IDENTIFIER, const bool);
+        void perform();
 
-            void perform();
+        void i2c_scan();
 
-            void i2c_scan();
-
-        protected:
-            RP2040Temperature temperature;
-            RP2040Ticker ticker;
-            RP2040Stopwatch stopwatch;
-            RP2040Watchdog watchdog;
-            RP2040Gpio gpio;
-        };
-    }
+    protected:
+        RP2040Temperature temperature;
+        RP2040Ticker ticker;
+        RP2040Stopwatch stopwatch;
+        RP2040Watchdog watchdog;
+        RP2040Gpio gpio;
+    };
 }
-
-#endif // __PLATFORM_SOC_RP2040_HPP__

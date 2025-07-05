@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware keymatrix queue functionality
+// SPDX-FileType: SOURCE
+
 #pragma once
 
 #include <cstdint>

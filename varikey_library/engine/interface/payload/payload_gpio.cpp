@@ -1,10 +1,8 @@
-/**
- * \file payload_gpio.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2024, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2024 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: payload gpio module
+// SPDX-FileType: SOURCE
 
 #include "payload_gpio.hpp"
 

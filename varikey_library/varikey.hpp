@@ -1,10 +1,8 @@
-/**
- * \file varikey.hpp
- * \author Roman Koch
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Main Varikey library interface
+// SPDX-FileType: SOURCE
 
 #pragma once 
 

@@ -1,10 +1,8 @@
-/**
- * \file keymatrix_adp5585.cpp
- * \author Koch, Roman (koch.roman@googlemail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Keymatrix core keymatrix core component functionality
+// SPDX-FileType: SOURCE
 
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
@@ -38,26 +36,26 @@ namespace platform::hardware
 
     bool KeymatrixCore::perform(void)
     {
-        //if (called_state > 0)
+        // if (called_state > 0)
         //{
-            //called_state--;
-            while (platform::hardware::protocol_core_has_event())
-            {
-                uint8_t state;
-                uint8_t identifier;
-                platform::hardware::protocol_core_get_event(&state, &identifier);
+        // called_state--;
+        while (platform::hardware::protocol_core_has_event())
+        {
+            uint8_t state;
+            uint8_t identifier;
+            platform::hardware::protocol_core_get_event(&state, &identifier);
 
-                pico::event_t event = {
-                    .identifier = static_cast<pico::event::IDENTIFIER>(identifier),
-                    .state = static_cast<pico::event::STATE>(state),
-                };
+            pico::event_t event = {
+                .identifier = static_cast<pico::event::IDENTIFIER>(identifier),
+                .state = static_cast<pico::event::STATE>(state),
+            };
 
-                key_handler.event_handler(event);
-            }
+            key_handler.event_handler(event);
+        }
 
-            return true;
+        return true;
         //}
-        //else
+        // else
         //{
         //    called_state = 0;
         //}

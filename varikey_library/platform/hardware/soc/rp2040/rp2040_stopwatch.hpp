@@ -1,20 +1,10 @@
-/**
- * \file rp2040_stopwatch.hpp
- * \author Koch, Roman (koch.roman@gmail.com)
- *
- * Copyright (c) 2023, Roman Koch, koch.roman@gmail.com
- * SPDX-License-Identifier: MIT
- */
+// SPDX-FileCopyrightText: 2023 Roman Koch <koch.roman@gmail.com>
+// SPDX-License-Identifier: MIT
+// SPDX-FileContributor: Roman Koch <koch.roman@gmail.com>
+// SPDX-FileComment: Hardware rp2040 stopwatch functionality
+// SPDX-FileType: SOURCE
 
-/**
-	\brief Stopwatch
-
-	\internal
-	\author Roman Koch, koch.roman@gmail.com
-*/
-
-#ifndef __PULP_STOPWATCH_HPP__
-#define __PULP_STOPWATCH_HPP__
+#pragma once
 
 #include <stdint.h>
 
@@ -22,25 +12,20 @@
 
 #include "component_interface.hpp"
 
-namespace platform
+namespace platform::soc
 {
-	namespace soc
+	struct RP2040Stopwatch : public pulp::ComponentInterface
 	{
-		struct RP2040Stopwatch : public pulp::ComponentInterface
-		{
-			RP2040Stopwatch(absolute_time_t &);
-			virtual ~RP2040Stopwatch() {}
+		RP2040Stopwatch(absolute_time_t &);
+		virtual ~RP2040Stopwatch() {}
 
-			virtual void initialize() {}
-			virtual void shutdown() {}
+		virtual void initialize() {}
+		virtual void shutdown() {}
 
-			void restart(void);
-			const uint64_t get_value(void) const;
+		void restart(void);
+		const uint64_t get_value(void) const;
 
-		protected:
-			absolute_time_t &time_reference;
-		};
-	}
+	protected:
+		absolute_time_t &time_reference;
+	};
 }
-
-#endif /* __PULP_STOPWATCH_HPP__ */
