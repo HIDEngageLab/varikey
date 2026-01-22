@@ -19,7 +19,7 @@ on:
         - debug
 
 env:
-  BUILD_TYPE: ${{ inputs.BuildType || 'Debug' }}
+  LOG_LEVEL: ${{ github.event.inputs['log-level'] || 'warning' }}
 
 jobs:
   build:
@@ -31,10 +31,11 @@ jobs:
         submodules: true
 
     - name: Declare variables
+      id: vars
       shell: bash
       run: |
-        echo "git_short=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-        echo "git_branch=$(echo ${GITHUB_REF_NAME/\//-})" >> "$GITHUB_ENV"
+        echo "git_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+        echo "git_branch=$(echo ${GITHUB_REF_NAME/\//-})" >> "$GITHUB_OUTPUT"
 
     - name: Generate SBOM
       id: sbom
@@ -42,13 +43,13 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         gh extension install advanced-security/gh-sbom
-        gh sbom >> varikey-spdx-${{ env.git_branch }}-${{ env.git_short }}.json
-        gh sbom -c -l >> varikey-spdx-cyclondx-${{ env.git_branch }}-${{ env.git_short }}.json
+        gh sbom >> varikey-spdx-${{ steps.vars.outputs.git_branch }}-${{ steps.vars.outputs.git_short }}.json
+        gh sbom -c -l >> varikey-spdx-cyclondx-${{ steps.vars.outputs.git_branch }}-${{ steps.vars.outputs.git_short }}.json
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: varikey-src-${{ env.git_branch }}-${{ env.git_short }}
+        name: varikey-src-${{ steps.vars.outputs.git_branch }}-${{ steps.vars.outputs.git_short }}
         path: |
           ${{github.workspace}}/src/
           ${{github.workspace}}/*.json
